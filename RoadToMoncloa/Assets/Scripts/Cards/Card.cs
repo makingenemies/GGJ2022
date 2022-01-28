@@ -85,10 +85,12 @@ public class Card : MonoBehaviour
     private void PlayForVoters()
     {
         _game.UpdateVotersCount(_votersWon);
+        _game.DestroyCard(this);
     }
 
     private void PlayForMoney()
     {
         _game.UpdateMoneyCount(_moneyWon);
+        _game.DestroyCard(this);
     }
 }
