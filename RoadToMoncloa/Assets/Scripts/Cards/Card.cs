@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
@@ -9,10 +8,14 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Card : MonoBehaviour
 {
-    [SerializeField] private int _votersWon;
-    [SerializeField] private int _moneyWon;
+    [SerializeField] CardData _cardData;
+    [SerializeField] SpriteRenderer[] _moneyIcons;
+    [SerializeField] SpriteRenderer[] _voterIcons;
 
     private Game _game;
+    private Strings _strings;
+
+    private TextMeshPro _titleText;
 
     private Vector3 screenPoint;
     private Vector3 offset;
@@ -20,9 +23,26 @@ public class Card : MonoBehaviour
     private bool isOnMoneyZone;
     private Vector3 originalPosition;
 
+    private void Awake()
+    {
+        _titleText = GetComponentInChildren<TextMeshPro>();
+
+        for (var i = _moneyIcons.Length - 1; i >= _cardData.MoneyWon; i--)
+        {
+            _moneyIcons[i].gameObject.SetActive(false);
+        }
+        for (var i = _voterIcons.Length - 1; i >= _cardData.VotersWon; i--)
+        {
+            _voterIcons[i].gameObject.SetActive(false);
+        }
+    }
+
     private void Start()
     {
         _game = FindObjectOfType<Game>();
+        _strings = FindObjectOfType<Strings>();
+
+        _titleText.text = _strings.GetString(_cardData.TitleId);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -84,13 +104,13 @@ public class Card : MonoBehaviour
 
     private void PlayForVoters()
     {
-        _game.UpdateVotersCount(_votersWon);
+        _game.UpdateVotersCount(_cardData.VotersWon);
         _game.DestroyCard(this);
     }
 
     private void PlayForMoney()
     {
-        _game.UpdateMoneyCount(_moneyWon);
+        _game.UpdateMoneyCount(_cardData.MoneyWon);
         _game.DestroyCard(this);
     }
 }
