@@ -8,6 +8,7 @@ public class Game : MonoBehaviour
 
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
+    private LiesManager _liesManager;
 
     private int _cardsCount;
 
@@ -15,6 +16,7 @@ public class Game : MonoBehaviour
     {
         _moneyCounter = FindObjectOfType<MoneyCounter>();
         _votersCounter = FindObjectOfType<VotersCounter>();
+        _liesManager = FindObjectOfType<LiesManager>();
 
         _votersCounter.SetMaxAmount(5);
         _moneyCounter.UpdateCurrentAmount(4);
@@ -42,6 +44,13 @@ public class Game : MonoBehaviour
                 _moneyCounter.UpdateCurrentAmount(cardData.MoneyWon);
                 _votersCounter.UpdateCurrentAmount(-cardData.VotersLost);
                 return true;
+            case CardPlayType.Lies:
+                var liePlayed = _liesManager.PlayLie();
+                if (liePlayed)
+                {
+                    _votersCounter.UpdateCurrentAmount(cardData.VotersWon);
+                }
+                return liePlayed;
             default:
                 return false;
         }

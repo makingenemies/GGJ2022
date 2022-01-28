@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +9,13 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Card : MonoBehaviour
 {
+    private static readonly Dictionary<string, CardPlayType> PlayTypeByTag = new Dictionary<string, CardPlayType>()
+    {
+        [Tags.VotersCardDropZone] = CardPlayType.Voters,
+        [Tags.MoneyCardDropZone] = CardPlayType.Money,
+        [Tags.LiesBox] = CardPlayType.Lies,
+    };
+
     [SerializeField] CardData _cardData;
     [SerializeField] SpriteRenderer[] _moneyIcons;
     [SerializeField] SpriteRenderer[] _voterIcons;
@@ -20,8 +28,8 @@ public class Card : MonoBehaviour
 
     private Vector3 screenPoint;
     private Vector3 offset;
-    private bool isOnVotersZone;
-    private bool isOnMoneyZone;
+    private int _potentialPlayTypesCount;
+    private CardPlayType _latestSelectedPlayType;
     private Vector3 originalPosition;
 
     private void Awake()
@@ -48,25 +56,26 @@ public class Card : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(Tags.VotersCardDropZone))
+        foreach(var tag in PlayTypeByTag.Keys)
         {
-            isOnVotersZone = true;
-        }
-        else if (collision.CompareTag(Tags.MoneyCardDropZone))
-        {
-            isOnMoneyZone = true;
+            if (collision.CompareTag(tag))
+            {
+                _potentialPlayTypesCount++;
+                _latestSelectedPlayType = PlayTypeByTag[tag];
+                return;
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag(Tags.VotersCardDropZone))
+        foreach (var tag in PlayTypeByTag.Keys)
         {
-            isOnVotersZone = false;
-        }
-        else if (collision.CompareTag(Tags.MoneyCardDropZone))
-        {
-            isOnMoneyZone = false;
+            if (collision.CompareTag(tag))
+            {
+                _potentialPlayTypesCount--;
+                return;
+            }
         }
     }
 
@@ -85,27 +94,17 @@ public class Card : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (isOnVotersZone && isOnMoneyZone)
+        if (_potentialPlayTypesCount != 1)
         {
-            Debug.Log("Dropped in the middle");
+            transform.position = originalPosition;
         }
-        else if (isOnVotersZone)
+        else if (_game.PlayCard(_cardData, _latestSelectedPlayType))
         {
-            Debug.Log("Dropped in voters zone");
-            if (_game.PlayCard(_cardData, CardPlayType.Voters))
-            {
-                _game.DestroyCard(this);
-            }
+            _game.DestroyCard(this);
         }
-        else if (isOnMoneyZone)
+        else
         {
-            Debug.Log("Dropped in money zone");
-            if (_game.PlayCard(_cardData, CardPlayType.Money))
-            {
-                _game.DestroyCard(this);
-            }
+            transform.position = originalPosition;
         }
-
-        transform.position = originalPosition;
     }
 }
