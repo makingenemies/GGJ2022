@@ -16,14 +16,33 @@ public class Card : MonoBehaviour
 
     private Vector3 screenPoint;
     private Vector3 offset;
+    private bool isOnVotersZone;
+    private Vector3 originalPosition;
 
     private void Start()
     {
         _game = FindObjectOfType<Game>();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag(Tags.VotersCardDropZone))
+        {
+            isOnVotersZone = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag(Tags.VotersCardDropZone))
+        {
+            isOnVotersZone = false;
+        }
+    }
+
     void OnMouseDown()
     {
+        originalPosition = transform.position;
         offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
     }
 
@@ -36,7 +55,15 @@ public class Card : MonoBehaviour
 
     private void OnMouseUp()
     {
-        Debug.Log("Mouse up");
+        if (isOnVotersZone)
+        {
+            Debug.Log("Dropped on voters zone");
+        }
+        else
+        {
+            Debug.Log("Dropped wherever");
+        }
+        transform.position = originalPosition;
     }
 
     private void PlayForVoters()
