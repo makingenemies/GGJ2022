@@ -11,11 +11,12 @@ public class Card : MonoBehaviour
     [SerializeField] CardData _cardData;
     [SerializeField] SpriteRenderer[] _moneyIcons;
     [SerializeField] SpriteRenderer[] _voterIcons;
+    [SerializeField] TextMeshPro _titleText;
+    [SerializeField] TextMeshPro _negativeVotersText;
+    [SerializeField] TextMeshPro _negativeMoneyText;
 
     private Game _game;
     private Strings _strings;
-
-    private TextMeshPro _titleText;
 
     private Vector3 screenPoint;
     private Vector3 offset;
@@ -43,6 +44,8 @@ public class Card : MonoBehaviour
         _strings = FindObjectOfType<Strings>();
 
         _titleText.text = _strings.GetString(_cardData.TitleId);
+        _negativeVotersText.text = $"-{_cardData.VotersLost}";
+        _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -91,26 +94,20 @@ public class Card : MonoBehaviour
         else if (isOnVotersZone)
         {
             Debug.Log("Dropped in voters zone");
-            PlayForVoters();
+            if (_game.PlayCard(_cardData, CardPlayType.Voters))
+            {
+                _game.DestroyCard(this);
+            }
         }
         else if (isOnMoneyZone)
         {
             Debug.Log("Dropped in money zone");
-            PlayForMoney();
+            if (_game.PlayCard(_cardData, CardPlayType.Money))
+            {
+                _game.DestroyCard(this);
+            }
         }
 
         transform.position = originalPosition;
-    }
-
-    private void PlayForVoters()
-    {
-        _game.UpdateVotersCount(_cardData.VotersWon);
-        _game.DestroyCard(this);
-    }
-
-    private void PlayForMoney()
-    {
-        _game.UpdateMoneyCount(_cardData.MoneyWon);
-        _game.DestroyCard(this);
     }
 }

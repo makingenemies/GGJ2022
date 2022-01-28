@@ -15,3 +15,5 @@ MonoBehaviour:
   TitleId: CardTitle_PublicHospital
   VotersWon: 3
   MoneyWon: 3
+  VotersLost: 2
+  MoneyLost: 3

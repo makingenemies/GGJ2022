@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -19,18 +17,34 @@ public class Game : MonoBehaviour
         _votersCounter = FindObjectOfType<VotersCounter>();
 
         _votersCounter.SetMaxAmount(5);
+        _moneyCounter.UpdateCurrentAmount(4);
 
         _cardsCount = 4;
     }
 
-    public void UpdateVotersCount(int votersCountDelta)
+    public bool PlayCard(CardData cardData, CardPlayType playType)
     {
-        _votersCounter.UpdateCurrentAmount(votersCountDelta);
-    }
-
-    public void UpdateMoneyCount(int moneyCountDelta)
-    {
-        _moneyCounter.UpdateCurrentAmount(moneyCountDelta);
+        switch(playType)
+        {
+            case CardPlayType.Voters:
+                if (cardData.MoneyLost > _moneyCounter.CurrentAmount)
+                {
+                    return false;
+                }
+                _votersCounter.UpdateCurrentAmount(cardData.VotersWon);
+                _moneyCounter.UpdateCurrentAmount(-cardData.MoneyLost);
+                return true;
+            case CardPlayType.Money:
+                if (cardData.VotersLost > _votersCounter.CurrentAmount)
+                {
+                    return false;
+                }
+                _moneyCounter.UpdateCurrentAmount(cardData.MoneyWon);
+                _votersCounter.UpdateCurrentAmount(-cardData.VotersLost);
+                return true;
+            default:
+                return false;
+        }
     }
 
     public void DestroyCard(Card card)

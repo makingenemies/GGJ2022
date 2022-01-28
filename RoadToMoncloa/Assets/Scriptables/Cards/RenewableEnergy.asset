@@ -15,3 +15,5 @@ MonoBehaviour:
   TitleId: CardTitle_RenewableEnergy
   VotersWon: 2
   MoneyWon: 2
+  VotersLost: 1
+  MoneyLost: 2

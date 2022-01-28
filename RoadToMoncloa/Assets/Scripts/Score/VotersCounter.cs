@@ -8,6 +8,8 @@ public class VotersCounter : MonoBehaviour
     private int _currentAmount;
     private int _maxAmount;
 
+    public int CurrentAmount => _currentAmount;
+
     private void Awake()
     {
         RefreshText();
