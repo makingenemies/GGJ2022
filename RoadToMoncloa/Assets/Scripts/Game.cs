@@ -19,7 +19,7 @@ public class Game : MonoBehaviour
         _votersCounter.SetMaxAmount(5);
         _moneyCounter.UpdateCurrentAmount(4);
 
-        _cardsCount = 4;
+        _cardsCount = FindObjectsOfType<Card>().Length;
     }
 
     public bool PlayCard(CardData cardData, CardPlayType playType)
