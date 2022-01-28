@@ -17,6 +17,7 @@ public class Card : MonoBehaviour
     private Vector3 screenPoint;
     private Vector3 offset;
     private bool isOnVotersZone;
+    private bool isOnMoneyZone;
     private Vector3 originalPosition;
 
     private void Start()
@@ -30,6 +31,10 @@ public class Card : MonoBehaviour
         {
             isOnVotersZone = true;
         }
+        else if (collision.CompareTag(Tags.MoneyCardDropZone))
+        {
+            isOnMoneyZone = true;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -37,6 +42,10 @@ public class Card : MonoBehaviour
         if (collision.CompareTag(Tags.VotersCardDropZone))
         {
             isOnVotersZone = false;
+        }
+        else if (collision.CompareTag(Tags.MoneyCardDropZone))
+        {
+            isOnMoneyZone = false;
         }
     }
 
@@ -55,14 +64,21 @@ public class Card : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (isOnVotersZone)
+        if (isOnVotersZone && isOnMoneyZone)
         {
-            Debug.Log("Dropped on voters zone");
+            Debug.Log("Dropped in the middle");
         }
-        else
+        else if (isOnVotersZone)
         {
-            Debug.Log("Dropped wherever");
+            Debug.Log("Dropped in voters zone");
+            PlayForVoters();
         }
+        else if (isOnMoneyZone)
+        {
+            Debug.Log("Dropped in money zone");
+            PlayForMoney();
+        }
+
         transform.position = originalPosition;
     }
 
@@ -73,6 +89,6 @@ public class Card : MonoBehaviour
 
     private void PlayForMoney()
     {
-        _game.UpdateMoneyCount(_votersWon);
+        _game.UpdateMoneyCount(_moneyWon);
     }
 }
