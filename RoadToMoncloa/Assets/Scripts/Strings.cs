@@ -20,6 +20,7 @@ public class Strings : MonoBehaviour
         [StringIds.CardTitle_FreeHeating] = "Calefacción gratis",
         [StringIds.CardTitle_PublicHospital] = "Hospital público",
         [StringIds.CardTitle_RenewableEnergy] = "Energías renovables",
+        [StringIds.CardTitle_Scolarships] = "Becas",
     };
 
     public static readonly Dictionary<Language, Dictionary<string, string>> StringsByLanguage = new Dictionary<Language, Dictionary<string, string>>
@@ -32,5 +33,6 @@ public class Strings : MonoBehaviour
         public const string CardTitle_FreeHeating = nameof(CardTitle_FreeHeating);
         public const string CardTitle_PublicHospital = nameof(CardTitle_PublicHospital);
         public const string CardTitle_RenewableEnergy = nameof(CardTitle_RenewableEnergy);
+        public const string CardTitle_Scolarships = nameof(CardTitle_Scolarships);
     }
 }
