@@ -9,8 +9,18 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Card : MonoBehaviour
 {
+    [SerializeField] private int _votersWon;
+    [SerializeField] private int _moneyWon;
+
+    private Game _game;
+
     private Vector3 screenPoint;
     private Vector3 offset;
+
+    private void Start()
+    {
+        _game = FindObjectOfType<Game>();
+    }
 
     void OnMouseDown()
     {
@@ -27,5 +37,15 @@ public class Card : MonoBehaviour
     private void OnMouseUp()
     {
         Debug.Log("Mouse up");
+    }
+
+    private void PlayForVoters()
+    {
+        _game.UpdateVotersCount(_votersWon);
+    }
+
+    private void PlayForMoney()
+    {
+        _game.UpdateMoneyCount(_votersWon);
     }
 }
