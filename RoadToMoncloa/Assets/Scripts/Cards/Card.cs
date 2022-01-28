@@ -26,8 +26,6 @@ public class Card : MonoBehaviour
 
     private void Awake()
     {
-        _titleText = GetComponentInChildren<TextMeshPro>();
-
         for (var i = _moneyIcons.Length - 1; i >= _cardData.MoneyWon; i--)
         {
             _moneyIcons[i].gameObject.SetActive(false);
