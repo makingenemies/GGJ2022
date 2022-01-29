@@ -26,6 +26,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private Strings _strings;
     private EventBus _eventBus;
     private PauseManager _pauseManager;
+    private LiesManager _liesManager;
 
     private Vector3 _screenPoint;
     private Vector3 _offset;
@@ -39,6 +40,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         _game = FindObjectOfType<GameplayManager>();
         _strings = FindObjectOfType<Strings>();
         _pauseManager = FindObjectOfType<PauseManager>();
+        _liesManager = FindObjectOfType<LiesManager>();
 
         if (_eventBus == null)
         {
@@ -55,7 +57,13 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         {
             _moneyIcons[i].gameObject.SetActive(false);
         }
-        for (var i = _voterIcons.Length - 1; i >= _cardData.VotersWon; i--)
+
+        var votersWon = _cardData.VotersWon;
+        if (_liesManager.IsLiesCountersFull)
+        {
+            votersWon--;
+        }
+        for (var i = _voterIcons.Length - 1; i >= votersWon; i--)
         {
             _voterIcons[i].gameObject.SetActive(false);
         }

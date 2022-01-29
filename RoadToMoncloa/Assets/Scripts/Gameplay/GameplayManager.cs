@@ -35,6 +35,7 @@ public class GameplayManager : MonoBehaviour
         _moneyCounter.UpdateCurrentAmount(_gameState.MoneyAmount);
 
         SetUpCards();
+        _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
     }
 
     private void SetUpCards()
@@ -140,6 +141,7 @@ public class GameplayManager : MonoBehaviour
     {
         _gameState.CurrentLevelIndex++;
         _gameState.MoneyAmount = _moneyCounter.CurrentAmount;
+        _gameState.LiesCount = _liesManager.PlayedLiesCount;
         SceneManager.LoadScene("Gameplay");
     }
 

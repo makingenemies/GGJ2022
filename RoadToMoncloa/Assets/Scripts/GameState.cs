@@ -28,4 +28,6 @@ public class GameState : MonoBehaviour
         get => _moneyAmount;
         set => _moneyAmount = value;
     }
+
+    public int LiesCount { get; set; }
 }
