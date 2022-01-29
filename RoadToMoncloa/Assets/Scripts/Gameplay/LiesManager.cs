@@ -24,8 +24,8 @@ public class LiesManager : MonoBehaviour
             return false;
         }
 
-        _lieMarkers[_playedLiesCount].color = Color.red;
-        _playedLiesCount++;
+        SetPlayedLiesCount(_playedLiesCount + 1);
+
         _eventBus.PublishEvent(new LiePlayedEvent
         {
             IsLiesCounterFull = _playedLiesCount >= _lieMarkers.Length
@@ -42,13 +42,13 @@ public class LiesManager : MonoBehaviour
     public void SetPlayedLiesCount(int playedLiesCount)
     {
         _playedLiesCount = playedLiesCount;
-        for (var i = 0; i < _playedLiesCount; i++)
+        for (var i = 0; i < _lieMarkers.Length; i++)
         {
-            _lieMarkers[i].color = Color.red;
+            _lieMarkers[i].gameObject.SetActive(false);
         }
-        for (var i = _playedLiesCount; i < _lieMarkers.Length; i++)
+        if (playedLiesCount > 0)
         {
-            _lieMarkers[i].color = Color.white;
+            _lieMarkers[playedLiesCount - 1].gameObject.SetActive(true);
         }
     }
 }
