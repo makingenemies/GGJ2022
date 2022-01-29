@@ -1081,6 +1081,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moneyAmount: 4
+  _votersCount: 0
 --- !u!4 &1392701693
 Transform:
   m_ObjectHideFlags: 0

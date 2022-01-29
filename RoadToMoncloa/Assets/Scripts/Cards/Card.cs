@@ -32,6 +32,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private Vector3 _offset;
     private int _potentialPlayTypesCount;
     private CardPlayType _latestSelectedPlayType;
+    private bool _isDragging;
     private Vector3 _originalPosition;
     CardData _cardData;
 
@@ -116,14 +117,22 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             return;
         }
 
+        _isDragging = true;
         _originalPosition = transform.position;
         _offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPoint.z));
     }
 
     void OnMouseDrag()
     {
-        if (_pauseManager.IsPaused)
+        if (_pauseManager.IsPaused || !_isDragging)
         {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _isDragging = false;
+            transform.position = _originalPosition;
             return;
         }
 
@@ -134,6 +143,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
     private void OnMouseUp()
     {
+        _isDragging = false;
+
         if (_pauseManager.IsPaused)
         {
             return;

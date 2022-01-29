@@ -6069,6 +6069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moneyAmount: 4
+  _votersCount: 0
 --- !u!1 &2055761162
 GameObject:
   m_ObjectHideFlags: 0
