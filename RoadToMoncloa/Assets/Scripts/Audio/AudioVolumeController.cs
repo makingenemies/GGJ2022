@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class AudioVolumeController : MonoBehaviour
 {
     private static AudioVolumeController _instance;
 
-    [SerializeField] private float _audioVolume;
+    [SerializeField] private int _audioVolume;
 
     private AudioSource[] _audioSources;
 
@@ -37,13 +38,19 @@ public class AudioVolumeController : MonoBehaviour
         _audioSources = FindObjectsOfType<AudioSource>();
         foreach (var audioSource in _audioSources)
         {
-            audioSource.volume = _audioVolume;
+            audioSource.volume = (float)_audioVolume / 100;
         }
     }
 
-    public void UpdateAudioVolume(float audioVolume)
+    public void SetAudioVolume(int audioVolume)
     {
         _audioVolume = audioVolume;
+        ApplyVolumeToAudioSources();
+    }
+
+    public void UpdateAudioVolume(int delta)
+    {
+        _audioVolume = Math.Max(0, Math.Min(100, _audioVolume + delta));
         ApplyVolumeToAudioSources();
     }
 }
