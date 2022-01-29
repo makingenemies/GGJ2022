@@ -464,7 +464,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 583728__warped-tension__suspense-bass-001.wav
+          m_StringArgument: aumentar_votos_2
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1115477110
@@ -616,6 +616,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioClips:
   - {fileID: 8300000, guid: 66136c2213f3c4a88a40fe6a3c640a76, type: 3}
+  - {fileID: 8300000, guid: c1baa84c5a29f3445a498c68727e3906, type: 3}
+  - {fileID: 8300000, guid: 3f2add35449451345a799f259c68dab5, type: 3}
+  - {fileID: 8300000, guid: 2442c69e3c3934e46a827f78b6b58802, type: 3}
+  - {fileID: 8300000, guid: 3c552401a196feb4b81fdfdc6b5d6b44, type: 3}
+  - {fileID: 8300000, guid: cf658399f3114a644a588e0ef0d1dd09, type: 3}
+  - {fileID: 8300000, guid: afeae447e7f76f540815172abfac38d9, type: 3}
+  - {fileID: 8300000, guid: de4f23b35f1e7554283d508777907545, type: 3}
+  - {fileID: 8300000, guid: c459fec1787793945a87d56184f5997d, type: 3}
+  - {fileID: 8300000, guid: 36ead1d9c1946254b9bb9565040bf4b9, type: 3}
+  - {fileID: 8300000, guid: b14846de5eb52014181ed5c78caed1bf, type: 3}
 --- !u!82 &1938285759
 AudioSource:
   m_ObjectHideFlags: 0
