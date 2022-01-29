@@ -26,6 +26,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private Game _game;
     private Strings _strings;
     private EventBus _eventBus;
+    private PauseManager _pauseManager;
 
     private Vector3 screenPoint;
     private Vector3 offset;
@@ -49,6 +50,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     {
         _game = FindObjectOfType<Game>();
         _strings = FindObjectOfType<Strings>();
+        _pauseManager = FindObjectOfType<PauseManager>();
 
         _titleText.text = _strings.GetString(_cardData.TitleId);
         _negativeVotersText.text = $"-{_cardData.VotersLost}";
@@ -104,12 +106,22 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
     void OnMouseDown()
     {
+        if (_pauseManager.IsPaused)
+        {
+            return;
+        }
+
         originalPosition = transform.position;
         offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
     }
 
     void OnMouseDrag()
     {
+        if (_pauseManager.IsPaused)
+        {
+            return;
+        }
+
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
         transform.position = curPosition;
@@ -117,6 +129,11 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
     private void OnMouseUp()
     {
+        if (_pauseManager.IsPaused)
+        {
+            return;
+        }
+
         if (_potentialPlayTypesCount != 1)
         {
             transform.position = originalPosition;

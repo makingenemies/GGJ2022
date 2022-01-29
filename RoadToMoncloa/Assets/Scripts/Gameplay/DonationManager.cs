@@ -9,14 +9,24 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
     private MoneyCounter _moneyCounter;
     private LiesManager _liesManager;
     private EventBus _eventBus;
+    private PauseManager _pauseManager;
 
     private void Start()
     {
         _moneyCounter = FindObjectOfType<MoneyCounter>();
         _liesManager = FindObjectOfType<LiesManager>();
         _eventBus = FindObjectOfType<EventBus>();
+        _pauseManager = FindObjectOfType<PauseManager>();
 
         _eventBus.Register(this);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && _donationPanel.activeSelf)
+        {
+            HideDonationPanel();
+        }
     }
 
     private void OnEnable()
@@ -35,11 +45,13 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
     public void ShowDonationPanel()
     {
         _donationPanel.SetActive(true);
+        _pauseManager.Pause();
     }
 
     public void HideDonationPanel()
     {
         _donationPanel.SetActive(false);
+        _pauseManager.Unpause();
     }
 
     public void Donate(int donationMoneyAmount)
@@ -47,7 +59,7 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
         _moneyCounter.UpdateCurrentAmount(-donationMoneyAmount);
         _liesManager.ResetPlayedLies();
 
-        _donationPanel.SetActive(false);
+        HideDonationPanel();
         _openPanelButton.interactable = false;
     }
 
