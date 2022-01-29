@@ -13,6 +13,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] GameObject _cards4SpotsPrefab;
     [SerializeField] GameObject _cards5SpotsPrefab;
     [SerializeField] GameObject _cards6SpotsPrefab;
+    [SerializeField] string[] _zoneAnimationTriggerNames;
 
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
@@ -20,11 +21,20 @@ public class GameplayManager : MonoBehaviour
     private GameState _gameState;
     private GeneralSettings _generalSettings;
     private DonationManager _donationManager;
+    private Animator _moneyZoneAnimator;
+    private Animator _votersZoneAnimator;
+
+    private System.Random _random;
 
     private int _cardsCount;
     private bool _liesDisabled;
 
     private LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
+
+    private void Awake()
+    {
+        _random = new System.Random();
+    }
 
     private void Start()
     {
@@ -34,6 +44,9 @@ public class GameplayManager : MonoBehaviour
         _gameState = FindObjectOfType<GameState>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
         _donationManager = FindObjectOfType<DonationManager>();
+
+        _votersZoneAnimator = GameObject.FindGameObjectWithTag(Tags.VotersCardDropZone).GetComponentInChildren<Animator>();
+        _moneyZoneAnimator = GameObject.FindGameObjectWithTag(Tags.MoneyCardDropZone).GetComponentInChildren<Animator>();
 
         _moneyCounter.UpdateCurrentAmount(_gameState.MoneyAmount);
         _votersCounter.UpdateCurrentAmount(_gameState.VotersCount);
@@ -83,26 +96,9 @@ public class GameplayManager : MonoBehaviour
         switch(playType)
         {
             case CardPlayType.Voters:
-                if (cardData.MoneyLost > _moneyCounter.CurrentAmount)
-                {
-                    return false;
-                }
-                var votersWon = cardData.VotersWon;
-                if (_liesManager.IsLiesCountersFull)
-                {
-                    votersWon--;
-                }
-                _votersCounter.UpdateCurrentAmount(votersWon);
-                _moneyCounter.UpdateCurrentAmount(-cardData.MoneyLost);
-                return true;
+                return TryPlayVotersCard(cardData);
             case CardPlayType.Money:
-                if (cardData.VotersLost > _votersCounter.CurrentAmount)
-                {
-                    return false;
-                }
-                _moneyCounter.UpdateCurrentAmount(cardData.MoneyWon);
-                _votersCounter.UpdateCurrentAmount(-cardData.VotersLost);
-                return true;
+                return TryPlayMoneyCard(cardData);
             case CardPlayType.Lies:
                 var liePlayed = _liesManager.PlayLie();
                 if (liePlayed)
@@ -113,6 +109,40 @@ public class GameplayManager : MonoBehaviour
             default:
                 return false;
         }
+    }
+
+    private bool TryPlayVotersCard(CardData cardData)
+    {
+        if (cardData.MoneyLost > _moneyCounter.CurrentAmount)
+        {
+            return false;
+        }
+        var votersWon = cardData.VotersWon;
+        if (_liesManager.IsLiesCountersFull)
+        {
+            votersWon--;
+        }
+        _votersCounter.UpdateCurrentAmount(votersWon);
+        _moneyCounter.UpdateCurrentAmount(-cardData.MoneyLost);
+        _votersZoneAnimator.SetTrigger(GetRandomZoneAnimationTriggerName());
+        return true;
+    }
+
+    private bool TryPlayMoneyCard(CardData cardData)
+    {
+        if (cardData.VotersLost > _votersCounter.CurrentAmount)
+        {
+            return false;
+        }
+        _moneyCounter.UpdateCurrentAmount(cardData.MoneyWon);
+        _votersCounter.UpdateCurrentAmount(-cardData.VotersLost);
+        _moneyZoneAnimator.SetTrigger(GetRandomZoneAnimationTriggerName());
+        return true;
+    }
+    
+    private string GetRandomZoneAnimationTriggerName()
+    {
+        return _zoneAnimationTriggerNames[_random.Next(0, _zoneAnimationTriggerNames.Length)];
     }
 
     public void DestroyCard(Card card)
