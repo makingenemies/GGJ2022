@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: SubidaSalarial
   m_EditorClassIdentifier: 
-  TitleId: CardTitle_SubidaSalarial
+  TitleId: Subida salarial
   VotersWon: 2
   MoneyWon: 1
   VotersLost: 1

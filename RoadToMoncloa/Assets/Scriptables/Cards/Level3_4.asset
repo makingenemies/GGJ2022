@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TitleId: Level3_4
   VotersWon: 7
-  MoneyWon: 2
-  VotersLost: 1
-  MoneyLost: 2
+  MoneyWon: 3
+  VotersLost: 3
+  MoneyLost: 3

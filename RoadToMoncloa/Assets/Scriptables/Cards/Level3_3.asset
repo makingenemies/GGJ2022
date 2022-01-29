@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level3_3
   m_EditorClassIdentifier: 
   TitleId: Level3_3
-  VotersWon: 8
+  VotersWon: 7
   MoneyWon: 4
   VotersLost: 2
   MoneyLost: 4
