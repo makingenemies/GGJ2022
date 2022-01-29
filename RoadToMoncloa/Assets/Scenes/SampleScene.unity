@@ -1152,6 +1152,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _language: 0
+  _levelsData:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &619239449
 GameObject:
   m_ObjectHideFlags: 0

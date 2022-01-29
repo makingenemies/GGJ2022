@@ -12,7 +12,8 @@ public class Strings : MonoBehaviour
 
     public string GetString(string stringId)
     {
-        return StringsByLanguage[_generalSettings.Language][stringId];
+        var currentLanguageStrings = StringsByLanguage[_generalSettings.Language];
+        return currentLanguageStrings.TryGetValue(stringId, out var localisedString) ? localisedString : stringId;
     }
 
     public static readonly Dictionary<string, string> SpanishStrings = new Dictionary<string, string>
