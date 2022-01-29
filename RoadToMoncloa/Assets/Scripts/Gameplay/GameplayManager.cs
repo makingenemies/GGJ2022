@@ -6,6 +6,7 @@ public class GameplayManager : MonoBehaviour
 {
     [SerializeField] Button _restartButton;
     [SerializeField] GameObject _successfulLevelEndPanel;
+    [SerializeField] GameObject _successfulGameEndPanel;
     [SerializeField] Transform[] _cardsPositions;
     [SerializeField] Card _cardPrefab;
 
@@ -95,7 +96,14 @@ public class GameplayManager : MonoBehaviour
     {
         if (_votersCounter.CurrentAmount >= CurrentLevelData.VotersGoal)
         {
-            _successfulLevelEndPanel.SetActive(true);
+            if (_gameState.CurrentLevelIndex < _generalSettings.LevelsData.Length - 1)
+            {
+                _successfulLevelEndPanel.SetActive(true);
+            }
+            else
+            {
+                _successfulGameEndPanel.SetActive(true);
+            }
         }
         else
         {
@@ -115,5 +123,11 @@ public class GameplayManager : MonoBehaviour
         _gameState.CurrentLevelIndex++;
         _gameState.MoneyAmount = _moneyCounter.CurrentAmount;
         SceneManager.LoadScene("Gameplay");
+    }
+
+    // Used from UI
+    public void GoToLevelSelectionDebugScene()
+    {
+        SceneManager.LoadScene("LevelSelection");
     }
 }
