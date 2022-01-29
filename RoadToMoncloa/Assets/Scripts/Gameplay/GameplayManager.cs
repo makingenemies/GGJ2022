@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,8 +8,11 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] Button _restartButton;
     [SerializeField] GameObject _successfulLevelEndPanel;
     [SerializeField] GameObject _successfulGameEndPanel;
-    [SerializeField] Transform[] _cardsPositions;
     [SerializeField] Card _cardPrefab;
+    [SerializeField] GameObject _cardsPlaceholderParent;
+    [SerializeField] GameObject _cards4SpotsPrefab;
+    [SerializeField] GameObject _cards5SpotsPrefab;
+    [SerializeField] GameObject _cards6SpotsPrefab;
 
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
@@ -35,9 +39,23 @@ public class GameplayManager : MonoBehaviour
 
     private void SetUpCards()
     {
+        if (CurrentLevelData.Cards.Length < 4 || CurrentLevelData.Cards.Length > 6)
+        {
+            throw new System.Exception("Invalid amount of cards. A level needs to have 4 to 6 cards");
+        }
+
+        var cardsPlaceholderPrefabByNumberOfCards = new Dictionary<int, GameObject>
+        {
+            [4] = _cards4SpotsPrefab,
+            [5] = _cards5SpotsPrefab,
+            [6] = _cards6SpotsPrefab,
+        };
+
+        var cardsPlaceholder = Instantiate(cardsPlaceholderPrefabByNumberOfCards[CurrentLevelData.Cards.Length], _cardsPlaceholderParent.transform);
+
         for (var i = 0; i < CurrentLevelData.Cards.Length; i++)
         {
-            var card = Instantiate(_cardPrefab, _cardsPositions[i]);
+            var card = Instantiate(_cardPrefab, cardsPlaceholder.transform.GetChild(i));
             card.SetCardData(CurrentLevelData.Cards[i]);
         }
 
