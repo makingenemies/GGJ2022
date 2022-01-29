@@ -44,5 +44,6 @@ public class AudioVolumeController : MonoBehaviour
     public void UpdateAudioVolume(float audioVolume)
     {
         _audioVolume = audioVolume;
+        ApplyVolumeToAudioSources();
     }
 }
