@@ -1080,7 +1080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87acc4f126e276b4db17e0593a81176d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moneyAmount: 4
+  _moneyAmount: 3
 --- !u!4 &1392701693
 Transform:
   m_ObjectHideFlags: 0
