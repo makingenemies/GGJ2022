@@ -7,19 +7,17 @@ public class GameState : MonoBehaviour
 
     private static GameState _instance;
 
-    public void Start()
+    public void Awake()
     {
         if (_instance == null)
         {
             DontDestroyOnLoad(this.gameObject);
             _instance = this;
         }
-        else
+        else if (_instance != this)
         {
-            if (_instance != this)
-            {
-                Destroy(this.gameObject);
-            }
+            Destroy(this.gameObject);
+            return;
         }
     }
 

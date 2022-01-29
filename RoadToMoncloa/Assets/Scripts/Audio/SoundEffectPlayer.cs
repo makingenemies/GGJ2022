@@ -14,27 +14,22 @@ public class SoundEffectPlayer : MonoBehaviour
 
     private void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
-    }
-
-    public void Start()
-    {
-        if (_instance != null && _instance != this)
+        if (_instance == null)
+        {
+            DontDestroyOnLoad(this.gameObject);
+            _instance = this;
+        }
+        else if (_instance != this)
         {
             Destroy(this.gameObject);
             return;
         }
 
-        if (_instance == null)
+        _audioSource = GetComponent<AudioSource>();
+        _audioClipsByName = new Dictionary<string, AudioClip>();
+        foreach (var audioClip in _audioClips)
         {
-            DontDestroyOnLoad(this.gameObject);
-            _instance = this;
-
-            _audioClipsByName = new Dictionary<string, AudioClip>();
-            foreach (var audioClip in _audioClips)
-            {
-                _audioClipsByName[audioClip.name] = audioClip;
-            }
+            _audioClipsByName[audioClip.name] = audioClip;
         }
     }
 

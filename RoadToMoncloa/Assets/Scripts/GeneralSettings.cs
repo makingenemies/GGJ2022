@@ -11,19 +11,17 @@ public class GeneralSettings : MonoBehaviour
     public Language Language => _language;
     public LevelData[] LevelsData => _levelsData.ToArray();
 
-    public void Start()
+    public void Awake()
     {
         if (_instance == null)
         {
             DontDestroyOnLoad(this.gameObject);
             _instance = this;
         }
-        else
+        else if (_instance != this)
         {
-            if (_instance != this)
-            {
-                Destroy(this.gameObject);
-            }
+            Destroy(this.gameObject);
+            return;
         }
     }
 }

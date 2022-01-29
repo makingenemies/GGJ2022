@@ -11,7 +11,7 @@ public class AudioVolumeController : MonoBehaviour
 
     public float AudioVolume => _audioVolume;
 
-    private void Start()
+    private void Awake()
     {
         if (_instance == null)
         {
