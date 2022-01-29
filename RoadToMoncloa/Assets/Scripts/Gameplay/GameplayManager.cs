@@ -33,6 +33,7 @@ public class GameplayManager : MonoBehaviour
         _generalSettings = FindObjectOfType<GeneralSettings>();
 
         _moneyCounter.UpdateCurrentAmount(_gameState.MoneyAmount);
+        _votersCounter.UpdateCurrentAmount(_gameState.VotersCount);
 
         SetUpCards();
         _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
@@ -141,6 +142,7 @@ public class GameplayManager : MonoBehaviour
     {
         _gameState.CurrentLevelIndex++;
         _gameState.MoneyAmount = _moneyCounter.CurrentAmount;
+        _gameState.VotersCount = _votersCounter.CurrentAmount;
         _gameState.LiesCount = _liesManager.PlayedLiesCount;
         SceneManager.LoadScene("Gameplay");
     }

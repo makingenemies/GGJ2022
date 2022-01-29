@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameState : MonoBehaviour
 {
     [SerializeField] private int _moneyAmount;
+    [SerializeField] private int _votersCount;
 
     private static GameState _instance;
 
@@ -24,9 +25,16 @@ public class GameState : MonoBehaviour
 
     public int CurrentLevelIndex { get; set; }
 
-    public int MoneyAmount { 
+    public int MoneyAmount 
+    { 
         get => _moneyAmount;
         set => _moneyAmount = value;
+    }
+
+    public int VotersCount
+    {
+        get => _votersCount;
+        set => _votersCount = value;
     }
 
     public int LiesCount { get; set; }
