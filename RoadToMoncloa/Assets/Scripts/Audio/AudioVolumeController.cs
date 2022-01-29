@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioVolumeController : MonoBehaviour
 {
@@ -16,13 +17,18 @@ public class AudioVolumeController : MonoBehaviour
         {
             DontDestroyOnLoad(this.gameObject);
             _instance = this;
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else if (_instance != this)
         {
             Destroy(this.gameObject);
             return;
         }
+    }
 
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
         ApplyVolumeToAudioSources();
     }
 
