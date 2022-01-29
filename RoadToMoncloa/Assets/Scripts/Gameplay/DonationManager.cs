@@ -5,6 +5,8 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
 {
     [SerializeField] private GameObject _donationPanel;
     [SerializeField] private Button _openPanelButton;
+    [SerializeField] private Button[] _optionButtons;
+    [SerializeField] private int[] _optionMoneyAmounts;
 
     private MoneyCounter _moneyCounter;
     private LiesManager _liesManager;
@@ -19,6 +21,11 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
         _pauseManager = FindObjectOfType<PauseManager>();
 
         _eventBus.Register(this);
+
+        if (_optionButtons.Length != _optionMoneyAmounts.Length)
+        {
+            throw new System.Exception($"[{nameof(DonationManager)}] Invalid options length");
+        }
     }
 
     private void Update()
@@ -46,6 +53,22 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
     {
         _donationPanel.SetActive(true);
         _pauseManager.Pause();
+        ShowButtonsOnlyIfEnoughMoney();
+    }
+
+    private void ShowButtonsOnlyIfEnoughMoney()
+    {
+        for (var i = 0; i < _optionMoneyAmounts.Length; i++)
+        {
+            if (_moneyCounter.CurrentAmount < _optionMoneyAmounts[i])
+            {
+                _optionButtons[i].interactable = false;
+            }
+            else
+            {
+                _optionButtons[i].interactable = true;
+            }
+        }
     }
 
     public void HideDonationPanel()
@@ -54,9 +77,9 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
         _pauseManager.Unpause();
     }
 
-    public void Donate(int donationMoneyAmount)
+    public void Donate(int optionIndex)
     {
-        _moneyCounter.UpdateCurrentAmount(-donationMoneyAmount);
+        _moneyCounter.UpdateCurrentAmount(-_optionMoneyAmounts[optionIndex]);
         _liesManager.ResetPlayedLies();
 
         HideDonationPanel();

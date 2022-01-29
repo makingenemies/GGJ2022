@@ -2224,6 +2224,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _donationPanel: {fileID: 2119230193}
   _openPanelButton: {fileID: 1600863385}
+  _optionButtons:
+  - {fileID: 741567863}
+  - {fileID: 1394997159}
+  _optionMoneyAmounts: 0100000001000000
 --- !u!4 &1118040361 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7923075812415955042, guid: 46074d81f5996944da1eebb5c0f489c7, type: 3}
