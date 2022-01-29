@@ -889,6 +889,10 @@ MonoBehaviour:
   _cards4SpotsPrefab: {fileID: 5642138180221056665, guid: 6ba9307444ac22545abec755009dfee9, type: 3}
   _cards5SpotsPrefab: {fileID: 3842414228185030258, guid: 8a11ccf2e4bc3934d867f426adeca904, type: 3}
   _cards6SpotsPrefab: {fileID: 3010333269669986365, guid: 59d20f8981bd9cf41a5aafd7759e635a, type: 3}
+  _zoneAnimationTriggerNames: []
+  _wrongVotersCardMessage: 
+  _wrongMoneyCardMessage: 
+  _wrongCardText: {fileID: 0}
 --- !u!4 &354494299
 Transform:
   m_ObjectHideFlags: 0

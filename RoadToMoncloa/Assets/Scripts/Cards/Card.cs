@@ -39,6 +39,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private EventBus _eventBus;
     private PauseManager _pauseManager;
     private LiesManager _liesManager;
+    private SoundEffectPlayer _soundEffectPlayer;
 
     private Vector3 _screenPoint;
     private Vector3 _offset;
@@ -70,6 +71,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         _strings = FindObjectOfType<Strings>();
         _pauseManager = FindObjectOfType<PauseManager>();
         _liesManager = FindObjectOfType<LiesManager>();
+        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
 
         if (_eventBus == null)
         {
@@ -155,12 +157,19 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         spriteRenderer.color = color;
     }
 
+    private void OnMouseEnter()
+    {
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.MouseHoverCard);
+    }
+
     void OnMouseDown()
     {
         if (_pauseManager.IsPaused)
         {
             return;
         }
+
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
 
         _isDragging = true;
         _originalPosition = transform.position;

@@ -26,6 +26,7 @@ public class GameplayManager : MonoBehaviour
     private GameState _gameState;
     private GeneralSettings _generalSettings;
     private DonationManager _donationManager;
+    private SoundEffectPlayer _soundEffectPlayer;
     private Animator _moneyZoneAnimator;
     private Animator _votersZoneAnimator;
 
@@ -50,6 +51,7 @@ public class GameplayManager : MonoBehaviour
         _gameState = FindObjectOfType<GameState>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
         _donationManager = FindObjectOfType<DonationManager>();
+        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
 
         _votersZoneAnimator = GameObject.FindGameObjectWithTag(Tags.VotersCardDropZone).GetComponentInChildren<Animator>();
         _moneyZoneAnimator = GameObject.FindGameObjectWithTag(Tags.MoneyCardDropZone).GetComponentInChildren<Animator>();
@@ -69,6 +71,8 @@ public class GameplayManager : MonoBehaviour
         {
             _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
         }
+
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
     }
 
     private void SetUpCards()
@@ -124,6 +128,7 @@ public class GameplayManager : MonoBehaviour
             ShowWrongCardMessage(_wrongVotersCardMessage);
             return false;
         }
+
         var votersWon = cardData.VotersWon;
         if (_liesManager.IsLiesCountersFull)
         {
@@ -133,6 +138,8 @@ public class GameplayManager : MonoBehaviour
         _votersCounter.UpdateCurrentAmount(votersWon);
         _moneyCounter.UpdateCurrentAmount(-cardData.MoneyLost);
         _votersZoneAnimator.SetTrigger(GetRandomZoneAnimationTriggerName());
+
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.GetVotes);
         return true;
     }
 
@@ -190,6 +197,7 @@ public class GameplayManager : MonoBehaviour
         {
             if (_gameState.CurrentLevelIndex < _generalSettings.LevelsData.Length - 1)
             {
+                _soundEffectPlayer.PlayClip(SoundNames.Gameplay.BeatLevel);
                 _successfulLevelEndPanel.SetActive(true);
             }
             else
