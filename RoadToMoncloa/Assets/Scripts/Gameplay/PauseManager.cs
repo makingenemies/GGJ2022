@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class PauseManager : MonoBehaviour
     private void Start()
     {
 #if !UNITY_EDITOR
-        _debugCommandsPausePanel.setActive(false);
+        _debugCommandsPausePanel.SetActive(false);
 #endif
     }
 
@@ -41,5 +42,10 @@ public class PauseManager : MonoBehaviour
     public void Unpause()
     {
         _isPaused = false;
+    }
+
+    public void OpenLevelSelectionDebugScene()
+    {
+        SceneManager.LoadScene("LevelSelection");
     }
 }

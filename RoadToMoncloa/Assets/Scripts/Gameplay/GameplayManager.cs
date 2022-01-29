@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class GameplayManager : MonoBehaviour
 {
     [SerializeField] Button _restartButton;
-    [SerializeField] GameObject _cardsRoot;
+    [SerializeField] GameObject _successfulLevelEndPanel;
     [SerializeField] Transform[] _cardsPositions;
     [SerializeField] Card _cardPrefab;
 
@@ -17,6 +17,8 @@ public class GameplayManager : MonoBehaviour
 
     private int _cardsCount;
 
+    private LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
+
     private void Start()
     {
         _moneyCounter = FindObjectOfType<MoneyCounter>();
@@ -25,21 +27,20 @@ public class GameplayManager : MonoBehaviour
         _gameState = FindObjectOfType<GameState>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
 
-        _votersCounter.SetMaxAmount(5);
-        _moneyCounter.UpdateCurrentAmount(4);
+        _moneyCounter.UpdateCurrentAmount(_gameState.MoneyAmount);
 
         SetUpCards();
     }
 
     private void SetUpCards()
     {
-        var levelData = _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
-        for (var i = 0; i < levelData.Cards.Length; i++)
+        for (var i = 0; i < CurrentLevelData.Cards.Length; i++)
         {
             var card = Instantiate(_cardPrefab, _cardsPositions[i]);
-            card.SetCardData(levelData.Cards[i]);
+            card.SetCardData(CurrentLevelData.Cards[i]);
         }
 
+        _votersCounter.SetMaxAmount(CurrentLevelData.VotersGoal);
         _cardsCount = FindObjectsOfType<Card>().Length;
     }
 
@@ -86,12 +87,33 @@ public class GameplayManager : MonoBehaviour
         _cardsCount--;
         if (_cardsCount <= 0)
         {
+            EndLevel();
+        }
+    }
+
+    private void EndLevel()
+    {
+        if (_votersCounter.CurrentAmount >= CurrentLevelData.VotersGoal)
+        {
+            _successfulLevelEndPanel.SetActive(true);
+        }
+        else
+        {
             _restartButton.gameObject.SetActive(true);
         }
     }
 
+    // Used from UI
     public void RestartGame()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Gameplay");
+    }
+
+    // Used from UI
+    public void MoveToNextLevel()
+    {
+        _gameState.CurrentLevelIndex++;
+        _gameState.MoneyAmount = _moneyCounter.CurrentAmount;
+        SceneManager.LoadScene("Gameplay");
     }
 }
