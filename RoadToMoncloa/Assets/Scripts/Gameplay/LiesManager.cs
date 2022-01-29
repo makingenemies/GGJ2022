@@ -4,7 +4,16 @@ public class LiesManager : MonoBehaviour
 {
     [SerializeField] SpriteRenderer[] _lieMarkers;
 
+    private EventBus _eventBus;
+
     private int _playedLiesCount;
+
+    public bool IsLiesCountersFull => _playedLiesCount >= _lieMarkers.Length;
+
+    private void Start()
+    {
+        _eventBus = FindObjectOfType<EventBus>();
+    }
 
     public bool PlayLie()
     {
@@ -15,6 +24,10 @@ public class LiesManager : MonoBehaviour
 
         _lieMarkers[_playedLiesCount].color = Color.red;
         _playedLiesCount++;
+        _eventBus.PublishEvent(new LiePlayedEvent
+        {
+            IsLiesCounterFull = _playedLiesCount >= _lieMarkers.Length
+        });
         return true;
     }
 }

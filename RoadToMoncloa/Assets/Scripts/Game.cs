@@ -33,7 +33,12 @@ public class Game : MonoBehaviour
                 {
                     return false;
                 }
-                _votersCounter.UpdateCurrentAmount(cardData.VotersWon);
+                var votersWon = cardData.VotersWon;
+                if (_liesManager.IsLiesCountersFull)
+                {
+                    votersWon--;
+                }
+                _votersCounter.UpdateCurrentAmount(votersWon);
                 _moneyCounter.UpdateCurrentAmount(-cardData.MoneyLost);
                 return true;
             case CardPlayType.Money:

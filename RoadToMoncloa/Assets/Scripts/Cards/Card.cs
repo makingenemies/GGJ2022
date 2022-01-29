@@ -7,7 +7,7 @@ using UnityEngine;
 /// Drag and drop from https://answers.unity.com/questions/1138645/how-do-i-drag-a-sprite-around.html
 /// </summary>
 [RequireComponent(typeof(BoxCollider2D))]
-public class Card : MonoBehaviour
+public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>
 {
     private static readonly Dictionary<string, CardPlayType> PlayTypeByTag = new Dictionary<string, CardPlayType>()
     {
@@ -25,6 +25,7 @@ public class Card : MonoBehaviour
 
     private Game _game;
     private Strings _strings;
+    private EventBus _eventBus;
 
     private Vector3 screenPoint;
     private Vector3 offset;
@@ -52,6 +53,25 @@ public class Card : MonoBehaviour
         _titleText.text = _strings.GetString(_cardData.TitleId);
         _negativeVotersText.text = $"-{_cardData.VotersLost}";
         _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
+
+        if (_eventBus == null)
+        {
+            _eventBus = FindObjectOfType<EventBus>();
+            _eventBus.Register(this);
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (_eventBus != null)
+        {
+            _eventBus.Register(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        _eventBus.Unregister(this);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -106,5 +126,15 @@ public class Card : MonoBehaviour
         {
             transform.position = originalPosition;
         }
+    }
+
+    public void HandleEvent(LiePlayedEvent @event)
+    {
+        if (!@event.IsLiesCounterFull)
+        {
+            return;
+        }
+
+        _voterIcons[_cardData.VotersWon - 1].gameObject.SetActive(false);
     }
 }
