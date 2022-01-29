@@ -23,6 +23,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     [SerializeField] TextMeshPro _moneyText;
     [SerializeField] TextMeshPro _negativeMoneyText;
     [SerializeField] SpriteRenderer _spriteRenderer;
+    [SerializeField] string[] _highlightableZonesTags;
 
     [Header("Sprites")]
     [SerializeField] Sprite _educationSprite;
@@ -116,6 +117,13 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             if (collision.CompareTag(tag))
             {
                 _selectedPlayTypes.Add(PlayTypeByTag[tag]);
+
+                if (_highlightableZonesTags.Contains(tag))
+                {
+                    var spriteRenderer = collision.gameObject.GetComponentInChildren<SpriteRenderer>();
+                    SetSpriteRendererAlpha(spriteRenderer, 1);
+                }
+
                 return;
             }
         }
@@ -128,9 +136,23 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             if (collision.CompareTag(tag))
             {
                 _selectedPlayTypes.Remove(PlayTypeByTag[tag]);
+
+                if (_highlightableZonesTags.Contains(tag))
+                {
+                    var spriteRenderer = collision.gameObject.GetComponentInChildren<SpriteRenderer>();
+                    SetSpriteRendererAlpha(spriteRenderer, .8f);
+                }
+
                 return;
             }
         }
+    }
+
+    private void SetSpriteRendererAlpha(SpriteRenderer spriteRenderer, float alpha)
+    {
+        var color = spriteRenderer.color;
+        color.a = alpha;
+        spriteRenderer.color = color;
     }
 
     void OnMouseDown()
