@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -18,9 +19,19 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
     [SerializeField] TextMeshPro _titleText;
     [SerializeField] TextMeshPro _votersText;
-    [SerializeField] TextMeshPro _moneyText;
     [SerializeField] TextMeshPro _negativeVotersText;
+    [SerializeField] TextMeshPro _moneyText;
     [SerializeField] TextMeshPro _negativeMoneyText;
+    [SerializeField] SpriteRenderer _spriteRenderer;
+
+    [Header("Sprites")]
+    [SerializeField] Sprite _educationSprite;
+    [SerializeField] Sprite _developmentSprite;
+    [SerializeField] Sprite _economySprite;
+    [SerializeField] Sprite _foreingPolicySprite;
+    [SerializeField] Sprite _healthSprite;
+    [SerializeField] Sprite _technologySprite;
+    [SerializeField] Sprite _transportSprite;
 
     private GameplayManager _game;
     private Strings _strings;
@@ -30,10 +41,27 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
     private Vector3 _screenPoint;
     private Vector3 _offset;
-    private int _potentialPlayTypesCount;
-    private CardPlayType _latestSelectedPlayType;
+    private HashSet<CardPlayType> _selectedPlayTypes;
+    private bool _isDragging;
     private Vector3 _originalPosition;
     CardData _cardData;
+    private Dictionary<CardCategory, Sprite> _spriteByCardCategory;
+
+    private void Awake()
+    {
+        _spriteByCardCategory = new Dictionary<CardCategory, Sprite>
+        {
+            [CardCategory.Education] = _educationSprite,
+            [CardCategory.Development] = _developmentSprite,
+            [CardCategory.Economy] = _economySprite,
+            [CardCategory.ForeignPolicy] = _foreingPolicySprite,
+            [CardCategory.Health] = _healthSprite,
+            [CardCategory.Technology] = _technologySprite,
+            [CardCategory.Transport] = _transportSprite,
+        };
+
+        _selectedPlayTypes = new HashSet<CardPlayType>();
+    }
 
     private void Start()
     {
@@ -51,17 +79,19 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
         _titleText.text = _strings.GetString(_cardData.TitleId);
 
-        _moneyText.text = _cardData.MoneyWon.ToString();
+        _moneyText.text = $"+{_cardData.MoneyWon}";
 
         var votersWon = _cardData.VotersWon;
         if (_liesManager.IsLiesCountersFull)
         {
             votersWon--;
         }
-        _votersText.text = votersWon.ToString();
+        _votersText.text = $"+{votersWon}";
 
         _negativeVotersText.text = $"-{_cardData.VotersLost}";
         _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
+
+        _spriteRenderer.sprite = _spriteByCardCategory[_cardData.Category];
     }
 
     private void OnEnable()
@@ -85,8 +115,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         {
             if (collision.CompareTag(tag))
             {
-                _potentialPlayTypesCount++;
-                _latestSelectedPlayType = PlayTypeByTag[tag];
+                _selectedPlayTypes.Add(PlayTypeByTag[tag]);
                 return;
             }
         }
@@ -98,7 +127,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         {
             if (collision.CompareTag(tag))
             {
-                _potentialPlayTypesCount--;
+                _selectedPlayTypes.Remove(PlayTypeByTag[tag]);
                 return;
             }
         }
@@ -111,14 +140,22 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             return;
         }
 
+        _isDragging = true;
         _originalPosition = transform.position;
         _offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPoint.z));
     }
 
     void OnMouseDrag()
     {
-        if (_pauseManager.IsPaused)
+        if (_pauseManager.IsPaused || !_isDragging)
         {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _isDragging = false;
+            transform.position = _originalPosition;
             return;
         }
 
@@ -129,16 +166,18 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
     private void OnMouseUp()
     {
+        _isDragging = false;
+
         if (_pauseManager.IsPaused)
         {
             return;
         }
 
-        if (_potentialPlayTypesCount != 1)
+        if (_selectedPlayTypes.Count != 1)
         {
             transform.position = _originalPosition;
         }
-        else if (_game.PlayCard(_cardData, _latestSelectedPlayType))
+        else if (_game.PlayCard(_cardData, _selectedPlayTypes.First()))
         {
             _game.DestroyCard(this);
         }
@@ -155,12 +194,12 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             return;
         }
 
-        _votersText.text = (_cardData.VotersWon - 1).ToString();
+        _votersText.text = $"+{_cardData.VotersWon - 1}";
     }
 
     public void HandleEvent(LiesResetEvent @event)
     {
-        _votersText.text = _cardData.VotersWon.ToString();
+        _votersText.text = $"+{_cardData.VotersWon}";
     }
 
     public void SetCardData(CardData cardData)
