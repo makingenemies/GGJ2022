@@ -16,7 +16,6 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         [Tags.LiesBox] = CardPlayType.Lies,
     };
 
-    [SerializeField] CardData _cardData;
     [SerializeField] SpriteRenderer[] _moneyIcons;
     [SerializeField] SpriteRenderer[] _voterIcons;
     [SerializeField] TextMeshPro _titleText;
@@ -28,23 +27,12 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private EventBus _eventBus;
     private PauseManager _pauseManager;
 
-    private Vector3 screenPoint;
-    private Vector3 offset;
+    private Vector3 _screenPoint;
+    private Vector3 _offset;
     private int _potentialPlayTypesCount;
     private CardPlayType _latestSelectedPlayType;
-    private Vector3 originalPosition;
-
-    private void Awake()
-    {
-        for (var i = _moneyIcons.Length - 1; i >= _cardData.MoneyWon; i--)
-        {
-            _moneyIcons[i].gameObject.SetActive(false);
-        }
-        for (var i = _voterIcons.Length - 1; i >= _cardData.VotersWon; i--)
-        {
-            _voterIcons[i].gameObject.SetActive(false);
-        }
-    }
+    private Vector3 _originalPosition;
+    CardData _cardData;
 
     private void Start()
     {
@@ -52,15 +40,24 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         _strings = FindObjectOfType<Strings>();
         _pauseManager = FindObjectOfType<PauseManager>();
 
-        _titleText.text = _strings.GetString(_cardData.TitleId);
-        _negativeVotersText.text = $"-{_cardData.VotersLost}";
-        _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
-
         if (_eventBus == null)
         {
             _eventBus = FindObjectOfType<EventBus>();
             _eventBus.Register<LiePlayedEvent>(this);
             _eventBus.Register<LiesResetEvent>(this);
+        }
+
+        _titleText.text = _strings.GetString(_cardData.TitleId);
+        _negativeVotersText.text = $"-{_cardData.VotersLost}";
+        _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
+
+        for (var i = _moneyIcons.Length - 1; i >= _cardData.MoneyWon; i--)
+        {
+            _moneyIcons[i].gameObject.SetActive(false);
+        }
+        for (var i = _voterIcons.Length - 1; i >= _cardData.VotersWon; i--)
+        {
+            _voterIcons[i].gameObject.SetActive(false);
         }
     }
 
@@ -111,8 +108,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             return;
         }
 
-        originalPosition = transform.position;
-        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        _originalPosition = transform.position;
+        _offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPoint.z));
     }
 
     void OnMouseDrag()
@@ -122,8 +119,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             return;
         }
 
-        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
+        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPoint.z);
+        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + _offset;
         transform.position = curPosition;
     }
 
@@ -136,7 +133,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
         if (_potentialPlayTypesCount != 1)
         {
-            transform.position = originalPosition;
+            transform.position = _originalPosition;
         }
         else if (_game.PlayCard(_cardData, _latestSelectedPlayType))
         {
@@ -144,7 +141,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         }
         else
         {
-            transform.position = originalPosition;
+            transform.position = _originalPosition;
         }
     }
 
@@ -161,5 +158,10 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     public void HandleEvent(LiesResetEvent @event)
     {
         _voterIcons[_cardData.VotersWon - 1].gameObject.SetActive(true);
+    }
+
+    public void SetCardData(CardData cardData)
+    {
+        _cardData = cardData;
     }
 }
