@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -21,6 +22,16 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     [SerializeField] TextMeshPro _negativeVotersText;
     [SerializeField] TextMeshPro _moneyText;
     [SerializeField] TextMeshPro _negativeMoneyText;
+    [SerializeField] SpriteRenderer _spriteRenderer;
+
+    [Header("Sprites")]
+    [SerializeField] Sprite _educationSprite;
+    [SerializeField] Sprite _developmentSprite;
+    [SerializeField] Sprite _economySprite;
+    [SerializeField] Sprite _foreingPolicySprite;
+    [SerializeField] Sprite _healthSprite;
+    [SerializeField] Sprite _technologySprite;
+    [SerializeField] Sprite _transportSprite;
 
     private GameplayManager _game;
     private Strings _strings;
@@ -30,11 +41,27 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
     private Vector3 _screenPoint;
     private Vector3 _offset;
-    private int _potentialPlayTypesCount;
-    private CardPlayType _latestSelectedPlayType;
+    private HashSet<CardPlayType> _selectedPlayTypes;
     private bool _isDragging;
     private Vector3 _originalPosition;
     CardData _cardData;
+    private Dictionary<CardCategory, Sprite> _spriteByCardCategory;
+
+    private void Awake()
+    {
+        _spriteByCardCategory = new Dictionary<CardCategory, Sprite>
+        {
+            [CardCategory.Education] = _educationSprite,
+            [CardCategory.Development] = _developmentSprite,
+            [CardCategory.Economy] = _economySprite,
+            [CardCategory.ForeignPolicy] = _foreingPolicySprite,
+            [CardCategory.Health] = _healthSprite,
+            [CardCategory.Technology] = _technologySprite,
+            [CardCategory.Transport] = _transportSprite,
+        };
+
+        _selectedPlayTypes = new HashSet<CardPlayType>();
+    }
 
     private void Start()
     {
@@ -63,6 +90,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
         _negativeVotersText.text = $"-{_cardData.VotersLost}";
         _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
+
+        _spriteRenderer.sprite = _spriteByCardCategory[_cardData.Category];
     }
 
     private void OnEnable()
@@ -86,8 +115,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         {
             if (collision.CompareTag(tag))
             {
-                _potentialPlayTypesCount++;
-                _latestSelectedPlayType = PlayTypeByTag[tag];
+                _selectedPlayTypes.Add(PlayTypeByTag[tag]);
                 return;
             }
         }
@@ -99,7 +127,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         {
             if (collision.CompareTag(tag))
             {
-                _potentialPlayTypesCount--;
+                _selectedPlayTypes.Remove(PlayTypeByTag[tag]);
                 return;
             }
         }
@@ -145,11 +173,11 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             return;
         }
 
-        if (_potentialPlayTypesCount != 1)
+        if (_selectedPlayTypes.Count != 1)
         {
             transform.position = _originalPosition;
         }
-        else if (_game.PlayCard(_cardData, _latestSelectedPlayType))
+        else if (_game.PlayCard(_cardData, _selectedPlayTypes.First()))
         {
             _game.DestroyCard(this);
         }

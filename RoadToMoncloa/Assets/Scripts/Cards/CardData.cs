@@ -8,4 +8,5 @@ public class CardData : ScriptableObject
     public int MoneyWon;
     public int VotersLost;
     public int MoneyLost;
+    public CardCategory Category;
 }
