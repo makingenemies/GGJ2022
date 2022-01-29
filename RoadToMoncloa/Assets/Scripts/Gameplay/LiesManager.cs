@@ -8,6 +8,8 @@ public class LiesManager : MonoBehaviour
 
     private int _playedLiesCount;
 
+    public int PlayedLiesCount => _playedLiesCount;
+
     public bool IsLiesCountersFull => _playedLiesCount >= _lieMarkers.Length;
 
     private void Start()
@@ -35,5 +37,18 @@ public class LiesManager : MonoBehaviour
     {
         _playedLiesCount = 0;
         _eventBus.PublishEvent(new LiesResetEvent());
+    }
+
+    public void SetPlayedLiesCount(int playedLiesCount)
+    {
+        _playedLiesCount = playedLiesCount;
+        for (var i = 0; i < _playedLiesCount; i++)
+        {
+            _lieMarkers[i].color = Color.red;
+        }
+        for (var i = _playedLiesCount; i < _lieMarkers.Length; i++)
+        {
+            _lieMarkers[i].color = Color.white;
+        }
     }
 }
