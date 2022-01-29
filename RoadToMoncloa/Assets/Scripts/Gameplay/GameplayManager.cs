@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Game : MonoBehaviour
+public class GameplayManager : MonoBehaviour
 {
     [SerializeField] Button _restartButton;
 

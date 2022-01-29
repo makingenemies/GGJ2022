@@ -23,7 +23,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     [SerializeField] TextMeshPro _negativeVotersText;
     [SerializeField] TextMeshPro _negativeMoneyText;
 
-    private Game _game;
+    private GameplayManager _game;
     private Strings _strings;
     private EventBus _eventBus;
     private PauseManager _pauseManager;
@@ -48,7 +48,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
     private void Start()
     {
-        _game = FindObjectOfType<Game>();
+        _game = FindObjectOfType<GameplayManager>();
         _strings = FindObjectOfType<Strings>();
         _pauseManager = FindObjectOfType<PauseManager>();
 
