@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,6 +16,9 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] GameObject _cards5SpotsPrefab;
     [SerializeField] GameObject _cards6SpotsPrefab;
     [SerializeField] string[] _zoneAnimationTriggerNames;
+    [SerializeField] string _wrongVotersCardMessage;
+    [SerializeField] string _wrongMoneyCardMessage;
+    [SerializeField] TextMeshProUGUI _wrongCardText;
 
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
@@ -28,6 +33,7 @@ public class GameplayManager : MonoBehaviour
 
     private int _cardsCount;
     private bool _liesDisabled;
+    private Coroutine _wrongCardMessageCoroutine;
 
     private LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
 
@@ -115,11 +121,13 @@ public class GameplayManager : MonoBehaviour
     {
         if (cardData.MoneyLost > _moneyCounter.CurrentAmount)
         {
+            ShowWrongCardMessage(_wrongVotersCardMessage);
             return false;
         }
         var votersWon = cardData.VotersWon;
         if (_liesManager.IsLiesCountersFull)
         {
+            ShowWrongCardMessage(_wrongMoneyCardMessage);
             votersWon--;
         }
         _votersCounter.UpdateCurrentAmount(votersWon);
@@ -132,6 +140,7 @@ public class GameplayManager : MonoBehaviour
     {
         if (cardData.VotersLost > _votersCounter.CurrentAmount)
         {
+            ShowWrongCardMessage(_wrongMoneyCardMessage);
             return false;
         }
         _moneyCounter.UpdateCurrentAmount(cardData.MoneyWon);
@@ -139,6 +148,26 @@ public class GameplayManager : MonoBehaviour
         _moneyZoneAnimator.SetTrigger(GetRandomZoneAnimationTriggerName());
         return true;
     }
+
+    private void ShowWrongCardMessage(string message)
+    {
+        if (_wrongCardMessageCoroutine != null)
+        {
+            StopCoroutine(_wrongCardMessageCoroutine);
+        }
+
+        _wrongCardText.gameObject.SetActive(true);
+        _wrongCardText.text = message;
+
+        _wrongCardMessageCoroutine = StartCoroutine(HideWrongCardMessageAfter2Seconds());
+    }
+
+    private IEnumerator HideWrongCardMessageAfter2Seconds()
+    {
+        yield return new WaitForSeconds(2);
+        _wrongCardText.gameObject.SetActive(false);
+    }
+
     
     private string GetRandomZoneAnimationTriggerName()
     {
