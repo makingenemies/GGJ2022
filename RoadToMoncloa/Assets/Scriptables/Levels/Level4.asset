@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60577da1b36c1cd479c2940d331516fc, type: 3}
   m_Name: Level4
   m_EditorClassIdentifier: 
-  Cards: []
-  VotersGoal: 0
+  Cards:
+  - {fileID: 11400000, guid: 282413d07a3ef4915b4c1270bbb1f9cd, type: 2}
+  - {fileID: 11400000, guid: 51689cc7dad964ba5a5fd6217a6aa891, type: 2}
+  - {fileID: 11400000, guid: ffa6087ff6d154b089c15b9cac411258, type: 2}
+  - {fileID: 11400000, guid: 32a7287d0eadb4ea982606cd30e33ce0, type: 2}
+  - {fileID: 11400000, guid: 98d0776a89f0247c9a638e19dca8dff8, type: 2}
+  VotersGoal: 35
