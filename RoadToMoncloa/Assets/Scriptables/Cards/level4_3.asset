@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
-  m_Name: Scolarships
+  m_Name: level4_3
   m_EditorClassIdentifier: 
-  TitleId: CardTitle_Scolarships
-  VotersWon: 2
-  MoneyWon: 1
-  VotersLost: 2
-  MoneyLost: 1
+  TitleId: 
+  VotersWon: 0
+  MoneyWon: 0
+  VotersLost: 0
+  MoneyLost: 0

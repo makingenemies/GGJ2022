@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
-  m_Name: PublicHospital
+  m_Name: Transporte
   m_EditorClassIdentifier: 
-  TitleId: CardTitle_PublicHospital
-  VotersWon: 3
-  MoneyWon: 3
-  VotersLost: 2
-  MoneyLost: 3
-  Category: 4
+  TitleId: Transporte
+  VotersWon: 2
+  MoneyWon: 2
+  VotersLost: 1
+  MoneyLost: 2
