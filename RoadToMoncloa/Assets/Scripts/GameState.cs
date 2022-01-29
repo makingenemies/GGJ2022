@@ -36,4 +36,6 @@ public class GameState : MonoBehaviour
     }
 
     public int LiesCount { get; set; }
+
+    public bool LiesDisabled { get; set; }
 }

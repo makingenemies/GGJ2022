@@ -19,8 +19,10 @@ public class GameplayManager : MonoBehaviour
     private LiesManager _liesManager;
     private GameState _gameState;
     private GeneralSettings _generalSettings;
+    private DonationManager _donationManager;
 
     private int _cardsCount;
+    private bool _liesDisabled;
 
     private LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
 
@@ -31,12 +33,23 @@ public class GameplayManager : MonoBehaviour
         _liesManager = FindObjectOfType<LiesManager>();
         _gameState = FindObjectOfType<GameState>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
+        _donationManager = FindObjectOfType<DonationManager>();
 
         _moneyCounter.UpdateCurrentAmount(_gameState.MoneyAmount);
         _votersCounter.UpdateCurrentAmount(_gameState.VotersCount);
 
         SetUpCards();
-        _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
+
+        _donationManager.SetDonationAmount(CurrentLevelData.DonationCost);
+
+        if (_gameState.LiesDisabled)
+        {
+            DisableLies();
+        }
+        else
+        {
+            _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
+        }
     }
 
     private void SetUpCards()
@@ -144,6 +157,7 @@ public class GameplayManager : MonoBehaviour
         _gameState.MoneyAmount = _moneyCounter.CurrentAmount;
         _gameState.VotersCount = _votersCounter.CurrentAmount;
         _gameState.LiesCount = _liesManager.PlayedLiesCount;
+        _gameState.LiesDisabled = _liesDisabled;
         SceneManager.LoadScene("Gameplay");
     }
 
@@ -151,5 +165,12 @@ public class GameplayManager : MonoBehaviour
     public void GoToLevelSelectionDebugScene()
     {
         SceneManager.LoadScene("LevelSelection");
+    }
+
+    public void DisableLies()
+    {
+        _liesManager.DisableLies();
+        _donationManager.DisableDonations();
+        _liesDisabled = true;
     }
 }

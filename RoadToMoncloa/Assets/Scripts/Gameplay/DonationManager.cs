@@ -5,27 +5,25 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
 {
     [SerializeField] private GameObject _donationPanel;
     [SerializeField] private Button _openPanelButton;
-    [SerializeField] private Button[] _optionButtons;
-    [SerializeField] private int[] _optionMoneyAmounts;
+    [SerializeField] private Image _openPanelButtonImage;
+    [SerializeField] private Text _openPanelButtonText;
+    [SerializeField] private Button _confirmDonationButton;
 
     private MoneyCounter _moneyCounter;
-    private LiesManager _liesManager;
     private EventBus _eventBus;
     private PauseManager _pauseManager;
+    private GameplayManager _gameplayManager;
+
+    private int _donationAmount;
 
     private void Start()
     {
         _moneyCounter = FindObjectOfType<MoneyCounter>();
-        _liesManager = FindObjectOfType<LiesManager>();
         _eventBus = FindObjectOfType<EventBus>();
         _pauseManager = FindObjectOfType<PauseManager>();
+        _gameplayManager = FindObjectOfType<GameplayManager>();
 
         _eventBus.Register(this);
-
-        if (_optionButtons.Length != _optionMoneyAmounts.Length)
-        {
-            throw new System.Exception($"[{nameof(DonationManager)}] Invalid options length");
-        }
     }
 
     private void Update()
@@ -58,16 +56,13 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
 
     private void ShowButtonsOnlyIfEnoughMoney()
     {
-        for (var i = 0; i < _optionMoneyAmounts.Length; i++)
+        if (_moneyCounter.CurrentAmount < _donationAmount)
         {
-            if (_moneyCounter.CurrentAmount < _optionMoneyAmounts[i])
-            {
-                _optionButtons[i].interactable = false;
-            }
-            else
-            {
-                _optionButtons[i].interactable = true;
-            }
+            _confirmDonationButton.interactable = false;
+        }
+        else
+        {
+            _confirmDonationButton.interactable = true;
         }
     }
 
@@ -79,8 +74,8 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
 
     public void Donate(int optionIndex)
     {
-        _moneyCounter.UpdateCurrentAmount(-_optionMoneyAmounts[optionIndex]);
-        _liesManager.ResetPlayedLies();
+        _moneyCounter.UpdateCurrentAmount(-_donationAmount);
+        _gameplayManager.DisableLies();
 
         HideDonationPanel();
         _openPanelButton.interactable = false;
@@ -92,5 +87,20 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
         {
             _openPanelButton.interactable = true;
         }
+    }
+
+    public void SetDonationAmount(int donationAmount)
+    {
+        _donationAmount = donationAmount;
+        _confirmDonationButton.GetComponentInChildren<Text>().text = $"Donate - {donationAmount}M";
+    }
+
+    public void DisableDonations()
+    {
+        _openPanelButton.interactable = false;
+        var color = _openPanelButtonImage.color;
+        color.a = .1f;
+        _openPanelButtonImage.color = color;
+        _openPanelButtonText.gameObject.SetActive(false);
     }
 }

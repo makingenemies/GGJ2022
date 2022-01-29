@@ -18,3 +18,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8979435d9633a7a4ca276caf02bf90bf, type: 2}
   - {fileID: 11400000, guid: 66c9fb399c27f234fb6c654b05d90172, type: 2}
   VotersGoal: 10
+  DonationCost: 1
