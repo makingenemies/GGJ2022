@@ -3453,10 +3453,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _donationPanel: {fileID: 2119230193}
   _openPanelButton: {fileID: 1600863385}
-  _optionButtons:
-  - {fileID: 741567863}
-  - {fileID: 1394997159}
-  _optionMoneyAmounts: 0100000001000000
+  _openPanelButtonImage: {fileID: 0}
+  _openPanelButtonText: {fileID: 0}
+  _confirmDonationButton: {fileID: 0}
 --- !u!1 &1112904158
 GameObject:
   m_ObjectHideFlags: 0
@@ -5256,6 +5255,8 @@ MonoBehaviour:
   - {fileID: 1204166152}
   - {fileID: 0}
   - {fileID: 0}
+  _mainSprite: {fileID: 0}
+  _label: {fileID: 0}
 --- !u!1 &1763687117
 GameObject:
   m_ObjectHideFlags: 0
@@ -6297,6 +6298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moneyAmount: 4
+  _votersCount: 0
 --- !u!1 &2019794183
 GameObject:
   m_ObjectHideFlags: 0
