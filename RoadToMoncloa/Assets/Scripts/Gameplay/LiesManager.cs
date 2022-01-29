@@ -35,7 +35,7 @@ public class LiesManager : MonoBehaviour
 
     public void ResetPlayedLies()
     {
-        _playedLiesCount = 0;
+        SetPlayedLiesCount(0);
         _eventBus.PublishEvent(new LiesResetEvent());
     }
 

@@ -16,9 +16,9 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         [Tags.LiesBox] = CardPlayType.Lies,
     };
 
-    [SerializeField] SpriteRenderer[] _moneyIcons;
-    [SerializeField] SpriteRenderer[] _voterIcons;
     [SerializeField] TextMeshPro _titleText;
+    [SerializeField] TextMeshPro _votersText;
+    [SerializeField] TextMeshPro _moneyText;
     [SerializeField] TextMeshPro _negativeVotersText;
     [SerializeField] TextMeshPro _negativeMoneyText;
 
@@ -50,23 +50,18 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         }
 
         _titleText.text = _strings.GetString(_cardData.TitleId);
-        _negativeVotersText.text = $"-{_cardData.VotersLost}";
-        _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
 
-        for (var i = _moneyIcons.Length - 1; i >= _cardData.MoneyWon; i--)
-        {
-            _moneyIcons[i].gameObject.SetActive(false);
-        }
+        _moneyText.text = _cardData.MoneyWon.ToString();
 
         var votersWon = _cardData.VotersWon;
         if (_liesManager.IsLiesCountersFull)
         {
             votersWon--;
         }
-        for (var i = _voterIcons.Length - 1; i >= votersWon; i--)
-        {
-            _voterIcons[i].gameObject.SetActive(false);
-        }
+        _votersText.text = votersWon.ToString();
+
+        _negativeVotersText.text = $"-{_cardData.VotersLost}";
+        _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
     }
 
     private void OnEnable()
@@ -160,12 +155,12 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             return;
         }
 
-        _voterIcons[_cardData.VotersWon - 1].gameObject.SetActive(false);
+        _votersText.text = (_cardData.VotersWon - 1).ToString();
     }
 
     public void HandleEvent(LiesResetEvent @event)
     {
-        _voterIcons[_cardData.VotersWon - 1].gameObject.SetActive(true);
+        _votersText.text = _cardData.VotersWon.ToString();
     }
 
     public void SetCardData(CardData cardData)
