@@ -1,4 +1,3 @@
-﻿public class LiePlayedEvent : IEvent
+﻿public class LiesResetEvent : IEvent
 {
-    public bool IsLiesCounterFull { get; set; }
 }

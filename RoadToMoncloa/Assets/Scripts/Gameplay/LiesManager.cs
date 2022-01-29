@@ -30,4 +30,10 @@ public class LiesManager : MonoBehaviour
         });
         return true;
     }
+
+    public void ResetPlayedLies()
+    {
+        _playedLiesCount = 0;
+        _eventBus.PublishEvent(new LiesResetEvent());
+    }
 }

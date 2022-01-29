@@ -7,7 +7,7 @@ using UnityEngine;
 /// Drag and drop from https://answers.unity.com/questions/1138645/how-do-i-drag-a-sprite-around.html
 /// </summary>
 [RequireComponent(typeof(BoxCollider2D))]
-public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>
+public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<LiesResetEvent>
 {
     private static readonly Dictionary<string, CardPlayType> PlayTypeByTag = new Dictionary<string, CardPlayType>()
     {
@@ -57,7 +57,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>
         if (_eventBus == null)
         {
             _eventBus = FindObjectOfType<EventBus>();
-            _eventBus.Register(this);
+            _eventBus.Register<LiePlayedEvent>(this);
+            _eventBus.Register<LiesResetEvent>(this);
         }
     }
 
@@ -65,13 +66,15 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>
     {
         if (_eventBus != null)
         {
-            _eventBus.Register(this);
+            _eventBus.Register<LiePlayedEvent>(this);
+            _eventBus.Register<LiesResetEvent>(this);
         }
     }
 
     private void OnDisable()
     {
-        _eventBus.Unregister(this);
+        _eventBus.Unregister<LiePlayedEvent>(this);
+        _eventBus.Unregister<LiesResetEvent>(this);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -136,5 +139,10 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>
         }
 
         _voterIcons[_cardData.VotersWon - 1].gameObject.SetActive(false);
+    }
+
+    public void HandleEvent(LiesResetEvent @event)
+    {
+        _voterIcons[_cardData.VotersWon - 1].gameObject.SetActive(true);
     }
 }
