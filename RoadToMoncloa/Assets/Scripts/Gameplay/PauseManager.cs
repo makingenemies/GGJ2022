@@ -9,6 +9,8 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _exitToMainMenuConfirmationText;
     [SerializeField] private TextMeshProUGUI _restartConfirmationText;
 
+    private EventBus _eventBus;
+
     private bool _exitToMainMenuButtonClicked;
     private bool _restartButtonClicked;
     private bool _isPaused;
@@ -20,6 +22,8 @@ public class PauseManager : MonoBehaviour
 #if !UNITY_EDITOR
         _debugCommandsPausePanel.SetActive(false);
 #endif
+        _eventBus = FindObjectOfType<EventBus>();
+
         _exitToMainMenuConfirmationText?.gameObject.SetActive(false);
         _restartConfirmationText?.gameObject.SetActive(false);
     }
@@ -46,11 +50,13 @@ public class PauseManager : MonoBehaviour
     public void Pause()
     {
         _isPaused = true;
+        _eventBus.PublishEvent(new PausedEvent());
     }
 
     public void Unpause()
     {
         _isPaused = false;
+        _eventBus.PublishEvent(new UnpausedEvent());
     }
 
     public void OpenLevelSelectionDebugScene()

@@ -8,7 +8,7 @@ using UnityEngine;
 /// Drag and drop from https://answers.unity.com/questions/1138645/how-do-i-drag-a-sprite-around.html
 /// </summary>
 [RequireComponent(typeof(BoxCollider2D))]
-public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<LiesResetEvent>
+public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<LiesResetEvent>, IEventHandler<PausedEvent>, IEventHandler<UnpausedEvent>
 {
     private static readonly Dictionary<string, CardPlayType> PlayTypeByTag = new Dictionary<string, CardPlayType>()
     {
@@ -56,6 +56,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private Dictionary<CardCategory, Sprite> _spriteByCardCategory;
     private int _spriteSortingOrder;
     private int _textSortingOrder;
+    private bool _mouseOver;
+    private bool _onPreview;
 
     private void Awake()
     {
@@ -86,6 +88,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             _eventBus = FindObjectOfType<EventBus>();
             _eventBus.Register<LiePlayedEvent>(this);
             _eventBus.Register<LiesResetEvent>(this);
+            _eventBus.Register<PausedEvent>(this);
+            _eventBus.Register<UnpausedEvent>(this);
         }
 
         _titleText.text = _strings.GetString(_cardData.TitleId);
@@ -116,6 +120,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         {
             _eventBus.Register<LiePlayedEvent>(this);
             _eventBus.Register<LiesResetEvent>(this);
+            _eventBus.Register<PausedEvent>(this);
+            _eventBus.Register<UnpausedEvent>(this);
         }
     }
 
@@ -123,6 +129,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     {
         _eventBus.Unregister<LiePlayedEvent>(this);
         _eventBus.Unregister<LiesResetEvent>(this);
+        _eventBus.Unregister<PausedEvent>(this);
+        _eventBus.Unregister<UnpausedEvent>(this);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -172,9 +180,24 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
     private void OnMouseEnter()
     {
+        _mouseOver = true;
+
+        if (_pauseManager.IsPaused)
+        {
+            return;
+        }
+
+        EnterPreview();
+    }
+
+    private void EnterPreview()
+    {
+        _onPreview = true;
+
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.MouseHoverCard);
 
         gameObject.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
+        _originalPosition = transform.position;
         var position = gameObject.transform.position;
         position.y += .6f;
         gameObject.transform.position = position;
@@ -185,10 +208,22 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
     private void OnMouseExit()
     {
+        _mouseOver = false;
+
+        if (_pauseManager.IsPaused)
+        {
+            return;
+        }
+
+        ExitPreview();
+    }
+
+    private void ExitPreview()
+    {
+        _onPreview = false;
+
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
-        var position = gameObject.transform.position;
-        position.y -= .6f;
-        gameObject.transform.position = position;
+        gameObject.transform.position = _originalPosition;
 
         _spriteRenderer.sortingOrder = _spriteSortingOrder;
         SetTextsSortingOrder(_textSortingOrder);
@@ -215,7 +250,6 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
 
         _isDragging = true;
-        _originalPosition = transform.position;
         _offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPoint.z));
     }
 
@@ -279,5 +313,21 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     public void SetCardData(CardData cardData)
     {
         _cardData = cardData;
+    }
+
+    public void HandleEvent(PausedEvent @event)
+    {
+        if (_onPreview)
+        {
+            ExitPreview();
+        }
+    }
+
+    public void HandleEvent(UnpausedEvent @event)
+    {
+        if (_mouseOver)
+        {
+            EnterPreview();
+        }
     }
 }
