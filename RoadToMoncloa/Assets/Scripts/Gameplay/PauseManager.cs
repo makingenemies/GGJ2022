@@ -41,8 +41,7 @@ public class PauseManager : MonoBehaviour
             }
             else
             {
-                Unpause();
-                _pausePanel.SetActive(false);
+                ResumeGame();
             }
         }
     }
@@ -102,5 +101,11 @@ public class PauseManager : MonoBehaviour
     {
         _exitToMainMenuButtonClicked = false;
         _exitToMainMenuConfirmationText?.gameObject.SetActive(false);
+    }
+
+    public void ResumeGame()
+    {
+        Unpause();
+        _pausePanel.SetActive(false);
     }
 }

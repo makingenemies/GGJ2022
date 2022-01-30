@@ -75,7 +75,7 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
         _pauseManager.Unpause();
     }
 
-    public void Donate(int optionIndex)
+    public void Donate()
     {
         _moneyCounter.UpdateCurrentAmount(-_donationAmount);
         _gameplayManager.DisableLies();
