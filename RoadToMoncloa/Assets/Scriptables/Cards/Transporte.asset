@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Transporte
   m_EditorClassIdentifier: 
   TitleId: Transporte
+  LeftAttributeId: Metro
+  RightAttributeId: Parking
   VotersWon: 2
   MoneyWon: 2
   VotersLost: 1

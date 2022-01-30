@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Level2_3
   m_EditorClassIdentifier: 
   TitleId: Factura luz
+  LeftAttributeId: Disminur
+  RightAttributeId: Aumentar
   VotersWon: 3
   MoneyWon: 3
   VotersLost: 2
