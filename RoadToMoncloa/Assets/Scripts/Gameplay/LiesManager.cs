@@ -1,12 +1,16 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class LiesManager : MonoBehaviour
 {
     [SerializeField] SpriteRenderer[] _lieMarkers;
+    [SerializeField] SpriteRenderer _mainSprite;
+    [SerializeField] TextMeshPro _label;
 
     private EventBus _eventBus;
 
     private int _playedLiesCount;
+    private bool _disabled;
 
     public int PlayedLiesCount => _playedLiesCount;
 
@@ -19,7 +23,7 @@ public class LiesManager : MonoBehaviour
 
     public bool PlayLie()
     {
-        if (_playedLiesCount >= _lieMarkers.Length)
+        if (_disabled || _playedLiesCount >= _lieMarkers.Length)
         {
             return false;
         }
@@ -33,10 +37,16 @@ public class LiesManager : MonoBehaviour
         return true;
     }
 
-    public void ResetPlayedLies()
+    public void DisableLies()
     {
+        _disabled = true;
         SetPlayedLiesCount(0);
-        _eventBus.PublishEvent(new LiesResetEvent());
+
+        var color = _mainSprite.color;
+        color.a = .1f;
+        _mainSprite.color = color;
+
+        _label.gameObject.SetActive(false);
     }
 
     public void SetPlayedLiesCount(int playedLiesCount)

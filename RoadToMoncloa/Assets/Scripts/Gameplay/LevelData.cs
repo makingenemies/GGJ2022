@@ -5,4 +5,5 @@ public class LevelData : ScriptableObject
 {
     public CardData[] Cards;
     public int VotersGoal;
+    public int DonationCost;
 }

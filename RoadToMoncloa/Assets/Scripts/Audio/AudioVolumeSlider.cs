@@ -14,6 +14,6 @@ public class AudioVolumeSlider : Slider
 
     public void UpdateAudioVolume()
     {
-        _audioVolumeController.UpdateAudioVolume(this.value);
+        _audioVolumeController.SetAudioVolume((int)(this.value * 100));
     }
 }

@@ -35,7 +35,6 @@ public class SoundEffectPlayer : MonoBehaviour
 
     public void PlayClip(string clipName)
     {
-        _audioSource.clip = _audioClipsByName[clipName];
-        _audioSource.Play();
+        _audioSource.PlayOneShot(_audioClipsByName[clipName]);
     }
 }

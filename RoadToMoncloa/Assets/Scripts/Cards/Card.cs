@@ -23,6 +23,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     [SerializeField] TextMeshPro _moneyText;
     [SerializeField] TextMeshPro _negativeMoneyText;
     [SerializeField] SpriteRenderer _spriteRenderer;
+    [SerializeField] string[] _highlightableZonesTags;
 
     [Header("Sprites")]
     [SerializeField] Sprite _educationSprite;
@@ -38,6 +39,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private EventBus _eventBus;
     private PauseManager _pauseManager;
     private LiesManager _liesManager;
+    private SoundEffectPlayer _soundEffectPlayer;
 
     private Vector3 _screenPoint;
     private Vector3 _offset;
@@ -69,6 +71,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         _strings = FindObjectOfType<Strings>();
         _pauseManager = FindObjectOfType<PauseManager>();
         _liesManager = FindObjectOfType<LiesManager>();
+        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
 
         if (_eventBus == null)
         {
@@ -116,6 +119,13 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             if (collision.CompareTag(tag))
             {
                 _selectedPlayTypes.Add(PlayTypeByTag[tag]);
+
+                if (_highlightableZonesTags.Contains(tag))
+                {
+                    var spriteRenderer = collision.gameObject.GetComponentInChildren<SpriteRenderer>();
+                    SetSpriteRendererAlpha(spriteRenderer, 1);
+                }
+
                 return;
             }
         }
@@ -128,9 +138,28 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             if (collision.CompareTag(tag))
             {
                 _selectedPlayTypes.Remove(PlayTypeByTag[tag]);
+
+                if (_highlightableZonesTags.Contains(tag))
+                {
+                    var spriteRenderer = collision.gameObject.GetComponentInChildren<SpriteRenderer>();
+                    SetSpriteRendererAlpha(spriteRenderer, .8f);
+                }
+
                 return;
             }
         }
+    }
+
+    private void SetSpriteRendererAlpha(SpriteRenderer spriteRenderer, float alpha)
+    {
+        var color = spriteRenderer.color;
+        color.a = alpha;
+        spriteRenderer.color = color;
+    }
+
+    private void OnMouseEnter()
+    {
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.MouseHoverCard);
     }
 
     void OnMouseDown()
@@ -139,6 +168,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         {
             return;
         }
+
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
 
         _isDragging = true;
         _originalPosition = transform.position;

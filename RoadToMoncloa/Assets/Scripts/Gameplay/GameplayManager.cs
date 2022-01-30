@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,16 +15,33 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] GameObject _cards4SpotsPrefab;
     [SerializeField] GameObject _cards5SpotsPrefab;
     [SerializeField] GameObject _cards6SpotsPrefab;
+    [SerializeField] string[] _zoneAnimationTriggerNames;
+    [SerializeField] string _wrongVotersCardMessage;
+    [SerializeField] string _wrongMoneyCardMessage;
+    [SerializeField] TextMeshProUGUI _wrongCardText;
 
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
     private LiesManager _liesManager;
     private GameState _gameState;
     private GeneralSettings _generalSettings;
+    private DonationManager _donationManager;
+    private SoundEffectPlayer _soundEffectPlayer;
+    private Animator _moneyZoneAnimator;
+    private Animator _votersZoneAnimator;
+
+    private System.Random _random;
 
     private int _cardsCount;
+    private bool _liesDisabled;
+    private Coroutine _wrongCardMessageCoroutine;
 
     private LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
+
+    private void Awake()
+    {
+        _random = new System.Random();
+    }
 
     private void Start()
     {
@@ -31,12 +50,33 @@ public class GameplayManager : MonoBehaviour
         _liesManager = FindObjectOfType<LiesManager>();
         _gameState = FindObjectOfType<GameState>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
+        _donationManager = FindObjectOfType<DonationManager>();
+        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
 
-        _moneyCounter.UpdateCurrentAmount(_gameState.MoneyAmount);
-        _votersCounter.UpdateCurrentAmount(_gameState.VotersCount);
+        _votersZoneAnimator = GameObject.FindGameObjectWithTag(Tags.VotersCardDropZone).GetComponentInChildren<Animator>();
+        _moneyZoneAnimator = GameObject.FindGameObjectWithTag(Tags.MoneyCardDropZone).GetComponentInChildren<Animator>();
+
+        _moneyCounter.UpdateCurrentAmount(_gameState.CurrentLevelIndex == 0 
+            ? _generalSettings.InitialMoneyAmount 
+            : _gameState.MoneyAmount);
+        _votersCounter.UpdateCurrentAmount(_gameState.CurrentLevelIndex == 0
+            ? _generalSettings.InitialVoterCount
+            : _gameState.VotersCount);
 
         SetUpCards();
-        _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
+
+        _donationManager.SetDonationAmount(CurrentLevelData.DonationCost);
+
+        if (_gameState.LiesDisabled)
+        {
+            DisableLies();
+        }
+        else
+        {
+            _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
+        }
+
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
     }
 
     private void SetUpCards()
@@ -70,26 +110,9 @@ public class GameplayManager : MonoBehaviour
         switch(playType)
         {
             case CardPlayType.Voters:
-                if (cardData.MoneyLost > _moneyCounter.CurrentAmount)
-                {
-                    return false;
-                }
-                var votersWon = cardData.VotersWon;
-                if (_liesManager.IsLiesCountersFull)
-                {
-                    votersWon--;
-                }
-                _votersCounter.UpdateCurrentAmount(votersWon);
-                _moneyCounter.UpdateCurrentAmount(-cardData.MoneyLost);
-                return true;
+                return TryPlayVotersCard(cardData);
             case CardPlayType.Money:
-                if (cardData.VotersLost > _votersCounter.CurrentAmount)
-                {
-                    return false;
-                }
-                _moneyCounter.UpdateCurrentAmount(cardData.MoneyWon);
-                _votersCounter.UpdateCurrentAmount(-cardData.VotersLost);
-                return true;
+                return TryPlayMoneyCard(cardData);
             case CardPlayType.Lies:
                 var liePlayed = _liesManager.PlayLie();
                 if (liePlayed)
@@ -100,6 +123,66 @@ public class GameplayManager : MonoBehaviour
             default:
                 return false;
         }
+    }
+
+    private bool TryPlayVotersCard(CardData cardData)
+    {
+        if (cardData.MoneyLost > _moneyCounter.CurrentAmount)
+        {
+            ShowWrongCardMessage(_wrongVotersCardMessage);
+            return false;
+        }
+
+        var votersWon = cardData.VotersWon;
+        if (_liesManager.IsLiesCountersFull)
+        {
+            ShowWrongCardMessage(_wrongMoneyCardMessage);
+            votersWon--;
+        }
+        _votersCounter.UpdateCurrentAmount(votersWon);
+        _moneyCounter.UpdateCurrentAmount(-cardData.MoneyLost);
+        _votersZoneAnimator.SetTrigger(GetRandomZoneAnimationTriggerName());
+
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.GetVotes);
+        return true;
+    }
+
+    private bool TryPlayMoneyCard(CardData cardData)
+    {
+        if (cardData.VotersLost > _votersCounter.CurrentAmount)
+        {
+            ShowWrongCardMessage(_wrongMoneyCardMessage);
+            return false;
+        }
+        _moneyCounter.UpdateCurrentAmount(cardData.MoneyWon);
+        _votersCounter.UpdateCurrentAmount(-cardData.VotersLost);
+        _moneyZoneAnimator.SetTrigger(GetRandomZoneAnimationTriggerName());
+        return true;
+    }
+
+    private void ShowWrongCardMessage(string message)
+    {
+        if (_wrongCardMessageCoroutine != null)
+        {
+            StopCoroutine(_wrongCardMessageCoroutine);
+        }
+
+        _wrongCardText.gameObject.SetActive(true);
+        _wrongCardText.text = message;
+
+        _wrongCardMessageCoroutine = StartCoroutine(HideWrongCardMessageAfter2Seconds());
+    }
+
+    private IEnumerator HideWrongCardMessageAfter2Seconds()
+    {
+        yield return new WaitForSeconds(2);
+        _wrongCardText.gameObject.SetActive(false);
+    }
+
+    
+    private string GetRandomZoneAnimationTriggerName()
+    {
+        return _zoneAnimationTriggerNames[_random.Next(0, _zoneAnimationTriggerNames.Length)];
     }
 
     public void DestroyCard(Card card)
@@ -118,6 +201,7 @@ public class GameplayManager : MonoBehaviour
         {
             if (_gameState.CurrentLevelIndex < _generalSettings.LevelsData.Length - 1)
             {
+                _soundEffectPlayer.PlayClip(SoundNames.Gameplay.BeatLevel);
                 _successfulLevelEndPanel.SetActive(true);
             }
             else
@@ -144,12 +228,20 @@ public class GameplayManager : MonoBehaviour
         _gameState.MoneyAmount = _moneyCounter.CurrentAmount;
         _gameState.VotersCount = _votersCounter.CurrentAmount;
         _gameState.LiesCount = _liesManager.PlayedLiesCount;
-        SceneManager.LoadScene("Gameplay");
+        _gameState.LiesDisabled = _liesDisabled;
+        SceneManager.LoadScene("LevelSummary");
     }
 
     // Used from UI
     public void GoToLevelSelectionDebugScene()
     {
         SceneManager.LoadScene("LevelSelection");
+    }
+
+    public void DisableLies()
+    {
+        _liesManager.DisableLies();
+        _donationManager.DisableDonations();
+        _liesDisabled = true;
     }
 }
