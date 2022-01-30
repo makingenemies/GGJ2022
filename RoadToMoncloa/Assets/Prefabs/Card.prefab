@@ -1507,6 +1507,8 @@ MonoBehaviour:
   _highlightableZonesTags:
   - VotersCardDropZone
   - MoneyCardDropZone
+  _selectedCardSpriteSortingOrder: 2
+  _selectedCardTextSortingOrder: 3
   _educationSprite: {fileID: 21300000, guid: f6323d00c556541cf8c449c273d179b0, type: 3}
   _developmentSprite: {fileID: 21300000, guid: 15ef62e2dca2c4016ab62a77ff37b4f8, type: 3}
   _economySprite: {fileID: 21300000, guid: 0aef235d8be874b3db486d3e1988dad2, type: 3}

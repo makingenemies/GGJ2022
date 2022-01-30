@@ -27,6 +27,10 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     [SerializeField] SpriteRenderer _spriteRenderer;
     [SerializeField] string[] _highlightableZonesTags;
 
+    [Header("Selected card")]
+    [SerializeField] int _selectedCardSpriteSortingOrder;
+    [SerializeField] int _selectedCardTextSortingOrder;
+
     [Header("Sprites")]
     [SerializeField] Sprite _educationSprite;
     [SerializeField] Sprite _developmentSprite;
@@ -50,6 +54,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private Vector3 _originalPosition;
     CardData _cardData;
     private Dictionary<CardCategory, Sprite> _spriteByCardCategory;
+    private int _spriteSortingOrder;
+    private int _textSortingOrder;
 
     private void Awake()
     {
@@ -99,6 +105,9 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
 
         _spriteRenderer.sprite = _spriteByCardCategory[_cardData.Category];
+
+        _spriteSortingOrder = _spriteRenderer.sortingOrder;
+        _textSortingOrder = _titleText.sortingOrder;
     }
 
     private void OnEnable()
@@ -164,6 +173,36 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private void OnMouseEnter()
     {
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.MouseHoverCard);
+
+        gameObject.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
+        var position = gameObject.transform.position;
+        position.y += .6f;
+        gameObject.transform.position = position;
+
+        _spriteRenderer.sortingOrder = _selectedCardSpriteSortingOrder;
+        SetTextsSortingOrder(_selectedCardTextSortingOrder);
+    }
+
+    private void OnMouseExit()
+    {
+        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+        var position = gameObject.transform.position;
+        position.y -= .6f;
+        gameObject.transform.position = position;
+
+        _spriteRenderer.sortingOrder = _spriteSortingOrder;
+        SetTextsSortingOrder(_textSortingOrder);
+    }
+
+    private void SetTextsSortingOrder(int sortingOrder)
+    {
+        _titleText.sortingOrder = sortingOrder;
+        _leftAttributeText.sortingOrder = sortingOrder;
+        _rightAttributeText.sortingOrder = sortingOrder;
+        _votersText.sortingOrder = sortingOrder;
+        _negativeVotersText.sortingOrder = sortingOrder;
+        _moneyText.sortingOrder = sortingOrder;
+        _negativeMoneyText.sortingOrder = sortingOrder;
     }
 
     void OnMouseDown()
