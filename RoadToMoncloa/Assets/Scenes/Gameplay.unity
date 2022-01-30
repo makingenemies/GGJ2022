@@ -2559,12 +2559,12 @@ MonoBehaviour:
   _leftZoneBackgroundPrefabs:
   - {fileID: 4640367656549241746, guid: bca226732c0d02c4b84ede825fd0f202, type: 3}
   - {fileID: 4308277864268565859, guid: 112fe4e3fbf2d4673a5426d0b8a80a8c, type: 3}
-  - {fileID: 4640367656549241746, guid: bca226732c0d02c4b84ede825fd0f202, type: 3}
+  - {fileID: 8163839627053581024, guid: cd0957a2335a14248b4c4fbdecc9f325, type: 3}
   - {fileID: 4640367656549241746, guid: bca226732c0d02c4b84ede825fd0f202, type: 3}
   _rightZoneBackgroundPrefabs:
   - {fileID: 485131061610983241, guid: 0e7abc5531aa22b4abb7bda653c891db, type: 3}
   - {fileID: 13171850914960015, guid: 4a3fa32b938c34485a8b81f966e0a4d2, type: 3}
-  - {fileID: 485131061610983241, guid: 0e7abc5531aa22b4abb7bda653c891db, type: 3}
+  - {fileID: 9197542489445817018, guid: aaeb14102a3c94af295bc7f079fa4135, type: 3}
   - {fileID: 485131061610983241, guid: 0e7abc5531aa22b4abb7bda653c891db, type: 3}
   _leftZoneParent: {fileID: 1970447006}
   _rightZoneParent: {fileID: 988524355}
