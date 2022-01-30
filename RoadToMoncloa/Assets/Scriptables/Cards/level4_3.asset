@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: level4_3
   m_EditorClassIdentifier: 
-  TitleId: Impuestos
-  LeftAttributeId: Bajar
-  RightAttributeId: Subir
+  TitleId: "Corrupci\xF3n"
+  LeftAttributeId: esta carta
+  RightAttributeId: es una putada
   VotersWon: 0
   MoneyWon: 0
   VotersLost: 3
