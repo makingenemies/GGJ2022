@@ -95,7 +95,7 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
     public void SetDonationAmount(int donationAmount)
     {
         _donationAmount = donationAmount;
-        _confirmDonationButton.GetComponentInChildren<Text>().text = $"Donate - {donationAmount}M";
+        _confirmDonationButton.GetComponentInChildren<Text>().text = $"Donar - {donationAmount}M";
     }
 
     public void DisableDonations()
