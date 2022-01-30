@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: level4_2
   m_EditorClassIdentifier: 
-  TitleId: 4_2
+  TitleId: Relaciones exteriores
   VotersWon: 8
   MoneyWon: 6
   VotersLost: 4
   MoneyLost: 6
+  Category: 3

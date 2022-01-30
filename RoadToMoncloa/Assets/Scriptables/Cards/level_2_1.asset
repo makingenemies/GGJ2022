@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: level_2_1
   m_EditorClassIdentifier: 
-  TitleId: "Inversi\xF3n europea"
+  TitleId: Fondos europeos
   VotersWon: 2
   MoneyWon: 2
   VotersLost: 1
   MoneyLost: 2
+  Category: 2
