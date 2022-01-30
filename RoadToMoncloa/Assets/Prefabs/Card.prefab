@@ -1497,6 +1497,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _titleText: {fileID: 278116736484870411}
+  _leftAttributeText: {fileID: 7109745051256163849}
+  _rightAttributeText: {fileID: 7109745050044440903}
   _votersText: {fileID: 7109745049527328857}
   _negativeVotersText: {fileID: 7109745051259533709}
   _moneyText: {fileID: 7109745049385606145}

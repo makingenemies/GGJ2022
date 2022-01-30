@@ -18,6 +18,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     };
 
     [SerializeField] TextMeshPro _titleText;
+    [SerializeField] TextMeshPro _leftAttributeText;
+    [SerializeField] TextMeshPro _rightAttributeText;
     [SerializeField] TextMeshPro _votersText;
     [SerializeField] TextMeshPro _negativeVotersText;
     [SerializeField] TextMeshPro _moneyText;
@@ -81,6 +83,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         }
 
         _titleText.text = _strings.GetString(_cardData.TitleId);
+        _leftAttributeText.text = _strings.GetString(_cardData.LeftAttributeId);
+        _rightAttributeText.text = _strings.GetString(_cardData.RightAttributeId);
 
         _moneyText.text = $"+{_cardData.MoneyWon}";
 

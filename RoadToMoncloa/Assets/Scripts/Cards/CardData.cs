@@ -4,6 +4,8 @@ using UnityEngine;
 public class CardData : ScriptableObject
 {
     public string TitleId;
+    public string LeftAttributeId;
+    public string RightAttributeId;
     public int VotersWon;
     public int MoneyWon;
     public int VotersLost;
