@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: level_2_1
   m_EditorClassIdentifier: 
   TitleId: Fondos europeos
+  LeftAttributeId: E.Solar
+  RightAttributeId: "E.At\xF3mica"
   VotersWon: 2
   MoneyWon: 2
   VotersLost: 1

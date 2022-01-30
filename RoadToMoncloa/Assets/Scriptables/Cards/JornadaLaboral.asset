@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: JornadaLaboral
   m_EditorClassIdentifier: 
   TitleId: Jornada Laboral
+  LeftAttributeId: "4 d\xEDas"
+  RightAttributeId: "6 d\xEDas"
   VotersWon: 1
   MoneyWon: 3
   VotersLost: 1

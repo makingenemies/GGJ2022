@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: SubidaSalarial
   m_EditorClassIdentifier: 
   TitleId: Subida salarial
+  LeftAttributeId: 5%
+  RightAttributeId: 1%
   VotersWon: 2
   MoneyWon: 1
   VotersLost: 1

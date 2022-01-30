@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Level3_3
   m_EditorClassIdentifier: 
   TitleId: "Carn\xE9 joven"
+  LeftAttributeId: <35
+  RightAttributeId: <18
   VotersWon: 7
   MoneyWon: 4
   VotersLost: 2

@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Level2_4
   m_EditorClassIdentifier: 
   TitleId: "Digitalizaci\xF3n"
+  LeftAttributeId: Renovables
+  RightAttributeId: Reactores
   VotersWon: 2
   MoneyWon: 1
   VotersLost: 2

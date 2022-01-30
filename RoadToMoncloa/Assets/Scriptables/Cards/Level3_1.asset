@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Level3_1
   m_EditorClassIdentifier: 
   TitleId: Becas
+  LeftAttributeId: Gratuitas
+  RightAttributeId: Con intereses
   VotersWon: 7
   MoneyWon: 5
   VotersLost: 3
