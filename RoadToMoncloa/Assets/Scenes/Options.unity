@@ -770,6 +770,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1171693304}
     m_Modifications:
+    - target: {fileID: 2938389008981001568, guid: 00c1a2282d6f53f42ae4a6abdda8db11, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938389008981001568, guid: 00c1a2282d6f53f42ae4a6abdda8db11, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938389008981001568, guid: 00c1a2282d6f53f42ae4a6abdda8db11, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938389008981001568, guid: 00c1a2282d6f53f42ae4a6abdda8db11, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
+      objectReference: {fileID: 0}
     - target: {fileID: 2938389009270087105, guid: 00c1a2282d6f53f42ae4a6abdda8db11, type: 3}
       propertyPath: m_Name
       value: VolumeController
@@ -857,6 +873,22 @@ PrefabInstance:
     - target: {fileID: 2938389009270087106, guid: 00c1a2282d6f53f42ae4a6abdda8db11, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938389009793109354, guid: 00c1a2282d6f53f42ae4a6abdda8db11, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938389009793109354, guid: 00c1a2282d6f53f42ae4a6abdda8db11, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938389009793109354, guid: 00c1a2282d6f53f42ae4a6abdda8db11, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938389009793109354, guid: 00c1a2282d6f53f42ae4a6abdda8db11, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00c1a2282d6f53f42ae4a6abdda8db11, type: 3}
