@@ -28,6 +28,7 @@ public class GameState : MonoBehaviour
         if (string.Equals(scene.name, "StartGame", System.StringComparison.InvariantCultureIgnoreCase))
         {
             Destroy(gameObject);
+            _instance = null;
         }
     }
 
