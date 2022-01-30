@@ -41,14 +41,26 @@ public class GameState : MonoBehaviour
     public int MoneyAmount 
     { 
         get => _moneyAmount;
-        set => _moneyAmount = value;
+        set
+        {
+            PreviousMoneyAmount = _moneyAmount;
+            _moneyAmount = value;
+        }
     }
 
     public int VotersCount
     {
         get => _votersCount;
-        set => _votersCount = value;
+        set
+        {
+            PreviousVotersCount = _votersCount;
+            _votersCount = value;
+        }
     }
+
+    public int PreviousMoneyAmount { get; private set; }
+
+    public int PreviousVotersCount { get; private set; }
 
     public int LiesCount { get; set; }
 
