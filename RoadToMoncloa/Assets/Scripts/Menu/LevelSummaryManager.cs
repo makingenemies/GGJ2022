@@ -20,7 +20,7 @@ public class LevelSummaryManager : MonoBehaviour
             dayInfoPanel.SetActive(false);
         }
 
-        var dayIndex = _gameState == null ? 0 : _gameState.CurrentLevelIndex;
+        var dayIndex = _gameState == null ? 0 : _gameState.CurrentLevelIndex - 1; // We've already increased the current level index
         _dayInfoPanels[dayIndex].SetActive(true);
 
         DisplayResults();
