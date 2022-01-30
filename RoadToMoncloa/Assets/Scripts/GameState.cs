@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameState : MonoBehaviour
 {
@@ -13,11 +14,20 @@ public class GameState : MonoBehaviour
         {
             DontDestroyOnLoad(this.gameObject);
             _instance = this;
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else if (_instance != this)
         {
             Destroy(this.gameObject);
             return;
+        }
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (!string.Equals(scene.name, "Gameplay", System.StringComparison.InvariantCultureIgnoreCase))
+        {
+            Destroy(gameObject);
         }
     }
 
