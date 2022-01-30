@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -141,8 +142,7 @@ public class GameplayManager : MonoBehaviour
         var votersWon = cardData.VotersWon;
         if (_liesManager.IsLiesCountersFull)
         {
-            ShowWrongCardMessage(_wrongMoneyCardMessage);
-            votersWon--;
+            votersWon = Math.Max(0, votersWon - 1);
         }
         _votersCounter.UpdateCurrentAmount(votersWon);
         _moneyCounter.UpdateCurrentAmount(-cardData.MoneyLost);

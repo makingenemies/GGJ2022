@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -302,7 +303,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             return;
         }
 
-        _votersText.text = $"+{_cardData.VotersWon - 1}";
+        var voters = Math.Max(_cardData.VotersWon - 1, 0);
+        _votersText.text = $"+{voters}";
     }
 
     public void HandleEvent(LiesResetEvent @event)
