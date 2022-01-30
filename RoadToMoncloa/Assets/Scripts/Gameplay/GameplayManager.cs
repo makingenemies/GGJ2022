@@ -10,6 +10,8 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] Button _restartButton;
     [SerializeField] GameObject _successfulLevelEndPanel;
     [SerializeField] GameObject _successfulGameEndPanel;
+    [SerializeField] GameObject _liesZone;
+    [SerializeField] Button _donateButton;
     [SerializeField] Card _cardPrefab;
     [SerializeField] GameObject _cardsPlaceholderParent;
     [SerializeField] GameObject _cards4SpotsPrefab;
@@ -75,6 +77,9 @@ public class GameplayManager : MonoBehaviour
         {
             _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
         }
+
+        _donateButton.gameObject.SetActive(_gameState.CurrentLevelIndex > 0);
+        _liesZone.SetActive(_gameState.CurrentLevelIndex > 0);
 
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
     }

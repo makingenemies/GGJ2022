@@ -1157,6 +1157,8 @@ MonoBehaviour:
   _restartButton: {fileID: 977815056}
   _successfulLevelEndPanel: {fileID: 1320507407}
   _successfulGameEndPanel: {fileID: 160174227}
+  _liesZone: {fileID: 597839988}
+  _donateButton: {fileID: 1600863385}
   _cardPrefab: {fileID: 8806348977340509323, guid: b853236cf3120394cbc98457105b03b1, type: 3}
   _cardsPlaceholderParent: {fileID: 1417425505}
   _cards4SpotsPrefab: {fileID: 5642138180221056665, guid: 6ba9307444ac22545abec755009dfee9, type: 3}
