@@ -113,6 +113,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
         _spriteSortingOrder = _spriteRenderer.sortingOrder;
         _textSortingOrder = _titleText.sortingOrder;
+
+        _originalPosition = transform.position;
     }
 
     private void OnEnable()
@@ -200,13 +202,17 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.MouseHoverCard);
 
         gameObject.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
-        _originalPosition = transform.position;
-        var position = gameObject.transform.position;
-        position.y += .6f;
-        gameObject.transform.position = position;
+        MoveCardUp();
 
         _spriteRenderer.sortingOrder = _selectedCardSpriteSortingOrder;
         SetTextsSortingOrder(_selectedCardTextSortingOrder);
+    }
+
+    private void MoveCardUp()
+    {
+        var position = gameObject.transform.position;
+        position.y += .6f;
+        gameObject.transform.position = position;
     }
 
     private void OnMouseExit()
@@ -286,7 +292,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
         if (_selectedPlayTypes.Count != 1)
         {
-            transform.position = _originalPosition;
+            RestoreCardPosition();
         }
         else if (_game.PlayCard(_cardData, _selectedPlayTypes.First()))
         {
@@ -294,7 +300,16 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         }
         else
         {
-            transform.position = _originalPosition;
+            RestoreCardPosition();
+        }
+    }
+
+    private void RestoreCardPosition()
+    {
+        transform.position = _originalPosition;
+        if (_mouseOver)
+        {
+            MoveCardUp();
         }
     }
 
