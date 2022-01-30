@@ -591,7 +591,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "RESUMEN \nAGENDA ELECTORAL\n\nD\xCDA 1: CONFLICTOS EN LA EMPRESA"
+  m_text: "RESUMEN \nAGENDA ELECTORAL\n\nD\xCDA 2: LA ENERG\xCDA DEL PA\xCDS"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
   m_sharedMaterial: {fileID: 1926249564111926156, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
@@ -725,9 +725,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Enhorabuena M. has superado esta jornada con \xE9xito. \n\nCualquiera
-    dir\xEDa que tus manos sudorosas y tu tartamudeo te acercan m\xE1s al p\xFAblico.
-    \n\nSigue as\xED y llegar\xE1s lejos."
+  m_text: "Esta era la jornada m\xE1s dif\xEDcil y no nos has defraudado.\n\nTus
+    dotes negociadoras y saber lidiar con la dualidad en este pa\xEDs te hacen merecedor
+    de el puesto en el Gobierno.\n\nEst\xE1s a un paso de lograr tus objetivos. \n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
   m_sharedMaterial: {fileID: 1926249564111926156, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
@@ -861,9 +861,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Enhorabuena M. has superado esta jornada con \xE9xito. \n\nCualquiera
-    dir\xEDa que tus manos sudorosas y tu tartamudeo te acercan m\xE1s al p\xFAblico.
-    \n\nSigue as\xED y llegar\xE1s lejos."
+  m_text: "Cuando has dicho \u201Csi hay una fuga en una central, yo mismo ir\xE9
+    a rescatar a la gente\u201D casi lloro de la emoci\xF3n. Y te has metido al p\xFAblico
+    en el bolsillo. \n\nComo ves mentir tiene sus beneficios, pero no lo hagas habitualmente
+    o se volver\xE1 en tu contra.\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
   m_sharedMaterial: {fileID: 1926249564111926156, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
@@ -1037,7 +1038,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &240792991
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1104,7 +1105,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &332285735
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1420,7 +1421,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -449, y: 428}
+  m_AnchoredPosition: {x: -449, y: 442}
   m_SizeDelta: {x: 601.5088, y: 111.2658}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &765961466
@@ -1443,9 +1444,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Enhorabuena M. has superado esta jornada con \xE9xito. \n\nCualquiera
-    dir\xEDa que tus manos sudorosas y tu tartamudeo te acercan m\xE1s al p\xFAblico.
-    \n\nSigue as\xED y llegar\xE1s lejos."
+  m_text: "Un d\xEDa m\xE1s me sorprendes, M.\n\nLos j\xF3venes conf\xEDan en ti
+    y creen que vas a ayudarles con su futuro profesional. Y has sabido gestionar
+    la dualidad entre fondos y becas.\n\nTienes madera para ser Presidiente."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
   m_sharedMaterial: {fileID: 1926249564111926156, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
@@ -2432,7 +2433,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "RESUMEN \nAGENDA ELECTORAL\n\nD\xCDA 1: CONFLICTOS EN LA EMPRESA"
+  m_text: "RESUMEN \nAGENDA ELECTORAL\n\nD\xCDA 3: BENDITA JUVENTUD"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
   m_sharedMaterial: {fileID: 1926249564111926156, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
@@ -3148,7 +3149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2107286284
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3227,7 +3228,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "RESUMEN \nAGENDA ELECTORAL\n\nD\xCDA 1: CONFLICTOS EN LA EMPRESA"
+  m_text: "RESUMEN \nAGENDA ELECTORAL\n\nD\xCDA 4: MONARQU\xCDA O REP\xDABLICA"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
   m_sharedMaterial: {fileID: 1926249564111926156, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
