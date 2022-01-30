@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: Level3_2
   m_EditorClassIdentifier: 
-  TitleId: Level3_2
+  TitleId: Universidad
   VotersWon: 8
   MoneyWon: 5
   VotersLost: 4
   MoneyLost: 5
+  Category: 1

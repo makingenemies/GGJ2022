@@ -835,7 +835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0747bb29c3a8e864e964ca8ecd352e2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioVolume: 0.5
+  _audioVolume: 0
 --- !u!4 &628570810
 Transform:
   m_ObjectHideFlags: 0
@@ -1015,7 +1015,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.5
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -1550,7 +1550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87acc4f126e276b4db17e0593a81176d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moneyAmount: 4
+  _moneyAmount: 3
   _votersCount: 0
 --- !u!4 &1392701693
 Transform:
@@ -1637,6 +1637,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 29d0af5630f0db041bc6e3f1b11f00b4, type: 2}
   - {fileID: 11400000, guid: 3ebc92b9687a1d84c815a755e50b3a30, type: 2}
   - {fileID: 11400000, guid: 64a021e07a75d4f12aa84ab427a909f8, type: 2}
+  _initialVoterCount: 0
+  _initialMoneyAmount: 3
 --- !u!4 &1440220819
 Transform:
   m_ObjectHideFlags: 0

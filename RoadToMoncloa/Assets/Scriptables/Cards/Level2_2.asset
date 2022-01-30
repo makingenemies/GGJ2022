@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: Level2_2
   m_EditorClassIdentifier: 
-  TitleId: Level2_2
+  TitleId: Terreno edificable
   VotersWon: 5
   MoneyWon: 4
   VotersLost: 3
   MoneyLost: 4
+  Category: 1
