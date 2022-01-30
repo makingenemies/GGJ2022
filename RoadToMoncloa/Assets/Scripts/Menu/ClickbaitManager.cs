@@ -34,7 +34,7 @@ public class ClickbaitManager : MonoBehaviour
         _continueButton.interactable = false;
 
         levelIndex = _gameState.CurrentLevelIndex - 1; // We've already increased current level index
-        _questionText.text = _questions[levelIndex];
+        _questionText.text = $"La prensa pregunta lo siguiente: {_questions[levelIndex]}";
         _firstOptionReplyText.text = _firstOptionReplies[levelIndex];
         _secondOptionReplyText.text = _secondOptionReplies[levelIndex];
 
