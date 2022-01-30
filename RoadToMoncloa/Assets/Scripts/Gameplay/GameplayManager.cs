@@ -136,6 +136,7 @@ public class GameplayManager : MonoBehaviour
         if (cardData.MoneyLost > _moneyCounter.CurrentAmount)
         {
             ShowWrongCardMessage(_wrongVotersCardMessage);
+            _soundEffectPlayer.PlayClip(SoundNames.Gameplay.WrongPlay);
             return false;
         }
 
@@ -157,11 +158,15 @@ public class GameplayManager : MonoBehaviour
         if (cardData.VotersLost > _votersCounter.CurrentAmount)
         {
             ShowWrongCardMessage(_wrongMoneyCardMessage);
+            _soundEffectPlayer.PlayClip(SoundNames.Gameplay.WrongPlay);
             return false;
         }
         _moneyCounter.UpdateCurrentAmount(cardData.MoneyWon);
         _votersCounter.UpdateCurrentAmount(-cardData.VotersLost);
         _moneyZoneAnimator.SetTrigger(GetRandomZoneAnimationTriggerName());
+
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.GetMoney);
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.LoseVotes);
         return true;
     }
 

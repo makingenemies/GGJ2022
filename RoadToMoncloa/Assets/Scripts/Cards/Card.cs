@@ -148,6 +148,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
                     SetSpriteRendererAlpha(spriteRenderer, 1);
                 }
 
+                _soundEffectPlayer.PlayClip(SoundNames.Menu.MouseHover);
+
                 return;
             }
         }

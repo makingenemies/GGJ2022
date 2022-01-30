@@ -13,6 +13,7 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
     private EventBus _eventBus;
     private PauseManager _pauseManager;
     private GameplayManager _gameplayManager;
+    private SoundEffectPlayer soundEffectPlayer;
 
     private int _donationAmount;
 
@@ -22,6 +23,7 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
         _eventBus = FindObjectOfType<EventBus>();
         _pauseManager = FindObjectOfType<PauseManager>();
         _gameplayManager = FindObjectOfType<GameplayManager>();
+        soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
 
         _eventBus.Register(this);
     }
@@ -52,6 +54,7 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
         _donationPanel.SetActive(true);
         _pauseManager.Pause();
         ShowButtonsOnlyIfEnoughMoney();
+        soundEffectPlayer.PlayClip(SoundNames.Gameplay.DonationButton);
     }
 
     private void ShowButtonsOnlyIfEnoughMoney()
