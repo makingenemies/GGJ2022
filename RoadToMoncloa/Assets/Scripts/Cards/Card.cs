@@ -185,7 +185,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     {
         _mouseOver = true;
 
-        if (_pauseManager.IsPaused)
+        if (_pauseManager?.IsPaused ?? true)
         {
             return;
         }

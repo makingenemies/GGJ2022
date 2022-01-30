@@ -11,6 +11,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] Button _restartButton;
     [SerializeField] GameObject _successfulLevelEndPanel;
     [SerializeField] GameObject _successfulGameEndPanel;
+    [SerializeField] GameObject _defeatPanel;
     [SerializeField] GameObject _liesZone;
     [SerializeField] Button _donateButton;
     [SerializeField] Card _cardPrefab;
@@ -221,7 +222,7 @@ public class GameplayManager : MonoBehaviour
         }
         else
         {
-            _restartButton.gameObject.SetActive(true);
+            _defeatPanel.SetActive(true);
         }
     }
 
