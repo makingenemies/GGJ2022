@@ -16,8 +16,10 @@ public class ClickbaitManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _questionText;
     [SerializeField] private TextMeshProUGUI _firstOptionReplyText;
     [SerializeField] private TextMeshProUGUI _secondOptionReplyText;
+    [SerializeField] private TextMeshProUGUI _headlineTitleText;
     [SerializeField] private TextMeshProUGUI _headlineText;
     [SerializeField] private Button _continueButton;
+    [SerializeField] private SpriteRenderer _newspaper;
 
     private GameState _gameState;
 
@@ -30,8 +32,10 @@ public class ClickbaitManager : MonoBehaviour
         _gameState = FindObjectOfType<GameState>();
 
         _responsePanel.SetActive(false);
+        _headlineTitleText.gameObject.SetActive(false);
         _headlineText.gameObject.SetActive(false);
         _continueButton.interactable = false;
+        _newspaper.gameObject.SetActive(false);
 
         levelIndex = _gameState.CurrentLevelIndex - 1; // We've already increased current level index
         _questionText.text = $"La prensa pregunta lo siguiente: {_questions[levelIndex]}";
@@ -47,6 +51,7 @@ public class ClickbaitManager : MonoBehaviour
     {
         _questionPanel.SetActive(false);
         _responsePanel.SetActive(true);
+        _headlineTitleText.gameObject.SetActive(true);
 
         _headlineText.text = _headlinesByOptionIndex[optionIndex][levelIndex];
         StartCoroutine(ShowHeadlineAfterTwoSeconds());
@@ -55,7 +60,9 @@ public class ClickbaitManager : MonoBehaviour
     private IEnumerator ShowHeadlineAfterTwoSeconds()
     {
         yield return new WaitForSeconds(2);
+        _headlineTitleText.gameObject.SetActive(false);
         _headlineText.gameObject.SetActive(true);
+        _newspaper.gameObject.SetActive(true);
         _continueButton.interactable = true;
     }
 }
