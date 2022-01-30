@@ -492,6 +492,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 29d0af5630f0db041bc6e3f1b11f00b4, type: 2}
   - {fileID: 11400000, guid: 3ebc92b9687a1d84c815a755e50b3a30, type: 2}
   - {fileID: 11400000, guid: 64a021e07a75d4f12aa84ab427a909f8, type: 2}
+  _initialVoterCount: 0
+  _initialMoneyAmount: 3
 --- !u!4 &735785618
 Transform:
   m_ObjectHideFlags: 0

@@ -56,8 +56,12 @@ public class GameplayManager : MonoBehaviour
         _votersZoneAnimator = GameObject.FindGameObjectWithTag(Tags.VotersCardDropZone).GetComponentInChildren<Animator>();
         _moneyZoneAnimator = GameObject.FindGameObjectWithTag(Tags.MoneyCardDropZone).GetComponentInChildren<Animator>();
 
-        _moneyCounter.UpdateCurrentAmount(_gameState.MoneyAmount);
-        _votersCounter.UpdateCurrentAmount(_gameState.VotersCount);
+        _moneyCounter.UpdateCurrentAmount(_gameState.CurrentLevelIndex == 0 
+            ? _generalSettings.InitialMoneyAmount 
+            : _gameState.MoneyAmount);
+        _votersCounter.UpdateCurrentAmount(_gameState.CurrentLevelIndex == 0
+            ? _generalSettings.InitialVoterCount
+            : _gameState.VotersCount);
 
         SetUpCards();
 
