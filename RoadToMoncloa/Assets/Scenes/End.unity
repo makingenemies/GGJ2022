@@ -517,9 +517,21 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Muchas muchas \nmuchas gracias por jugar.\n\n\nB. Diaz - Design, Storyting\nA.
-    Paz - Concept, Programmer\nA. Trujillo - Design, 2D Artist\nA. Vozmediano - Level
-    Design, Sound Artist\n"
+  m_text: 'Muchas gracias por jugar.
+
+
+
+    B. Diaz - Design, Storytelling.
+
+    A.
+    Paz - Concept, Programmer.
+
+    A. Trujillo - Design, 2D Artist.
+
+    A. Vozmediano
+    - Level Design, Sound Artist.
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
   m_sharedMaterial: {fileID: 1926249564111926156, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}

@@ -242,7 +242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1319265745752652461, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 714
+      value: 123
       objectReference: {fileID: 0}
     - target: {fileID: 1319265745752652461, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -422,7 +422,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Options
+  m_text: Opciones
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
   m_sharedMaterial: {fileID: 1926249564111926156, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
