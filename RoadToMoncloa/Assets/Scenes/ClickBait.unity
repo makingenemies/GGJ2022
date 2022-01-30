@@ -938,8 +938,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "La prensa pregunta lo siguiente: \xBFBla bla bla bla bla bla bla bla bla
-    bla bla bla bla bla bla bla bla bla bla bla bla bla ?"
+  m_text: "El p\xFAblico quiere saber m\xE1s sobre los candidatos. La pregunta m\xE1s
+    formulada es: \n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
   m_sharedMaterial: {fileID: 1926249564111926156, guid: 31b89bfa01d39416da6716ad13fb427b, type: 2}
@@ -1602,25 +1602,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _questions:
-  - "\xBFColacao o Nesquick?"
-  - 
-  - 
+  - "El p\xFAblico quiere saber m\xE1s sobre su pol\xEDtica exterior.  \xBFPizza
+    con pi\xF1a o sin pi\xF1a? "
+  - "Sus pol\xEDticas son tachadas por algunos de extremistas. Para despejar cualquier
+    duda: \xBFcalcetines lisos o con dibujos?"
+  - "El comercio exterior es un tema candente estos d\xEDas. Qu\xE9 prefiere para
+    desayunar, \xBFNesquik o Colacao? "
   _firstOptionReplies:
-  - Colacao
-  - 
-  - 
-  _secondOptionReplies:
+  - "Pizza CON pi\xF1a"
+  - Calcetines lisos
   - Nesquik
-  - 
-  - 
+  _secondOptionReplies:
+  - "Pizza SIN pi\xF1a"
+  - Calcetines con dibujos
+  - Colacao
   _firstOptionHeadlines:
-  - "El presidente se plantea cerrar las f\xE1bricas de Nesquik"
-  - 
-  - 
+  - "\u201CCuanta mas pizza mejor para la pi\xF1a y cuanta m\xE1s pi\xF1a mejor para
+    m\xED.\u201D"
+  - "\u201CTenemos que fabricar m\xE1quinas que hagan m\xE1quinas, con calcetines\u201D"
+  - "El candidato M. anuncia que  nacionalizar\xE1 Nesquik para ofrecerlo en los
+    colegios."
   _secondOptionHeadlines:
-  - "Las palabras del presidente provocar\xEDan la caida de Colacao en bolsa"
-  - 
-  - 
+  - "\u201CUna pi\xF1a es una pi\xF1a, y una pizza es una pizza\u201D"
+  - "\u201CYo por mis calcetines MA-TO\u201D "
+  - "\"Colacao patrocinar\xE1 al equipo Ol\xEDmpico espa\xF1ol\""
   _questionPanel: {fileID: 1281008318}
   _responsePanel: {fileID: 291354179}
   _questionText: {fileID: 1116421421}
