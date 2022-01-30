@@ -204,7 +204,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5008169476351066724, guid: 8093d474aadde4a20b95428296411b34, type: 3}
       propertyPath: m_text
-      value: Exit
+      value: Salir
       objectReference: {fileID: 0}
     - target: {fileID: 5008169476892174656, guid: 8093d474aadde4a20b95428296411b34, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -517,7 +517,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5008169476351066724, guid: 8093d474aadde4a20b95428296411b34, type: 3}
       propertyPath: m_text
-      value: Options
+      value: Opciones
       objectReference: {fileID: 0}
     - target: {fileID: 5008169476892174656, guid: 8093d474aadde4a20b95428296411b34, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -789,7 +789,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5008169476351066724, guid: 8093d474aadde4a20b95428296411b34, type: 3}
       propertyPath: m_text
-      value: Credits
+      value: "Cr\xE9ditos"
       objectReference: {fileID: 0}
     - target: {fileID: 5008169476892174656, guid: 8093d474aadde4a20b95428296411b34, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -1745,6 +1745,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1171693304}
     m_Modifications:
+    - target: {fileID: 5008169476351066724, guid: 8093d474aadde4a20b95428296411b34, type: 3}
+      propertyPath: m_text
+      value: "Nueva Campa\xF1a"
+      objectReference: {fileID: 0}
     - target: {fileID: 5008169476892174656, guid: 8093d474aadde4a20b95428296411b34, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
