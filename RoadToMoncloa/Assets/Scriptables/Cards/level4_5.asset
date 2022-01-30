@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: level4_5
   m_EditorClassIdentifier: 
   TitleId: "Hospitales honor\xEDficos"
+  LeftAttributeId: No
+  RightAttributeId: "S\xED"
   VotersWon: 6
   MoneyWon: 9
   VotersLost: 7

@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: level4_2
   m_EditorClassIdentifier: 
   TitleId: Relaciones exteriores
+  LeftAttributeId: USA
+  RightAttributeId: Marruecos
   VotersWon: 8
   MoneyWon: 6
   VotersLost: 4
