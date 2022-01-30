@@ -22,7 +22,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] string[] _zoneAnimationTriggerNames;
     [SerializeField] string _wrongVotersCardMessage;
     [SerializeField] string _wrongMoneyCardMessage;
-    [SerializeField] TextMeshProUGUI _wrongCardText;
+    [SerializeField] TextMeshPro _wrongCardText;
 
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
