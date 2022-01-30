@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GenericSoundEffectPlayer : MonoBehaviour
 {
-    [SerializeField] private string _clipName;
-
     private SoundEffectPlayer _soundEffectPlayer;
 
     private void Start()
@@ -13,8 +11,8 @@ public class GenericSoundEffectPlayer : MonoBehaviour
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
     }
 
-    public void PlaySound()
+    public void PlaySound(string clipName)
     {
-        _soundEffectPlayer.PlayClip(_clipName);
+        _soundEffectPlayer.PlayClip(clipName);
     }
 }
