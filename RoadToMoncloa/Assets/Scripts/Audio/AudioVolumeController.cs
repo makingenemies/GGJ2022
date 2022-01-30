@@ -33,6 +33,11 @@ public class AudioVolumeController : MonoBehaviour
         ApplyVolumeToAudioSources();
     }
 
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
     private void ApplyVolumeToAudioSources()
     {
         _audioSources = FindObjectsOfType<AudioSource>();

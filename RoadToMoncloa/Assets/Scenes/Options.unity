@@ -238,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1319265745752652461, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 192
+      value: 197
       objectReference: {fileID: 0}
     - target: {fileID: 1319265745752652461, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -259,6 +259,10 @@ PrefabInstance:
     - target: {fileID: 1319265745752652462, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_Name
       value: BackButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319265746260185480, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
+      propertyPath: m_text
+      value: Volver
       objectReference: {fileID: 0}
     - target: {fileID: 1319265746260185480, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_fontSize

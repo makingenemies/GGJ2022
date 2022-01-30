@@ -25,10 +25,15 @@ public class GameState : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (!string.Equals(scene.name, "Gameplay", System.StringComparison.InvariantCultureIgnoreCase))
+        if (string.Equals(scene.name, "StartGame", System.StringComparison.InvariantCultureIgnoreCase))
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     public int CurrentLevelIndex { get; set; }

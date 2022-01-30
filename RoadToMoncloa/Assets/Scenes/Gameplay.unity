@@ -2385,7 +2385,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Back to level selection
+  m_Text: View credits
 --- !u!222 &596214047
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2553,6 +2553,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bf3b532539017a946a7394e4bfaf9f1c, type: 2}
   - {fileID: 11400000, guid: 29d0af5630f0db041bc6e3f1b11f00b4, type: 2}
   - {fileID: 11400000, guid: 3ebc92b9687a1d84c815a755e50b3a30, type: 2}
+  - {fileID: 11400000, guid: 64a021e07a75d4f12aa84ab427a909f8, type: 2}
   _initialVoterCount: 0
   _initialMoneyAmount: 3
 --- !u!1 &619239449
@@ -4664,8 +4665,9 @@ GameObject:
   - component: {fileID: 1469403544}
   - component: {fileID: 1469403543}
   - component: {fileID: 1469403542}
+  - component: {fileID: 1469403545}
   m_Layer: 5
-  m_Name: BackToLevelsSelectionButton
+  m_Name: OpenCreditsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4735,9 +4737,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 354494298}
-        m_TargetAssemblyTypeName: GameplayManager, Assembly-CSharp
-        m_MethodName: GoToLevelSelectionDebugScene
+      - m_Target: {fileID: 1469403545}
+        m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
+        m_MethodName: LoadScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4785,6 +4787,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1469403540}
   m_CullTransparentMesh: 1
+--- !u!114 &1469403545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469403540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c37e2419b59d94ce8a2b088a420b30ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextScene: Credits
 --- !u!1 &1469547032
 GameObject:
   m_ObjectHideFlags: 0

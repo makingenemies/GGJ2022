@@ -32,4 +32,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tutorial.unity
     guid: 0c38e71afb6844a689bbb3beeaef79fb
+  - enabled: 1
+    path: Assets/Scenes/LevelSummary.unity
+    guid: 5be77a448076b418dbdf2432c8b8345d
+  - enabled: 1
+    path: Assets/Scenes/ClickBait.unity
+    guid: 3e60a1fc48291d24284c82660c1c700c
+  - enabled: 1
+    path: Assets/Scenes/LevelIntroduction.unity
+    guid: e7374f29ccc0a4152ad4eb7da08e5ae7
   m_configObjects: {}

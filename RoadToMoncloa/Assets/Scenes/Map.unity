@@ -518,7 +518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37e2419b59d94ce8a2b088a420b30ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: Brief1
+  nextScene: LevelIntroduction
 --- !u!114 &502408125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -975,7 +975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37e2419b59d94ce8a2b088a420b30ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: Brief1
+  nextScene: LevelIntroduction
 --- !u!114 &1093039858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1490,7 +1490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37e2419b59d94ce8a2b088a420b30ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: Brief1
+  nextScene: LevelIntroduction
 --- !u!114 &1519696323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1687,7 +1687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37e2419b59d94ce8a2b088a420b30ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: Brief1
+  nextScene: LevelIntroduction
 --- !u!114 &1592105521
 MonoBehaviour:
   m_ObjectHideFlags: 0

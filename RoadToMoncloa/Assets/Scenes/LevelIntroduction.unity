@@ -2285,7 +2285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1319265745752652461, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290.7
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1319265745752652461, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2321,7 +2321,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1319265745752652461, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 648
+      value: 730.9
       objectReference: {fileID: 0}
     - target: {fileID: 1319265745752652461, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2345,7 +2345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1319265746260185480, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_text
-      value: "Empezar Campa\xF1a"
+      value: Empezar
       objectReference: {fileID: 0}
     - target: {fileID: 1319265746260185480, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: m_fontColor.b
@@ -2363,9 +2363,13 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4281479730
       objectReference: {fileID: 0}
+    - target: {fileID: 1319265746260185480, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2445637121475700210, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}
       propertyPath: nextScene
-      value: Level1
+      value: Gameplay
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 233adba235f184e3f8811c181a27b3a3, type: 3}

@@ -229,7 +229,7 @@ public class GameplayManager : MonoBehaviour
         _gameState.VotersCount = _votersCounter.CurrentAmount;
         _gameState.LiesCount = _liesManager.PlayedLiesCount;
         _gameState.LiesDisabled = _liesDisabled;
-        SceneManager.LoadScene("Gameplay");
+        SceneManager.LoadScene("LevelSummary");
     }
 
     // Used from UI
