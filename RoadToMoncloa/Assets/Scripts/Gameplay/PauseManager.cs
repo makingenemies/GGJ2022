@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class PauseManager : MonoBehaviour
 {
     [SerializeField] private GameObject _pausePanel;
-    [SerializeField] private GameObject _debugCommandsPausePanel;
     [SerializeField] private TextMeshProUGUI _exitToMainMenuConfirmationText;
     [SerializeField] private TextMeshProUGUI _restartConfirmationText;
 
@@ -19,9 +18,6 @@ public class PauseManager : MonoBehaviour
 
     private void Start()
     {
-#if !UNITY_EDITOR
-        _debugCommandsPausePanel.SetActive(false);
-#endif
         _eventBus = FindObjectOfType<EventBus>();
 
         _exitToMainMenuConfirmationText?.gameObject.SetActive(false);
