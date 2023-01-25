@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class GameplayManager : MonoBehaviour
 {
+    private int AmountOfRounds = 2;
+
     [SerializeField] Button _restartButton;
     [SerializeField] GameObject _successfulLevelEndPanel;
     [SerializeField] GameObject _successfulGameEndPanel;
@@ -23,6 +25,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] string _wrongVotersCardMessage;
     [SerializeField] string _wrongMoneyCardMessage;
     [SerializeField] TextMeshPro _wrongCardText;
+    [SerializeField] TextMeshProUGUI _roundCounterText;
 
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
@@ -39,6 +42,7 @@ public class GameplayManager : MonoBehaviour
     private int _cardsCount;
     private bool _liesDisabled;
     private Coroutine _wrongCardMessageCoroutine;
+    private int _playedRoundsCounter;
 
     private LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
 
@@ -60,30 +64,7 @@ public class GameplayManager : MonoBehaviour
         _votersZoneAnimator = GameObject.FindGameObjectWithTag(Tags.VotersCardDropZone).GetComponentInChildren<Animator>();
         _moneyZoneAnimator = GameObject.FindGameObjectWithTag(Tags.MoneyCardDropZone).GetComponentInChildren<Animator>();
 
-        _moneyCounter.UpdateCurrentAmount(_gameState.CurrentLevelIndex == 0 
-            ? _generalSettings.InitialMoneyAmount 
-            : _gameState.MoneyAmount);
-        _votersCounter.UpdateCurrentAmount(_gameState.CurrentLevelIndex == 0
-            ? _generalSettings.InitialVoterCount
-            : _gameState.VotersCount);
-
-        SetUpCards();
-
-        _donationManager.SetDonationAmount(CurrentLevelData.DonationCost);
-
-        if (_gameState.LiesDisabled)
-        {
-            DisableLies();
-        }
-        else
-        {
-            _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
-        }
-
-        _donateButton.gameObject.SetActive(_gameState.CurrentLevelIndex > 0);
-        _liesZone.SetActive(_gameState.CurrentLevelIndex > 0);
-
-        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
+        StartNextRound();
     }
 
     private void SetUpCards()
@@ -110,6 +91,43 @@ public class GameplayManager : MonoBehaviour
 
         _votersCounter.SetMaxAmount(CurrentLevelData.VotersGoal);
         _cardsCount = FindObjectsOfType<Card>().Length;
+    }
+
+    /// <summary>
+    /// This is temporary, setting up the same data for both rounds
+    /// until we have the layout for 3 cards and the card selection stage.
+    /// </summary>
+    private void StartNextRound()
+    {
+        if (_roundCounterText != null)
+        {
+            _roundCounterText.text = $"{_playedRoundsCounter + 1}";
+        }
+
+        _moneyCounter.UpdateCurrentAmount(_gameState.CurrentLevelIndex == 0
+            ? _generalSettings.InitialMoneyAmount
+            : _gameState.MoneyAmount);
+        _votersCounter.UpdateCurrentAmount(_gameState.CurrentLevelIndex == 0
+            ? _generalSettings.InitialVoterCount
+            : _gameState.VotersCount);
+
+        SetUpCards();
+
+        _donationManager.SetDonationAmount(CurrentLevelData.DonationCost);
+
+        if (_gameState.LiesDisabled)
+        {
+            DisableLies();
+        }
+        else
+        {
+            _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
+        }
+
+        _donateButton.gameObject.SetActive(_gameState.CurrentLevelIndex > 0);
+        _liesZone.SetActive(_gameState.CurrentLevelIndex > 0);
+
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
     }
 
     public bool PlayCard(CardData cardData, CardPlayType playType)
@@ -202,7 +220,20 @@ public class GameplayManager : MonoBehaviour
         _cardsCount--;
         if (_cardsCount <= 0)
         {
+            EndRound();
+        }
+    }
+
+    private void EndRound()
+    {
+        _playedRoundsCounter++;
+        if (_playedRoundsCounter >= AmountOfRounds)
+        {
             EndLevel();
+        }
+        else
+        {
+            StartNextRound();
         }
     }
 
