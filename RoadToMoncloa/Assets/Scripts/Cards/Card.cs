@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 
@@ -46,6 +47,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private EventBus _eventBus;
     private PauseManager _pauseManager;
     private LiesManager _liesManager;
+    private BoardCardSlot _boardCardSlot;
     private SoundEffectPlayer _soundEffectPlayer;
 
     private Vector3 _screenPoint;
@@ -54,14 +56,19 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private bool _isDragging;
     private Vector3 _originalPosition;
     CardData _cardData;
+    BoxCollider2D _boxCollider;
     private Dictionary<CardCategory, Sprite> _spriteByCardCategory;
     private int _spriteSortingOrder;
     private int _textSortingOrder;
     private bool _mouseOver;
     private bool _onPreview;
+    private string _id;
+    public string Id => _id;
+    public CardData CardData => _cardData;
 
     private void Awake()
     {
+        _id = Guid.NewGuid().ToString();
         _spriteByCardCategory = new Dictionary<CardCategory, Sprite>
         {
             [CardCategory.Education] = _educationSprite,
@@ -82,7 +89,9 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         _strings = FindObjectOfType<Strings>();
         _pauseManager = FindObjectOfType<PauseManager>();
         _liesManager = FindObjectOfType<LiesManager>();
+        _boardCardSlot= FindObjectOfType<BoardCardSlot>();
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        _boxCollider = GetComponent<BoxCollider2D>();
 
         if (_eventBus == null)
         {
@@ -178,9 +187,9 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
     private void SetSpriteRendererAlpha(SpriteRenderer spriteRenderer, float alpha)
     {
-        var color = spriteRenderer.color;
-        color.a = alpha;
-        spriteRenderer.color = color;
+        //var color = spriteRenderer.color;
+        //color.a = alpha;
+        //spriteRenderer.color = color;
     }
 
     private void OnMouseEnter()
@@ -260,6 +269,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
 
         _isDragging = true;
         _offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPoint.z));
+        _boxCollider.enabled = false;
     }
 
     void OnMouseDrag()
@@ -272,6 +282,7 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             _isDragging = false;
+            _boxCollider.enabled = true;
             transform.position = _originalPosition;
             return;
         }
@@ -279,29 +290,33 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPoint.z);
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + _offset;
         transform.position = curPosition;
+        
     }
 
     private void OnMouseUp()
     {
         _isDragging = false;
+        _boxCollider.enabled = true;
 
         if (_pauseManager.IsPaused)
         {
             return;
         }
 
-        if (_selectedPlayTypes.Count != 1)
+        if (_game.PlayCard(this))
         {
-            RestoreCardPosition();
-        }
-        else if (_game.PlayCard(_cardData, _selectedPlayTypes.First()))
-        {
-            _game.DestroyCard(this);
+            _boxCollider.enabled = false;
+            //cards don't destroy anymore, instead card moves to slot and scaled
         }
         else
-        {
+        { 
             RestoreCardPosition();
         }
+    }
+
+    public void SetCardPosition(Vector3 position)
+    {
+        transform.position = position;
     }
 
     private void RestoreCardPosition()
@@ -349,4 +364,6 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             EnterPreview();
         }
     }
+
+   
 }
