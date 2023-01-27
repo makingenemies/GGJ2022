@@ -22,10 +22,6 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     [SerializeField] TextMeshPro _titleText;
     [SerializeField] TextMeshPro _leftAttributeText;
     [SerializeField] TextMeshPro _rightAttributeText;
-    [SerializeField] TextMeshPro _votersText;
-    [SerializeField] TextMeshPro _negativeVotersText;
-    [SerializeField] TextMeshPro _moneyText;
-    [SerializeField] TextMeshPro _negativeMoneyText;
     [SerializeField] SpriteRenderer _spriteRenderer;
     [SerializeField] string[] _highlightableZonesTags;
 
@@ -65,6 +61,17 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private string _id;
     public string Id => _id;
     public CardData CardData => _cardData;
+    public TextMeshPro _votersText;
+    public TextMeshPro _negativeVotersText;
+    public TextMeshPro _moneyText;
+    public TextMeshPro _negativeMoneyText;
+
+    public int MoneyWonModifier { get; set;}
+    public int VotersWonModifier { get; set;}
+    public int MoneyWon => CardData.MoneyWon + MoneyWonModifier;
+    public int VotersWon => CardData.VotersWon + VotersWonModifier;
+    public int MoneyLost => CardData.MoneyLost;
+    public int VotersLost => CardData.VotersLost;
 
     private void Awake()
     {
@@ -306,7 +313,6 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         if (_game.PlayCard(this))
         {
             _boxCollider.enabled = false;
-            //cards don't destroy anymore, instead card moves to slot and scaled
         }
         else
         { 
@@ -326,6 +332,11 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         {
             MoveCardUp();
         }
+    }
+
+    public void SetCardScale(float scale)
+    {
+        transform.localScale = new Vector3(scale, scale, 0f);
     }
 
     public void HandleEvent(LiePlayedEvent @event)

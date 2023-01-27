@@ -8,20 +8,20 @@ using UnityEngine;
 public class BoardCardSlot : MonoBehaviour
 {
     [SerializeField] private bool _isSelected;
-    [SerializeField] private bool _areModifiersActive;
-    [SerializeField] private int _votersModifier;
-    [SerializeField] private int _moneyModifier;
+    [SerializeField] private int _modifier;
     [SerializeField] private CardPlayType _playType;
 
     private BoxCollider2D _slotCollider;
     private EventBus _eventBus;
+    private GameplayManager _gameplayManager;
     private string _id;
 
-    public TextMeshPro _moneyModifierText;
-    public TextMeshPro _votersModifierText;
+    public TextMeshPro _modifierText;
 
     public string Id => _id;
+    public bool IsUsed { get; set; }
     public CardPlayType PlayType => _playType;
+    public int Modifier => _modifier;
 
     private void Awake()
     {
@@ -33,8 +33,9 @@ public class BoardCardSlot : MonoBehaviour
     void Start()
     {
         _eventBus = FindObjectOfType<EventBus>();
+        _gameplayManager= FindObjectOfType<GameplayManager>();
         
-        if (_areModifiersActive)
+        if (_gameplayManager.AreModifiersActive)
         {
             ShowModifiers();
         }
@@ -71,30 +72,29 @@ public class BoardCardSlot : MonoBehaviour
         return true;
     }
 
-    public void disableModifiers()
-    {
-        _areModifiersActive = false;
-        HideModifiers();
-    }
-
-    public void enableModifiers()
-    {
-        _areModifiersActive = true;
-        ShowModifiers();
-    }
-
+    
     private void ShowModifiers()
     {
-        if (_votersModifier != 0 || _moneyModifier != 0)
+        if (_modifier != 0)
         {
             //modifiers text update
-            _moneyModifierText.enabled = true;
-            _votersModifierText.enabled = true;
+            if(_modifier > 0)
+            {
+                _modifierText.text = $"+{_modifier}";
+            }
+            else
+            {
+                _modifierText.text = $"{_modifier}";
+            }
+
+            
+            _modifierText.enabled = true;
+            
+            
         }
     }
     private void HideModifiers()
     {
-        _moneyModifierText.enabled = false;
-        _votersModifierText.enabled = false;
+        _modifierText.enabled = false;
     }
 }

@@ -23,6 +23,8 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
     [SerializeField] string _wrongVotersCardMessage;
     [SerializeField] string _wrongMoneyCardMessage;
     [SerializeField] TextMeshPro _wrongCardText;
+    [SerializeField] float _playedCardScale;
+    [SerializeField] private bool _areModifiersActive;
 
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
@@ -45,6 +47,8 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
     private Coroutine _wrongCardMessageCoroutine;
 
     private LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
+
+    public bool AreModifiersActive => _areModifiersActive;
 
     private void Awake()
     {
@@ -138,7 +142,7 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
     {
         bool cardPlayed = false;
 
-        if (_selectedSlot == null)
+        if (_selectedSlot == null || _selectedSlot.IsUsed)
         {
             return false;
         }
@@ -146,17 +150,17 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
         switch(_selectedSlot.PlayType)
         {
             case CardPlayType.Voters:
-                cardPlayed = TryPlayVotersCard(card.CardData);
+                cardPlayed = TryPlayVotersCard(card);
                 if (cardPlayed)
                 {
-                    card.SetCardPosition(_selectedSlot.transform.position);
+                    PlayedCard(card);
                 }
                 break;
             case CardPlayType.Money:
-                cardPlayed = TryPlayMoneyCard(card.CardData);
+                cardPlayed = TryPlayMoneyCard(card);
                 if (cardPlayed)
                 {
-                    card.SetCardPosition(_selectedSlot.transform.position);
+                    PlayedCard(card);
                 }
                 break;
             case CardPlayType.Lies:
@@ -177,38 +181,42 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
         return cardPlayed;
     }
 
-    private bool TryPlayVotersCard(CardData cardData)
+    private bool TryPlayVotersCard(Card card)
     {
-        if (cardData.MoneyLost > _moneyCounter.CurrentAmount)
+        if (card.MoneyLost > _moneyCounter.CurrentAmount)
         {
             ShowWrongCardMessage(_wrongVotersCardMessage);
             _soundEffectPlayer.PlayClip(SoundNames.Gameplay.WrongPlay);
             return false;
         }
 
-        var votersWon = cardData.VotersWon;
+        ApplyModifiers(card);
+        var votersWon = card.VotersWon;
+
         if (_liesManager.IsLiesCountersFull)
         {
             votersWon = Math.Max(0, votersWon - 1);
         }
+        
         _votersCounter.UpdateCurrentAmount(votersWon);
-        _moneyCounter.UpdateCurrentAmount(-cardData.MoneyLost);
+        _moneyCounter.UpdateCurrentAmount(-card.MoneyLost);
         _votersZoneAnimator.SetTrigger(GetRandomZoneAnimationTriggerName());
 
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.GetVotes);
         return true;
     }
 
-    private bool TryPlayMoneyCard(CardData cardData)
+    private bool TryPlayMoneyCard(Card card)
     {
-        if (cardData.VotersLost > _votersCounter.CurrentAmount)
+        if (card.VotersLost > _votersCounter.CurrentAmount)
         {
             ShowWrongCardMessage(_wrongMoneyCardMessage);
             _soundEffectPlayer.PlayClip(SoundNames.Gameplay.WrongPlay);
             return false;
         }
-        _moneyCounter.UpdateCurrentAmount(cardData.MoneyWon);
-        _votersCounter.UpdateCurrentAmount(-cardData.VotersLost);
+        ApplyModifiers(card);
+        _moneyCounter.UpdateCurrentAmount(card.MoneyWon);
+        _votersCounter.UpdateCurrentAmount(-card.VotersLost);
         _moneyZoneAnimator.SetTrigger(GetRandomZoneAnimationTriggerName());
 
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.GetMoney);
@@ -252,6 +260,52 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
         if (_cardsCount <= 0)
         {
             EndLevel();
+        }
+    }
+
+    private void PlayedCard(Card card)
+    {
+        card.SetCardPosition(_selectedSlot.transform.position);
+        card.SetCardScale(_playedCardScale);
+        _selectedSlot.IsUsed = true;
+
+    }
+
+    private void ApplyModifiers(Card card)
+    {
+        if (!_areModifiersActive)
+        {
+            return;
+        };
+
+        switch (_selectedSlot.PlayType)
+        {
+            case CardPlayType.Voters: 
+                card.VotersWonModifier = _selectedSlot.Modifier;
+
+                if (card.VotersWon > 0)
+                {
+                    card._votersText.text = $"+{card.VotersWon}";
+                }
+                else
+                {
+                    card._votersText.text = $"{card.VotersWon}";
+                }
+                break;
+            case CardPlayType.Money:
+                card.MoneyWonModifier = _selectedSlot.Modifier;
+
+                if (card.MoneyWon > 0)
+                {
+                    card._moneyText.text = $"+{card.MoneyWon}";
+                }
+                else
+                {
+                    card._moneyText.text = $"{card.MoneyWon}";
+                }
+                break;
+            default: 
+                break;
         }
     }
 
