@@ -94,7 +94,15 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
             return;
         }
 
-        EnterPreview();
+        TryEnterPreview();
+    }
+
+    private void TryEnterPreview()
+    {
+        if (!_game.IsAnyCardSelected)
+        {
+            EnterPreview();
+        }
     }
 
     private void EnterPreview()
@@ -161,6 +169,8 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
 
         _isDragging = true;
+        _eventBus.PublishEvent(new CardDragStartedEvent());
+
         _offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPoint.z));
         _boxCollider.enabled = false;
 
@@ -171,14 +181,6 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     {
         if (_pauseManager.IsPaused || !_isDragging)
         {
-            return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            _isDragging = false;
-            _boxCollider.enabled = true;
-            transform.position = _originalPosition;
             return;
         }
 
@@ -194,16 +196,26 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
 
     private void OnMouseUp()
     {
+        StopDraggingCard();
+    }
+
+    private void StopDraggingCard()
+    {
         if (!_isDragging)
         {
             return;
         }
 
         _isDragging = false;
+        _eventBus.PublishEvent(new CardDragFinishedEvent());
+
         _boxCollider.enabled = true;
+
+        RestoreUISortingLayer();
 
         if (_pauseManager.IsPaused)
         {
+            RestoreCardPosition();
             return;
         }
 
@@ -212,11 +224,9 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
             _boxCollider.enabled = false;
         }
         else
-        { 
+        {
             RestoreCardPosition();
         }
-
-        RestoreUISortingLayer();
     }
 
     public void SetCardPosition(Vector3 position)
@@ -270,7 +280,11 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
 
     public void HandleEvent(PausedEvent @event)
     {
-        if (_onPreview)
+        if (_isDragging)
+        {
+            StopDraggingCard();
+        }
+        else if (_onPreview)
         {
             ExitPreview();
         }
@@ -280,7 +294,7 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     {
         if (_mouseOver)
         {
-            EnterPreview();
+            TryEnterPreview();
         }
     }
 }

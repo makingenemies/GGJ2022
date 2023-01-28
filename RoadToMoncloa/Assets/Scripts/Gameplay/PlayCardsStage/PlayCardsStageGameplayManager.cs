@@ -5,7 +5,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEnteredEvent>, IEventHandler<BoardCardSlotExitedEvent>
+public class PlayCardsStageGameplayManager : 
+    MonoBehaviour, 
+    IEventHandler<BoardCardSlotEnteredEvent>, 
+    IEventHandler<BoardCardSlotExitedEvent>,
+    IEventHandler<CardDragStartedEvent>,
+    IEventHandler<CardDragFinishedEvent>
 {
     [SerializeField] GameObject _liesZone;
     [SerializeField] Button _donateButton;
@@ -44,6 +49,8 @@ public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardC
 
     private int CardPlaceHoldersCount => _playCardsStageBoardPrefab.transform.childCount;
 
+    public bool IsAnyCardSelected { get; private set; }
+
     private void Awake()
     {
         _random = new System.Random();
@@ -56,7 +63,6 @@ public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardC
         _votersCounter = FindObjectOfType<VotersCounter>();
         _liesManager = FindObjectOfType<LiesManager>();
         _gameState = FindObjectOfType<GameState>();
-        _eventBus = FindObjectOfType<EventBus>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
         _playCardsPanel = FindObjectOfType<PlayCardsPanel>();
@@ -76,15 +82,37 @@ public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardC
             _cardsById[card.Id] = card;
         }
 
-        _eventBus.Register<BoardCardSlotEnteredEvent>(this);
-        _eventBus.Register<BoardCardSlotExitedEvent>(this);
+        RegisterToEvents();
 
         _votersZoneAnimator = GameObject.FindGameObjectWithTag(Tags.VotersCardDropZone).GetComponentInChildren<Animator>();
         _moneyZoneAnimator = GameObject.FindGameObjectWithTag(Tags.MoneyCardDropZone).GetComponentInChildren<Animator>();
 
         _playCardsPanel.SetActive(false);
     }
-    
+
+    private void RegisterToEvents()
+    {
+        if (_eventBus != null)
+        {
+            return;
+        }
+
+        _eventBus = FindObjectOfType<EventBus>();
+
+        _eventBus.Register<BoardCardSlotEnteredEvent>(this);
+        _eventBus.Register<BoardCardSlotExitedEvent>(this);
+        _eventBus.Register<CardDragStartedEvent>(this);
+        _eventBus.Register<CardDragFinishedEvent>(this);
+    }
+
+    private void UnregisterFromEvents()
+    {
+        _eventBus.Unregister<BoardCardSlotEnteredEvent>(this);
+        _eventBus.Unregister<BoardCardSlotExitedEvent>(this);
+        _eventBus.Unregister<CardDragStartedEvent>(this);
+        _eventBus.Unregister<CardDragFinishedEvent>(this);
+    }
+
     public void EnterStage(List<CardData> _cardDatas)
     {
         _playCardsPanel.SetActive(true);
@@ -276,17 +304,12 @@ public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardC
 
     private void OnEnable()
     {
-        if (_eventBus != null)
-        {
-            _eventBus.Register<BoardCardSlotEnteredEvent>(this);
-            _eventBus.Register<BoardCardSlotExitedEvent>(this);
-        }
+        RegisterToEvents();
     }
 
     private void OnDisable()
     {
-        _eventBus.Unregister<BoardCardSlotEnteredEvent>(this);
-        _eventBus.Unregister<BoardCardSlotExitedEvent>(this);
+        UnregisterFromEvents();
     }
 
     public void HandleEvent(BoardCardSlotEnteredEvent @event)
@@ -299,5 +322,15 @@ public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardC
     {
         _selectedSlot = null;
         Debug.Log($"Slot exit");
+    }
+
+    public void HandleEvent(CardDragStartedEvent @event)
+    {
+        IsAnyCardSelected = true;
+    }
+
+    public void HandleEvent(CardDragFinishedEvent @event)
+    {
+        IsAnyCardSelected = false;
     }
 }
