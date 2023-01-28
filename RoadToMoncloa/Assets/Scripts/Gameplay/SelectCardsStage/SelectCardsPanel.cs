@@ -7,7 +7,14 @@ public class SelectCardsPanel : MonoBehaviour
     [SerializeField] private List<Transform> _cardPlaceHolders;
     [SerializeField] private Button _confirmSelectionButton;
 
+    private EventBus _eventBus;
+
     public List<Transform> CardPlaceHolders => _cardPlaceHolders;
+
+    private void Start()
+    {
+        _eventBus = FindObjectOfType<EventBus>();
+    }
 
     public void SetActive(bool active)
     {
@@ -23,5 +30,10 @@ public class SelectCardsPanel : MonoBehaviour
     public void DisableConfirmSelectionButton()
     {
         _confirmSelectionButton.interactable = false;
+    }
+
+    public void ConfirmSelection()
+    {
+        _eventBus.PublishEvent(new CardsSelectionConfirmEvent());
     }
 }
