@@ -94,6 +94,7 @@ public class GameplayManager : MonoBehaviour
         }
         else
         {
+            _playCardsStage.ExitStage();
             StartNextRound();
         }
     }

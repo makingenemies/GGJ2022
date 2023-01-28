@@ -27,6 +27,7 @@ public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardC
     private GeneralSettings _generalSettings;
     private EventBus _eventBus;
     private SoundEffectPlayer _soundEffectPlayer;
+    private PlayCardsPanel _playCardsPanel;
     private Animator _moneyZoneAnimator;
     private Animator _votersZoneAnimator;
     private Dictionary<string, BoardCardSlot> _boardCardSlotsById;
@@ -58,6 +59,7 @@ public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardC
         _eventBus = FindObjectOfType<EventBus>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        _playCardsPanel = FindObjectOfType<PlayCardsPanel>();
 
         var boardCardSlots = FindObjectsOfType<BoardCardSlot>();
         var cards = FindObjectsOfType<PlayStageCard>();
@@ -79,10 +81,14 @@ public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardC
 
         _votersZoneAnimator = GameObject.FindGameObjectWithTag(Tags.VotersCardDropZone).GetComponentInChildren<Animator>();
         _moneyZoneAnimator = GameObject.FindGameObjectWithTag(Tags.MoneyCardDropZone).GetComponentInChildren<Animator>();
+
+        _playCardsPanel.SetActive(false);
     }
     
     public void EnterStage(List<CardData> _cardDatas)
     {
+        _playCardsPanel.SetActive(true);
+
         _donateButton.gameObject.SetActive(_gameState.CurrentLevelIndex > 0);
         _liesZone.SetActive(_gameState.CurrentLevelIndex > 0);
 
@@ -124,14 +130,14 @@ public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardC
                 cardPlayed = TryPlayVotersCard(card);
                 if (cardPlayed)
                 {
-                    PlayedCard(card);
+                    TrackPlayedActionCard(card);
                 }
                 break;
             case CardPlayType.Money:
                 cardPlayed = TryPlayMoneyCard(card);
                 if (cardPlayed)
                 {
-                    PlayedCard(card);
+                    TrackPlayedActionCard(card);
                 }
                 break;
             case CardPlayType.Lies:
@@ -234,12 +240,16 @@ public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardC
         }
     }
 
-    private void PlayedCard(PlayStageCard card)
+    public void ExitStage()
+    {
+        _playCardsPanel.SetActive(false);
+    }
+
+    private void TrackPlayedActionCard(PlayStageCard card)
     {
         card.SetCardPosition(_selectedSlot.transform.position);
         card.SetCardScale(_playedCardScale);
         _selectedSlot.IsUsed = true;
-
     }
 
     private void ApplyModifiers(PlayStageCard card)
@@ -289,10 +299,5 @@ public class PlayCardsStageGameplayManager : MonoBehaviour, IEventHandler<BoardC
     {
         _selectedSlot = null;
         Debug.Log($"Slot exit");
-    }
-
-    public void StartPlayCardsStage(List<CardData> _cardDatas)
-    {
-        SetUpCards(_cardDatas);
     }
 }
