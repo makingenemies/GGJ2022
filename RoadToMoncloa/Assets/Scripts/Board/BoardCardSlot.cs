@@ -13,7 +13,7 @@ public class BoardCardSlot : MonoBehaviour
 
     private BoxCollider2D _slotCollider;
     private EventBus _eventBus;
-    private GameplayManager _gameplayManager;
+    private PlayCardsStageGameplayManager _gameplayManager;
     private string _id;
 
     public TextMeshPro _modifierText;
@@ -33,7 +33,7 @@ public class BoardCardSlot : MonoBehaviour
     void Start()
     {
         _eventBus = FindObjectOfType<EventBus>();
-        _gameplayManager= FindObjectOfType<GameplayManager>();
+        _gameplayManager= FindObjectOfType<PlayCardsStageGameplayManager>();
         
         if (_gameplayManager.AreModifiersActive)
         {

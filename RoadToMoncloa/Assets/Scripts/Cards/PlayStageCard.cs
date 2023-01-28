@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -13,7 +12,7 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     [SerializeField] int _selectedCardSpriteSortingOrder;
     [SerializeField] int _selectedCardTextSortingOrder;
 
-    private GameplayManager _game;
+    private PlayCardsStageGameplayManager _game;
     private EventBus _eventBus;
     private PauseManager _pauseManager;
     private LiesManager _liesManager;
@@ -23,12 +22,10 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
 
     private Vector3 _screenPoint;
     private Vector3 _offset;
-    private HashSet<CardPlayType> _selectedPlayTypes;
     private bool _isDragging;
     private Vector3 _originalPosition;
     CardData _cardData;
     BoxCollider2D _boxCollider;
-    private Dictionary<CardCategory, Sprite> _spriteByCardCategory;
     private bool _mouseOver;
     private bool _onPreview;
     private string _id;
@@ -45,13 +42,12 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     private void Awake()
     {
         _id = Guid.NewGuid().ToString();
-        _selectedPlayTypes = new HashSet<CardPlayType>();
         _cardUI = GetComponent<CardUI>();
     }
 
     private void Start()
     {
-        _game = FindObjectOfType<GameplayManager>();
+        _game = FindObjectOfType<PlayCardsStageGameplayManager>();
         _pauseManager = FindObjectOfType<PauseManager>();
         _liesManager = FindObjectOfType<LiesManager>();
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
