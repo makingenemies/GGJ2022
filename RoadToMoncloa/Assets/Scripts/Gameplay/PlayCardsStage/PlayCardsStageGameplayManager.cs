@@ -156,6 +156,8 @@ public class PlayCardsStageGameplayManager :
         {
             slot.IsUsed = false;
         }
+
+        _selectedSlot = null;
     }
 
     public bool PlayCard(PlayStageCard card)
