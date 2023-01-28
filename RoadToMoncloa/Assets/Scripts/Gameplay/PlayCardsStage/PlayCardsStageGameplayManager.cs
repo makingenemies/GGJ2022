@@ -28,16 +28,19 @@ public class PlayCardsStageGameplayManager :
     [SerializeField] private bool _areModifiersActive;
 
     private GameplayManager _gameplayManager;
+    private GameState _gameState;
+    private GeneralSettings _generalSettings;
+    private GameplayDebugManager _gameplayDebugManager;
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
     private LiesManager _liesManager;
-    private GameState _gameState;
-    private GeneralSettings _generalSettings;
     private EventBus _eventBus;
     private SoundEffectPlayer _soundEffectPlayer;
     private PlayCardsPanel _playCardsPanel;
+
     private Animator _moneyZoneAnimator;
     private Animator _votersZoneAnimator;
+
     private Dictionary<string, BoardCardSlot> _boardCardSlotsById;
     private Dictionary<string, PlayStageCard> _cardsById;
     private Dictionary<CardPlayType, List<PlayStageCard>> _cardsPlayedByPlayType = new Dictionary<CardPlayType, List<PlayStageCard>>();
@@ -66,11 +69,12 @@ public class PlayCardsStageGameplayManager :
     private void Start()
     {
         _gameplayManager = FindObjectOfType<GameplayManager>();
+        _gameState = FindObjectOfType<GameState>();
+        _generalSettings = FindObjectOfType<GeneralSettings>();
+        _gameplayDebugManager = FindObjectOfType<GameplayDebugManager>();
         _moneyCounter = FindObjectOfType<MoneyCounter>();
         _votersCounter = FindObjectOfType<VotersCounter>();
         _liesManager = FindObjectOfType<LiesManager>();
-        _gameState = FindObjectOfType<GameState>();
-        _generalSettings = FindObjectOfType<GeneralSettings>();
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
         _playCardsPanel = FindObjectOfType<PlayCardsPanel>();
 
@@ -94,9 +98,10 @@ public class PlayCardsStageGameplayManager :
         _votersZoneAnimator = GameObject.FindGameObjectWithTag(Tags.VotersCardDropZone).GetComponentInChildren<Animator>();
         _moneyZoneAnimator = GameObject.FindGameObjectWithTag(Tags.MoneyCardDropZone).GetComponentInChildren<Animator>();
 
-        _playCardsPanel.SetActive(false);
-
         InitializePlayedCardsLists();
+        SetUpLiesUI();
+
+        _playCardsPanel.SetActive(false);
     }
 
     private void RegisterToEvents()
@@ -122,6 +127,18 @@ public class PlayCardsStageGameplayManager :
         _eventBus.Unregister<CardDragFinishedEvent>(this);
     }
 
+    private void SetUpLiesUI()
+    {
+        _donateButton.gameObject.SetActive(_gameState.CurrentLevelIndex > 0 || _gameplayDebugManager.LiesEnabledInFirstLevel);
+        _liesZone.SetActive(_gameState.CurrentLevelIndex > 0 || _gameplayDebugManager.LiesEnabledInFirstLevel);
+
+        if (_liesZone.activeInHierarchy)
+        {
+            var liesSlot = _liesZone.GetComponentInChildren<BoardCardSlot>();
+            _boardCardSlotsById[liesSlot.Id] = liesSlot;
+        }
+    }
+
     private void InitializePlayedCardsLists()
     {
         foreach (var cardPlayType in (CardPlayType[])Enum.GetValues(typeof(CardPlayType)))
@@ -133,9 +150,6 @@ public class PlayCardsStageGameplayManager :
     public void EnterStage(List<CardData> _cardDatas)
     {
         _playCardsPanel.SetActive(true);
-
-        _donateButton.gameObject.SetActive(_gameState.CurrentLevelIndex > 0);
-        _liesZone.SetActive(_gameState.CurrentLevelIndex > 0);
 
         _selectedSlot = null;
 
