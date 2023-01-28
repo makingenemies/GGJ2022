@@ -75,7 +75,6 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
         _onPreview = true;
 
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.MouseHoverCard);
-        Debug.Log($"Mouse on card {Id}");
     }
 
     private void OnMouseExit()
@@ -93,8 +92,6 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     private void ExitPreview()
     {
         _onPreview = false;
-
-        Debug.Log($"Mouse out of card {Id}");
     }
 
     void OnMouseDown()
@@ -104,7 +101,6 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
             return;
         }
 
-        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _eventBus.PublishEvent(new SelectStageCardClickedEvent
         {
             CardId = Id,
