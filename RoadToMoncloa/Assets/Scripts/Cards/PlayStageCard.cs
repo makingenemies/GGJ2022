@@ -194,6 +194,11 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
 
     private void OnMouseUp()
     {
+        if (!_isDragging)
+        {
+            return;
+        }
+
         _isDragging = false;
         _boxCollider.enabled = true;
 
