@@ -1673,10 +1673,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5346737730693994570, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _selectCardsPanel
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5346737730693994570, guid: a25468952c551584f841d73e31c206ab, type: 3}
       propertyPath: _selectCardsMainPanel
       value: 
       objectReference: {fileID: 1893772990}
@@ -1693,53 +1689,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 593308584}
     - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _playedCardScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _areModifiersActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
       propertyPath: _cardsPlaceholderParent
       value: 
       objectReference: {fileID: 1417425505}
-    - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _zoneAnimationTriggerNames.Array.data[0]
-      value: asdasdf
-      objectReference: {fileID: 0}
-    - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _zoneAnimationTriggerNames.Array.data[1]
-      value: 32rdafsdga
-      objectReference: {fileID: 0}
-    - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _zoneAnimationTriggerNames.Array.data[2]
-      value: dafghaergtaew4t
-      objectReference: {fileID: 0}
-    - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _liesZone
-      value: 
-      objectReference: {fileID: 597839988}
     - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
       propertyPath: _defeatPanel
       value: 
       objectReference: {fileID: 8115723011807948695}
     - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _donateButton
-      value: 
-      objectReference: {fileID: 1600863385}
-    - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
       propertyPath: _restartButton
       value: 
       objectReference: {fileID: 977815056}
-    - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _wrongCardText
-      value: 
-      objectReference: {fileID: 593308584}
-    - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _areModifiersActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
       propertyPath: _successfulGameEndPanel
       value: 
@@ -1748,18 +1708,6 @@ PrefabInstance:
       propertyPath: _successfulLevelEndPanel
       value: 
       objectReference: {fileID: 6390657075563558439}
-    - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _zoneAnimationTriggerNames.Array.data[0]
-      value: asdfasdf
-      objectReference: {fileID: 0}
-    - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _zoneAnimationTriggerNames.Array.data[1]
-      value: gerye4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _zoneAnimationTriggerNames.Array.data[2]
-      value: 23234234
-      objectReference: {fileID: 0}
     - target: {fileID: 5346737731336387485, guid: a25468952c551584f841d73e31c206ab, type: 3}
       propertyPath: m_RootOrder
       value: 12

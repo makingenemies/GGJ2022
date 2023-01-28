@@ -108,8 +108,8 @@ MonoBehaviour:
   _wrongVotersCardMessage: "\xA1No puedes hacer eso sin dinero!"
   _wrongMoneyCardMessage: "Sin suficiente apoyo popular no les convencer\xE1s."
   _wrongCardText: {fileID: 0}
-  _playedCardScale: 0
-  _areModifiersActive: 0
+  _playedCardScale: 1
+  _areModifiersActive: 1
 --- !u!1 &5346737731096751064
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,7 +166,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5346737731336387487}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 571.48285, y: 391.21332, z: -33.53066}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
