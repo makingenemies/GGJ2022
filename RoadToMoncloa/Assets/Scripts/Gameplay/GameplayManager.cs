@@ -18,9 +18,7 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
     [SerializeField] Button _donateButton;
     [SerializeField] Card _cardPrefab;
     [SerializeField] GameObject _cardsPlaceholderParent;
-    [SerializeField] GameObject _cards4SpotsPrefab;
-    [SerializeField] GameObject _cards5SpotsPrefab;
-    [SerializeField] GameObject _cards6SpotsPrefab;
+    [SerializeField] GameObject _playCardsStageBoardPrefab;
     [SerializeField] string[] _zoneAnimationTriggerNames;
     [SerializeField] string _wrongVotersCardMessage;
     [SerializeField] string _wrongMoneyCardMessage;
@@ -97,21 +95,9 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
 
     private void SetUpCards()
     {
-        if (CurrentLevelData.Cards.Length < 4 || CurrentLevelData.Cards.Length > 6)
-        {
-            throw new System.Exception("Invalid amount of cards. A level needs to have 4 to 6 cards");
-        }
+        var cardsPlaceholder = Instantiate(_playCardsStageBoardPrefab, _cardsPlaceholderParent.transform);
 
-        var cardsPlaceholderPrefabByNumberOfCards = new Dictionary<int, GameObject>
-        {
-            [4] = _cards4SpotsPrefab,
-            [5] = _cards5SpotsPrefab,
-            [6] = _cards6SpotsPrefab,
-        };
-
-        var cardsPlaceholder = Instantiate(cardsPlaceholderPrefabByNumberOfCards[CurrentLevelData.Cards.Length], _cardsPlaceholderParent.transform);
-
-        for (var i = 0; i < CurrentLevelData.Cards.Length; i++)
+        for (var i = 0; i < 3; i++)
         {
             var card = Instantiate(_cardPrefab, cardsPlaceholder.transform.GetChild(i));
             card.SetCardData(CurrentLevelData.Cards[i]);

@@ -739,9 +739,7 @@ MonoBehaviour:
   _donateButton: {fileID: 1600863385}
   _cardPrefab: {fileID: 8806348977340509323, guid: b853236cf3120394cbc98457105b03b1, type: 3}
   _cardsPlaceholderParent: {fileID: 1417425505}
-  _cards4SpotsPrefab: {fileID: 5642138180221056665, guid: 6ba9307444ac22545abec755009dfee9, type: 3}
-  _cards5SpotsPrefab: {fileID: 3842414228185030258, guid: 8a11ccf2e4bc3934d867f426adeca904, type: 3}
-  _cards6SpotsPrefab: {fileID: 3010333269669986365, guid: 59d20f8981bd9cf41a5aafd7759e635a, type: 3}
+  _playCardsStageBoardPrefab: {fileID: 3842414228185030258, guid: 8a11ccf2e4bc3934d867f426adeca904, type: 3}
   _zoneAnimationTriggerNames:
   - Dialog1
   - Dialog2
@@ -750,6 +748,8 @@ MonoBehaviour:
   _wrongMoneyCardMessage: "Sin suficiente apoyo popular no les convencer\xE1s."
   _wrongCardText: {fileID: 593308584}
   _roundCounterText: {fileID: 976333305}
+  _playedCardScale: 0
+  _areModifiersActive: 0
 --- !u!4 &354494299
 Transform:
   m_ObjectHideFlags: 0
