@@ -44,7 +44,7 @@ public class GameplayManager : MonoBehaviour
     private Coroutine _wrongCardMessageCoroutine;
     private int _playedRoundsCounter;
 
-    private LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
+    public LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
 
     private void Awake()
     {
