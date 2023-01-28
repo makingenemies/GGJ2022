@@ -17,12 +17,12 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
     private EventBus _eventBus;
     private SoundEffectPlayer _soundEffectPlayer;
 
-    private int _usedCardsCounter = 0;
     private HashSet<string> _selectedCardsIds = new HashSet<string>();
     private Dictionary<string, SelectStageCard> _cardsById = new Dictionary<string, SelectStageCard>();
     private Dictionary<int, SelectCardsStageCardsPanel> _selectCardsPanelPrefabByNumberOfCards = new Dictionary<int, SelectCardsStageCardsPanel>();
     private SelectCardsStageCardsPanel _cardsPanelInstance;
     private CardsSelectionRoundConfig _cardSelectionConfig;
+    private List<CardData> _nonOfferedCards;
 
     private int SelectedCardsCount => _selectedCardsIds.Count;
 
@@ -78,6 +78,11 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         {
             _gameplayManager = FindObjectOfType<GameplayManager>();
         }
+        if (_nonOfferedCards is null)
+        {
+            _nonOfferedCards = _gameplayManager.CurrentLevelData.Cards.ToList();
+            _nonOfferedCards.Shuffle();
+        }
 
         _selectCardsMainPanel.SetActive(true);
         _selectCardsMainPanel.DisableConfirmSelectionButton();
@@ -85,7 +90,6 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         _cardSelectionConfig = _gameplayManager.GetCurrentRoundCardSelectionConfig();
         ValidateCardSelectionConfig();
 
-        _usedCardsCounter = 0;
         _selectedCardsIds.Clear();
         _cardsById.Clear();
 
@@ -94,12 +98,12 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
 
         for (var i = 0; i < _cardSelectionConfig.NumberOfOfferedCards; i++)
         {
-            var card = Instantiate(_cardPrefab, _cardsPanelInstance.CardPlaceHolders[i]);
-            card.SetCardData(_gameplayManager.CurrentLevelData.Cards[_usedCardsCounter]);
-            _cardsById[card.Id] = card;
+            var cardData = _nonOfferedCards.First();
+            _nonOfferedCards.RemoveAt(0);
 
-            _usedCardsCounter++;
-            _usedCardsCounter %= _gameplayManager.CurrentLevelData.Cards.Length;
+            var card = Instantiate(_cardPrefab, _cardsPanelInstance.CardPlaceHolders[i]);
+            card.SetCardData(cardData);
+            _cardsById[card.Id] = card;
         }
 
         _selectCardsMainPanel.UpdateTextOfNumberOfCardsToSelect(_cardSelectionConfig.NumberOfCardsToSelect);
