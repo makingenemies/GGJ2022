@@ -27,6 +27,7 @@ public class GameplayManager : MonoBehaviour
     private bool _liesDisabled;
     private int _playedRoundsCounter;
 
+    private int CurrentRoundIndex => _playedRoundsCounter;
     public LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
 
     private void Start()
@@ -152,5 +153,12 @@ public class GameplayManager : MonoBehaviour
     public void StartPlayCardsStage(List<CardData> _cardDatas)
     {
         _playCardsStage.EnterStage(_cardDatas);
+    }
+
+    public CardsSelectionRoundConfig GetCurrentRoundCardSelectionConfig()
+    {
+        return CurrentRoundIndex < CurrentLevelData.CardSelectionRoundConfigs.Length
+            ? CurrentLevelData.CardSelectionRoundConfigs[CurrentRoundIndex]
+            : CardsSelectionRoundConfig.GetDefaultConfig();
     }
 }

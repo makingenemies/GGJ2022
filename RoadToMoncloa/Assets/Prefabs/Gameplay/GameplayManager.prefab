@@ -43,7 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2860d462f7d9a645a86bf67a63eb6c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _selectCardsPanel: {fileID: 0}
+  _selectCardsMainPanel: {fileID: 0}
+  _cardsPanel3CardsPrefab: {fileID: 2120495698100275151, guid: 2b51c36de6a2c834d867f3b8de2d0b92, type: 3}
+  _cardsPanel4CardsPrefab: {fileID: -7579739602878751642, guid: 3f8ab63cae36ce24e8d5c4ad5ef9d32d, type: 3}
+  _cardsPanel5CardsPrefab: {fileID: 8137832502137245678, guid: a348e07c2d001434495771bf86b926ac, type: 3}
+  _cardsPanel6CardsPrefab: {fileID: 459224872566966720, guid: 5c7d102ac33205d44a640d45b4819e9d, type: 3}
+  _cardsPanel7CardsPrefab: {fileID: 6185446348000577336, guid: 7725630d7407ac942a9e44625a1ac3d5, type: 3}
   _cardPrefab: {fileID: 8202027566859505698, guid: d68a2ee4feab831428f8e341dbfda60e, type: 3}
 --- !u!1 &5346737730957765952
 GameObject:
@@ -92,7 +97,10 @@ MonoBehaviour:
   _donateButton: {fileID: 0}
   _cardPrefab: {fileID: 8806348977340509323, guid: b853236cf3120394cbc98457105b03b1, type: 3}
   _cardsPlaceholderParent: {fileID: 0}
-  _playCardsStageBoardPrefab: {fileID: 3842414228185030258, guid: 8a11ccf2e4bc3934d867f426adeca904, type: 3}
+  _cards3SpotsPrefab: {fileID: 3842414228185030258, guid: 8a11ccf2e4bc3934d867f426adeca904, type: 3}
+  _cards4SpotsPrefab: {fileID: 5642138180221056665, guid: 6ba9307444ac22545abec755009dfee9, type: 3}
+  _cards5SpotsPrefab: {fileID: 3842414228185030258, guid: 778a74201626aa249a126623752e4c14, type: 3}
+  _cards6SpotsPrefab: {fileID: 3010333269669986365, guid: 59d20f8981bd9cf41a5aafd7759e635a, type: 3}
   _zoneAnimationTriggerNames:
   - Dialog1
   - Dialog2
@@ -182,15 +190,4 @@ MonoBehaviour:
   _successfulLevelEndPanel: {fileID: 0}
   _successfulGameEndPanel: {fileID: 0}
   _defeatPanel: {fileID: 0}
-  _liesZone: {fileID: 0}
-  _donateButton: {fileID: 0}
-  _zoneAnimationTriggerNames:
-  - Dialog1
-  - Dialog2
-  - Dialog3
-  _wrongVotersCardMessage: "\xA1No puedes hacer eso sin dinero!"
-  _wrongMoneyCardMessage: "Sin suficiente apoyo popular no les convencer\xE1s."
-  _wrongCardText: {fileID: 0}
   _roundCounterText: {fileID: 0}
-  _playedCardScale: 0
-  _areModifiersActive: 0

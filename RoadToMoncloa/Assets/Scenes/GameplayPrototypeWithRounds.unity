@@ -1587,6 +1587,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1514675674725947744, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514675674725947744, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -170
+      objectReference: {fileID: 0}
+    - target: {fileID: 2149718950190333547, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2676802060130200538, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -212.2
+      objectReference: {fileID: 0}
     - target: {fileID: 2676802060544254768, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -1635,19 +1651,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: SelectCardsStagePanel
       objectReference: {fileID: 0}
+    - target: {fileID: 7282525100594794533, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282525100594794533, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282525100594794533, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
---- !u!114 &1469697376 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2676802060544254775, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
-  m_PrefabInstance: {fileID: 1469697375}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1585d4a9e186364085137f3d9cc4348, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1492404758
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1658,7 +1675,11 @@ PrefabInstance:
     - target: {fileID: 5346737730693994570, guid: a25468952c551584f841d73e31c206ab, type: 3}
       propertyPath: _selectCardsPanel
       value: 
-      objectReference: {fileID: 1469697376}
+      objectReference: {fileID: 0}
+    - target: {fileID: 5346737730693994570, guid: a25468952c551584f841d73e31c206ab, type: 3}
+      propertyPath: _selectCardsMainPanel
+      value: 
+      objectReference: {fileID: 1893772990}
     - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
       propertyPath: _liesZone
       value: 
@@ -1956,6 +1977,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1893772990 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -1565453810024585959, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
+  m_PrefabInstance: {fileID: 1469697375}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc84f45043241a4db5f3db5a8520252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1970447006 stripped

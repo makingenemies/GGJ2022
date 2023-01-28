@@ -1,25 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectCardsPanel : MonoBehaviour
+public class SelectCardsStageMainPanel : MonoBehaviour
 {
-    [SerializeField] private List<Transform> _cardPlaceHolders;
     [SerializeField] private Button _confirmSelectionButton;
+    [SerializeField] private TextMeshProUGUI _selectNCardsText;
 
     private EventBus _eventBus;
-
-    public List<Transform> CardPlaceHolders => _cardPlaceHolders;
 
     private void Start()
     {
         _eventBus = FindObjectOfType<EventBus>();
+        DisableConfirmSelectionButton();
     }
 
     public void SetActive(bool active)
     {
         gameObject.SetActive(active);
-        DisableConfirmSelectionButton();
     }
 
     public void EnableConfirmSelectionButton()
@@ -35,5 +33,10 @@ public class SelectCardsPanel : MonoBehaviour
     public void ConfirmSelection()
     {
         _eventBus.PublishEvent(new CardsSelectionConfirmEvent());
+    }
+
+    public void UpdateTextOfNumberOfCardsToSelect(int numberOfCardsToSelect)
+    {
+        _selectNCardsText.text = $"Pick {numberOfCardsToSelect} cards";
     }
 }

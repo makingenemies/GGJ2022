@@ -16,7 +16,10 @@ public class PlayCardsStageGameplayManager :
     [SerializeField] Button _donateButton;
     [SerializeField] PlayStageCard _cardPrefab;
     [SerializeField] GameObject _cardsPlaceholderParent;
-    [SerializeField] GameObject _playCardsStageBoardPrefab;
+    [SerializeField] GameObject _cards3SpotsPrefab;
+    [SerializeField] GameObject _cards4SpotsPrefab;
+    [SerializeField] GameObject _cards5SpotsPrefab;
+    [SerializeField] GameObject _cards6SpotsPrefab;
     [SerializeField] string[] _zoneAnimationTriggerNames;
     [SerializeField] string _wrongVotersCardMessage;
     [SerializeField] string _wrongMoneyCardMessage;
@@ -41,13 +44,12 @@ public class PlayCardsStageGameplayManager :
 
     private int _cardsCount;
     private BoardCardSlot _selectedSlot;
+    private GameObject _cardsPlaceholder;
     private Coroutine _wrongCardMessageCoroutine;
 
     public LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
 
     public bool AreModifiersActive => _areModifiersActive;
-
-    private int CardPlaceHoldersCount => _playCardsStageBoardPrefab.transform.childCount;
 
     public bool IsAnyCardSelected { get; private set; }
 
@@ -120,37 +122,50 @@ public class PlayCardsStageGameplayManager :
         _donateButton.gameObject.SetActive(_gameState.CurrentLevelIndex > 0);
         _liesZone.SetActive(_gameState.CurrentLevelIndex > 0);
 
-        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
-
         SetUpCards(_cardDatas);
+
+        ResetSlots();
     }
 
     private void SetUpCards(List<CardData> _cardDatas)
     {
-        if (_cardDatas.Count != CardPlaceHoldersCount)
+        var cardsPlaceholderPrefabByNumberOfCards = new Dictionary<int, GameObject>
         {
-            throw new Exception($"Invalid amount of cards. We should have {CardPlaceHoldersCount} cards");
-        }
+            [3] = _cards3SpotsPrefab,
+            [4] = _cards4SpotsPrefab,
+            [5] = _cards5SpotsPrefab,
+            [6] = _cards6SpotsPrefab,
+        };
 
-        var cardsPlaceholder = Instantiate(_playCardsStageBoardPrefab, _cardsPlaceholderParent.transform);
+        _cardsPlaceholder = Instantiate(cardsPlaceholderPrefabByNumberOfCards[_cardDatas.Count], _cardsPlaceholderParent.transform);
 
         for (var i = 0; i < _cardDatas.Count; i++)
         {
-            var card = Instantiate(_cardPrefab, cardsPlaceholder.transform.GetChild(i));
+            var card = Instantiate(_cardPrefab, _cardsPlaceholder.transform.GetChild(i));
             card.SetCardData(_cardDatas[i]);
         }
+
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
 
         _cardsCount = _cardDatas.Count;
     }
 
+    private void ResetSlots()
+    {
+        foreach(var slot in _boardCardSlotsById.Values)
+        {
+            slot.IsUsed = false;
+        }
+    }
+
     public bool PlayCard(PlayStageCard card)
     {
-        bool cardPlayed = false;
-
         if (_selectedSlot == null || _selectedSlot.IsUsed)
         {
             return false;
         }
+
+        bool cardPlayed;
 
         switch (_selectedSlot.PlayType)
         {
@@ -270,6 +285,7 @@ public class PlayCardsStageGameplayManager :
 
     public void ExitStage()
     {
+        Destroy(_cardsPlaceholder);
         _playCardsPanel.SetActive(false);
     }
 

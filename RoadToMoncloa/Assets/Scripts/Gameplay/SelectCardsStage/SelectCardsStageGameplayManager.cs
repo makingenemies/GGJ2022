@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<SelectStageCardClickedEvent>, IEventHandler<CardsSelectionConfirmEvent>
 {
-    private const int NumberOfRequiredCards = 3;
-
-    [SerializeField] private SelectCardsPanel _selectCardsPanel;
+    [SerializeField] private SelectCardsStageMainPanel _selectCardsMainPanel;
+    [SerializeField] private SelectCardsStageCardsPanel _cardsPanel3CardsPrefab;
+    [SerializeField] private SelectCardsStageCardsPanel _cardsPanel4CardsPrefab;
+    [SerializeField] private SelectCardsStageCardsPanel _cardsPanel5CardsPrefab;
+    [SerializeField] private SelectCardsStageCardsPanel _cardsPanel6CardsPrefab;
+    [SerializeField] private SelectCardsStageCardsPanel _cardsPanel7CardsPrefab;
     [SerializeField] private SelectStageCard _cardPrefab;
 
     private GameplayManager _gameplayManager;
@@ -16,8 +20,20 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
     private int _usedCardsCounter = 0;
     private HashSet<string> _selectedCardsIds = new HashSet<string>();
     private Dictionary<string, SelectStageCard> _cardsById = new Dictionary<string, SelectStageCard>();
+    private Dictionary<int, SelectCardsStageCardsPanel> _selectCardsPanelPrefabByNumberOfCards = new Dictionary<int, SelectCardsStageCardsPanel>();
+    private SelectCardsStageCardsPanel _cardsPanelInstance;
+    private CardsSelectionRoundConfig _cardSelectionConfig;
 
     private int SelectedCardsCount => _selectedCardsIds.Count;
+
+    private void Awake()
+    {
+        _selectCardsPanelPrefabByNumberOfCards[3] = _cardsPanel3CardsPrefab;
+        _selectCardsPanelPrefabByNumberOfCards[4] = _cardsPanel4CardsPrefab;
+        _selectCardsPanelPrefabByNumberOfCards[5] = _cardsPanel5CardsPrefab;
+        _selectCardsPanelPrefabByNumberOfCards[6] = _cardsPanel6CardsPrefab;
+        _selectCardsPanelPrefabByNumberOfCards[7] = _cardsPanel7CardsPrefab;
+    }
 
     private void Start()
     {
@@ -63,20 +79,51 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
             _gameplayManager = FindObjectOfType<GameplayManager>();
         }
 
+        _selectCardsMainPanel.SetActive(true);
+
+        _cardSelectionConfig = _gameplayManager.GetCurrentRoundCardSelectionConfig();
+        ValidateCardSelectionConfig();
+
         _usedCardsCounter = 0;
         _selectedCardsIds.Clear();
         _cardsById.Clear();
 
-        _selectCardsPanel.SetActive(true);
+        var selectCardsPanelPrefab = _selectCardsPanelPrefabByNumberOfCards[_cardSelectionConfig.NumberOfOfferedCards];
+        _cardsPanelInstance = Instantiate(selectCardsPanelPrefab, _selectCardsMainPanel.transform).GetComponent<SelectCardsStageCardsPanel>();
 
-        foreach (var cardPlaceHolder in _selectCardsPanel.CardPlaceHolders)
+        for (var i = 0; i < _cardSelectionConfig.NumberOfOfferedCards; i++)
         {
-            var card = Instantiate(_cardPrefab, cardPlaceHolder);
+            var card = Instantiate(_cardPrefab, _cardsPanelInstance.CardPlaceHolders[i]);
             card.SetCardData(_gameplayManager.CurrentLevelData.Cards[_usedCardsCounter]);
             _cardsById[card.Id] = card;
 
             _usedCardsCounter++;
             _usedCardsCounter %= _gameplayManager.CurrentLevelData.Cards.Length;
+        }
+
+        _selectCardsMainPanel.UpdateTextOfNumberOfCardsToSelect(_cardSelectionConfig.NumberOfCardsToSelect);
+    }
+
+    private void ValidateCardSelectionConfig()
+    {
+        const int minCardsToOffer = 3;
+        const int maxCardsToOffer = 7;
+        const int minCardsToSelect = 3;
+        const int maxCardsToSelect = 6;
+
+        if (_cardSelectionConfig.NumberOfOfferedCards < minCardsToOffer || _cardSelectionConfig.NumberOfOfferedCards > maxCardsToOffer)
+        {
+            throw new Exception($"Invalid number of offered cards. It should be between {minCardsToOffer} and {maxCardsToOffer} but it was {_cardSelectionConfig.NumberOfOfferedCards}");
+        }
+
+        if (_cardSelectionConfig.NumberOfCardsToSelect < minCardsToSelect || _cardSelectionConfig.NumberOfCardsToSelect > maxCardsToSelect)
+        {
+            throw new Exception($"Invalid number of cards to select. It should be between {minCardsToSelect} and {maxCardsToSelect} but it was {_cardSelectionConfig.NumberOfCardsToSelect}");
+        }
+
+        if (_cardSelectionConfig.NumberOfCardsToSelect > _cardSelectionConfig.NumberOfOfferedCards)
+        {
+            throw new Exception($"There are not enough cards to select. We need to select {_cardSelectionConfig.NumberOfCardsToSelect} but only {_cardSelectionConfig.NumberOfOfferedCards} were offered");
         }
     }
 
@@ -96,7 +143,7 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
 
     private void TrySelectCard(string cardId)
     {
-        if (SelectedCardsCount >= NumberOfRequiredCards)
+        if (SelectedCardsCount >= _cardSelectionConfig.NumberOfCardsToSelect)
         {
             return;
         }
@@ -105,9 +152,9 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardDown();
 
-        if (SelectedCardsCount >= NumberOfRequiredCards)
+        if (SelectedCardsCount >= _cardSelectionConfig.NumberOfCardsToSelect)
         {
-            _selectCardsPanel.EnableConfirmSelectionButton();
+            _selectCardsMainPanel.EnableConfirmSelectionButton();
         }
     }
 
@@ -117,7 +164,7 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardUp();
 
-        _selectCardsPanel.DisableConfirmSelectionButton();
+        _selectCardsMainPanel.DisableConfirmSelectionButton();
     }
 
     public void HandleEvent(CardsSelectionConfirmEvent @event)
@@ -126,7 +173,10 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         {
             Destroy(card.gameObject);
         }
-        _selectCardsPanel.gameObject.SetActive(false);
+
+        Destroy(_cardsPanelInstance.gameObject);
+
+        _selectCardsMainPanel.SetActive(false);
 
         _gameplayManager.StartPlayCardsStage(_selectedCardsIds.Select(cardId => _cardsById[cardId].CardData).ToList());
     }
