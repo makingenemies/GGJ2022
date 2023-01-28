@@ -80,6 +80,7 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         }
 
         _selectCardsMainPanel.SetActive(true);
+        _selectCardsMainPanel.DisableConfirmSelectionButton();
 
         _cardSelectionConfig = _gameplayManager.GetCurrentRoundCardSelectionConfig();
         ValidateCardSelectionConfig();
