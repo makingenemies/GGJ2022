@@ -122,9 +122,9 @@ public class PlayCardsStageGameplayManager :
         _donateButton.gameObject.SetActive(_gameState.CurrentLevelIndex > 0);
         _liesZone.SetActive(_gameState.CurrentLevelIndex > 0);
 
-        SetUpCards(_cardDatas);
+        _selectedSlot = null;
 
-        ResetSlots();
+        SetUpCards(_cardDatas);
     }
 
     private void SetUpCards(List<CardData> _cardDatas)
@@ -148,16 +148,6 @@ public class PlayCardsStageGameplayManager :
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
 
         _cardsCount = _cardDatas.Count;
-    }
-
-    private void ResetSlots()
-    {
-        foreach(var slot in _boardCardSlotsById.Values)
-        {
-            slot.IsUsed = false;
-        }
-
-        _selectedSlot = null;
     }
 
     public bool PlayCard(PlayStageCard card)
@@ -295,6 +285,7 @@ public class PlayCardsStageGameplayManager :
     {
         card.SetCardPosition(_selectedSlot.transform.position);
         card.SetCardScale(_playedCardScale);
+        card.SetParent(_playCardsPanel.transform);
         _selectedSlot.IsUsed = true;
     }
 

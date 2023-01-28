@@ -248,6 +248,11 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         transform.localScale = new Vector3(scale, scale, 0f);
     }
 
+    public void SetParent(Transform parentTransform)
+    {
+        gameObject.transform.parent = parentTransform;
+    }
+
     public void HandleEvent(LiePlayedEvent @event)
     {
         if (!@event.IsLiesCounterFull)
