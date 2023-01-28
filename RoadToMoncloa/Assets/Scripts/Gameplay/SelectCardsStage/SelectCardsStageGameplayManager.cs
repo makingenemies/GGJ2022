@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<SelectStageCardClickedEvent>
 {
-    private const int MaxNumberOfCardsToSelect = 3;
+    private const int NumberOfRequiredCards = 3;
 
     [SerializeField] private SelectCardsPanel _selectCardsPanel;
-    [SerializeField] SelectStageCard _cardPrefab;
+    [SerializeField] private SelectStageCard _cardPrefab;
 
     private GameplayManager _gameplayManager;
     private EventBus _eventBus;
@@ -84,7 +84,7 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
 
     private void TrySelectCard(string cardId)
     {
-        if (SelectedCardsCount >= MaxNumberOfCardsToSelect)
+        if (SelectedCardsCount >= NumberOfRequiredCards)
         {
             return;
         }
@@ -92,6 +92,11 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         _selectedCardsIds.Add(cardId);
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardDown();
+
+        if (SelectedCardsCount >= NumberOfRequiredCards)
+        {
+            _selectCardsPanel.EnableConfirmSelectionButton();
+        }
     }
 
     private void UnselectCard(string cardId)
@@ -99,5 +104,7 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         _selectedCardsIds.Remove(cardId);
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardUp();
+
+        _selectCardsPanel.DisableConfirmSelectionButton();
     }
 }
