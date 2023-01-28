@@ -29,9 +29,10 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     private bool _mouseOver;
     private bool _onPreview;
     private string _id;
+    private bool _isUIOnTopOfOtherCards;
+
     public string Id => _id;
     public CardData CardData => _cardData;
-
     public int MoneyWonModifier { get; set;}
     public int VotersWonModifier { get; set;}
     public int MoneyWon => CardData.MoneyWon + MoneyWonModifier + (_liesManager.IsLiesCountersFull ? -1 : 0);
@@ -104,9 +105,21 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
 
         gameObject.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
         MoveCardUp();
+        PutUIOnTopOfOtherCards();
+    }
 
+    private void PutUIOnTopOfOtherCards()
+    {
         _cardUI.SetSpriteSortingOrder(_selectedCardSpriteSortingOrder);
         _cardUI.SetTextsSortingOrder(_selectedCardTextSortingOrder);
+        _isUIOnTopOfOtherCards = true;
+    }
+
+    private void RestoreUISortingLayer()
+    {
+        _cardUI.ResetSpriteSortingOrder();
+        _cardUI.ResetTextsSortingOrder();
+        _isUIOnTopOfOtherCards = false;
     }
 
     private void MoveCardUp()
@@ -135,8 +148,7 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         gameObject.transform.position = _originalPosition;
 
-        _cardUI.ResetSpriteSortingOrder();
-        _cardUI.ResetTextsSortingOrder();
+        RestoreUISortingLayer();
     }
 
     void OnMouseDown()
@@ -151,6 +163,8 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         _isDragging = true;
         _offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPoint.z));
         _boxCollider.enabled = false;
+
+        PutUIOnTopOfOtherCards();
     }
 
     void OnMouseDrag()
@@ -171,7 +185,11 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPoint.z);
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + _offset;
         transform.position = curPosition;
-        
+
+        if (!_isUIOnTopOfOtherCards)
+        {
+            PutUIOnTopOfOtherCards();
+        }
     }
 
     private void OnMouseUp()
@@ -192,6 +210,8 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         { 
             RestoreCardPosition();
         }
+
+        RestoreUISortingLayer();
     }
 
     public void SetCardPosition(Vector3 position)

@@ -101,6 +101,7 @@ public class CardUI : MonoBehaviour
 
     public void SetSpriteSortingOrder(int sortingOrder)
     {
+        Debug.Log($"Sprite sorting order: {sortingOrder}");
         _spriteRenderer.sortingOrder = sortingOrder;
     }
 
@@ -111,6 +112,7 @@ public class CardUI : MonoBehaviour
 
     public void SetTextsSortingOrder(int sortingOrder)
     {
+        Debug.Log($"Text sorting order: {sortingOrder}");
         _titleText.sortingOrder = sortingOrder;
         _leftAttributeText.sortingOrder = sortingOrder;
         _rightAttributeText.sortingOrder = sortingOrder;
@@ -122,6 +124,6 @@ public class CardUI : MonoBehaviour
 
     public void ResetTextsSortingOrder()
     {
-        SetSpriteSortingOrder(_textSortingOrder);
+        SetTextsSortingOrder(_textSortingOrder);
     }
 }
