@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<SelectStageCardClickedEvent>
+public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<SelectStageCardClickedEvent>, IEventHandler<CardsSelectionConfirmEvent>
 {
     private const int NumberOfRequiredCards = 3;
 
@@ -24,8 +25,6 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
 
         RegisterToEvents();
-
-        EnterStage();
     }
 
     private void RegisterToEvents()
@@ -35,12 +34,14 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
             _eventBus = FindObjectOfType<EventBus>();
 
             _eventBus.Register<SelectStageCardClickedEvent>(this);
+            _eventBus.Register<CardsSelectionConfirmEvent>(this);
         }
     }
 
     private void UnregisterFromEvents()
     {
         _eventBus.Unregister<SelectStageCardClickedEvent>(this);
+        _eventBus.Unregister<CardsSelectionConfirmEvent>(this);
     }
 
     private void OnEnable()
@@ -55,6 +56,17 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
 
     public void EnterStage()
     {
+        // As EnterStage is invoked by GameplayManager on Start the first time,
+        // _gameplayManager might not have been assigned yet.
+        if (_gameplayManager is null)
+        {
+            _gameplayManager = FindObjectOfType<GameplayManager>();
+        }
+
+        _usedCardsCounter = 0;
+        _selectedCardsIds.Clear();
+        _cardsById.Clear();
+
         _selectCardsPanel.SetActive(true);
 
         foreach (var cardPlaceHolder in _selectCardsPanel.CardPlaceHolders)
@@ -106,5 +118,16 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         _cardsById[cardId].MoveCardUp();
 
         _selectCardsPanel.DisableConfirmSelectionButton();
+    }
+
+    public void HandleEvent(CardsSelectionConfirmEvent @event)
+    {
+        foreach (var card in _cardsById.Values)
+        {
+            Destroy(card.gameObject);
+        }
+        _selectCardsPanel.gameObject.SetActive(false);
+
+        _gameplayManager.StartPlayCardsStage(_selectedCardsIds.Select(cardId => _cardsById[cardId].CardData).ToList());
     }
 }

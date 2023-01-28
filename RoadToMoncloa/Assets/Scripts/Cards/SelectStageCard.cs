@@ -17,6 +17,7 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     private bool _onPreview;
 
     public string Id { get; private set; }
+    public CardData CardData => _cardData;
 
     private void Awake()
     {

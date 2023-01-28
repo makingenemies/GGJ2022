@@ -16,7 +16,7 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
     [SerializeField] GameObject _defeatPanel;
     [SerializeField] GameObject _liesZone;
     [SerializeField] Button _donateButton;
-    [SerializeField] Card _cardPrefab;
+    [SerializeField] PlayStageCard _cardPrefab;
     [SerializeField] GameObject _cardsPlaceholderParent;
     [SerializeField] GameObject _playCardsStageBoardPrefab;
     [SerializeField] string[] _zoneAnimationTriggerNames;
@@ -34,12 +34,13 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
     private GameState _gameState;
     private GeneralSettings _generalSettings;
     private DonationManager _donationManager;
+    private SelectCardsStageGameplayManager _selectCardsStage;
     private EventBus _eventBus;
     private SoundEffectPlayer _soundEffectPlayer;
     private Animator _moneyZoneAnimator;
     private Animator _votersZoneAnimator;
     private Dictionary<string, BoardCardSlot> _boardCardSlotsById;
-    private Dictionary<string, Card> _cardsById;
+    private Dictionary<string, PlayStageCard> _cardsById;
     private System.Random _random;
 
     private int _cardsCount;
@@ -51,6 +52,8 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
     public LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
 
     public bool AreModifiersActive => _areModifiersActive;
+
+    private int CardPlaceHoldersCount => _playCardsStageBoardPrefab.transform.childCount;
 
     private void Awake()
     {
@@ -64,15 +67,16 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
         _liesManager = FindObjectOfType<LiesManager>();
         _boardCardSlot = FindObjectOfType<BoardCardSlot>();
         _gameState = FindObjectOfType<GameState>();
+        _selectCardsStage = FindObjectOfType<SelectCardsStageGameplayManager>();
         _eventBus = FindObjectOfType<EventBus>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
         _donationManager = FindObjectOfType<DonationManager>();
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
         
         var boardCardSlots = FindObjectsOfType<BoardCardSlot>();
-        var cards = FindObjectsOfType<Card>(); 
+        var cards = FindObjectsOfType<PlayStageCard>(); 
         _boardCardSlotsById = new Dictionary<string, BoardCardSlot>();
-        _cardsById= new Dictionary<string, Card>();
+        _cardsById= new Dictionary<string, PlayStageCard>();
 
         foreach (var slot in boardCardSlots)
         {
@@ -90,21 +94,27 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
         _votersZoneAnimator = GameObject.FindGameObjectWithTag(Tags.VotersCardDropZone).GetComponentInChildren<Animator>();
         _moneyZoneAnimator = GameObject.FindGameObjectWithTag(Tags.MoneyCardDropZone).GetComponentInChildren<Animator>();
 
+        _votersCounter.SetMaxAmount(CurrentLevelData.VotersGoal);
+
         StartNextRound();
     }
 
-    private void SetUpCards()
+    private void SetUpCards(List<CardData> _cardDatas)
     {
+        if (_cardDatas.Count != CardPlaceHoldersCount)
+        {
+            throw new Exception($"Invalid amount of cards. We should have {CardPlaceHoldersCount} cards");
+        }
+        
         var cardsPlaceholder = Instantiate(_playCardsStageBoardPrefab, _cardsPlaceholderParent.transform);
 
-        for (var i = 0; i < 3; i++)
+        for (var i = 0; i < _cardDatas.Count; i++)
         {
             var card = Instantiate(_cardPrefab, cardsPlaceholder.transform.GetChild(i));
-            card.SetCardData(CurrentLevelData.Cards[i]);
+            card.SetCardData(_cardDatas[i]);
         }
 
-        _votersCounter.SetMaxAmount(CurrentLevelData.VotersGoal);
-        _cardsCount = FindObjectsOfType<Card>().Length;
+        _cardsCount = _cardDatas.Count;
     }
 
     /// <summary>
@@ -125,8 +135,6 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
             ? _generalSettings.InitialVoterCount
             : _gameState.VotersCount);
 
-        SetUpCards();
-
         _donationManager.SetDonationAmount(CurrentLevelData.DonationCost);
 
         if (_gameState.LiesDisabled)
@@ -142,9 +150,16 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
         _liesZone.SetActive(_gameState.CurrentLevelIndex > 0);
 
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
+
+        StartSelectCardsStage();
     }
 
-    public bool PlayCard(Card card)
+    private void StartSelectCardsStage()
+    {
+        _selectCardsStage.EnterStage();
+    }
+
+    public bool PlayCard(PlayStageCard card)
     {
         bool cardPlayed = false;
 
@@ -187,7 +202,7 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
         return cardPlayed;
     }
 
-    private bool TryPlayVotersCard(Card card)
+    private bool TryPlayVotersCard(PlayStageCard card)
     {
         if (card.MoneyLost > _moneyCounter.CurrentAmount)
         {
@@ -212,7 +227,7 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
         return true;
     }
 
-    private bool TryPlayMoneyCard(Card card)
+    private bool TryPlayMoneyCard(PlayStageCard card)
     {
         if (card.VotersLost > _votersCounter.CurrentAmount)
         {
@@ -255,12 +270,12 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
         return _zoneAnimationTriggerNames[_random.Next(0, _zoneAnimationTriggerNames.Length)];
     }
 
-    private void DestroyCard(Card card)
+    private void DestroyCard(PlayStageCard card)
     {
         Destroy(card.gameObject);
     }
 
-    private void TrackPlayedCard(Card card)
+    private void TrackPlayedCard(PlayStageCard card)
     {
         _cardsCount--;
         if (_cardsCount <= 0)
@@ -282,7 +297,7 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
         }
     }
 
-    private void PlayedCard(Card card)
+    private void PlayedCard(PlayStageCard card)
     {
         card.SetCardPosition(_selectedSlot.transform.position);
         card.SetCardScale(_playedCardScale);
@@ -290,7 +305,7 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
 
     }
 
-    private void ApplyModifiers(Card card)
+    private void ApplyModifiers(PlayStageCard card)
     {
         if (!_areModifiersActive)
         {
@@ -301,27 +316,11 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
         {
             case CardPlayType.Voters: 
                 card.VotersWonModifier = _selectedSlot.Modifier;
-
-                if (card.VotersWon > 0)
-                {
-                    card._votersText.text = $"+{card.VotersWon}";
-                }
-                else
-                {
-                    card._votersText.text = $"{card.VotersWon}";
-                }
+                card.UpdateVotersWonText();
                 break;
             case CardPlayType.Money:
                 card.MoneyWonModifier = _selectedSlot.Modifier;
-
-                if (card.MoneyWon > 0)
-                {
-                    card._moneyText.text = $"+{card.MoneyWon}";
-                }
-                else
-                {
-                    card._moneyText.text = $"{card.MoneyWon}";
-                }
+                card.UpdateMoneyWonText();
                 break;
             default: 
                 break;
@@ -403,5 +402,10 @@ public class GameplayManager : MonoBehaviour, IEventHandler<BoardCardSlotEntered
     {
         _selectedSlot = null;
         Debug.Log($"Slot exit");
+    }
+
+    public void StartPlayCardsStage(List<CardData> _cardDatas)
+    {
+        SetUpCards(_cardDatas);
     }
 }

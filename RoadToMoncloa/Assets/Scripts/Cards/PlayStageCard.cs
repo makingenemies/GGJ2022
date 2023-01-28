@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using TMPro;
 using UnityEngine;
 
 
@@ -10,41 +7,19 @@ using UnityEngine;
 /// Drag and drop from https://answers.unity.com/questions/1138645/how-do-i-drag-a-sprite-around.html
 /// </summary>
 [RequireComponent(typeof(BoxCollider2D))]
-public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<LiesResetEvent>, IEventHandler<PausedEvent>, IEventHandler<UnpausedEvent>
+public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<LiesResetEvent>, IEventHandler<PausedEvent>, IEventHandler<UnpausedEvent>
 {
-    private static readonly Dictionary<string, CardPlayType> PlayTypeByTag = new Dictionary<string, CardPlayType>()
-    {
-        [Tags.VotersCardDropZone] = CardPlayType.Voters,
-        [Tags.MoneyCardDropZone] = CardPlayType.Money,
-        [Tags.LiesBox] = CardPlayType.Lies,
-    };
-
-    [SerializeField] TextMeshPro _titleText;
-    [SerializeField] TextMeshPro _leftAttributeText;
-    [SerializeField] TextMeshPro _rightAttributeText;
-    [SerializeField] SpriteRenderer _spriteRenderer;
-    [SerializeField] string[] _highlightableZonesTags;
-
     [Header("Selected card")]
     [SerializeField] int _selectedCardSpriteSortingOrder;
     [SerializeField] int _selectedCardTextSortingOrder;
 
-    [Header("Sprites")]
-    [SerializeField] Sprite _educationSprite;
-    [SerializeField] Sprite _developmentSprite;
-    [SerializeField] Sprite _economySprite;
-    [SerializeField] Sprite _foreingPolicySprite;
-    [SerializeField] Sprite _healthSprite;
-    [SerializeField] Sprite _technologySprite;
-    [SerializeField] Sprite _transportSprite;
-
     private GameplayManager _game;
-    private Strings _strings;
     private EventBus _eventBus;
     private PauseManager _pauseManager;
     private LiesManager _liesManager;
-    private BoardCardSlot _boardCardSlot;
     private SoundEffectPlayer _soundEffectPlayer;
+
+    private CardUI _cardUI;
 
     private Vector3 _screenPoint;
     private Vector3 _offset;
@@ -54,21 +29,15 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     CardData _cardData;
     BoxCollider2D _boxCollider;
     private Dictionary<CardCategory, Sprite> _spriteByCardCategory;
-    private int _spriteSortingOrder;
-    private int _textSortingOrder;
     private bool _mouseOver;
     private bool _onPreview;
     private string _id;
     public string Id => _id;
     public CardData CardData => _cardData;
-    public TextMeshPro _votersText;
-    public TextMeshPro _negativeVotersText;
-    public TextMeshPro _moneyText;
-    public TextMeshPro _negativeMoneyText;
 
     public int MoneyWonModifier { get; set;}
     public int VotersWonModifier { get; set;}
-    public int MoneyWon => CardData.MoneyWon + MoneyWonModifier;
+    public int MoneyWon => CardData.MoneyWon + MoneyWonModifier + (_liesManager.IsLiesCountersFull ? -1 : 0);
     public int VotersWon => CardData.VotersWon + VotersWonModifier;
     public int MoneyLost => CardData.MoneyLost;
     public int VotersLost => CardData.VotersLost;
@@ -76,27 +45,15 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
     private void Awake()
     {
         _id = Guid.NewGuid().ToString();
-        _spriteByCardCategory = new Dictionary<CardCategory, Sprite>
-        {
-            [CardCategory.Education] = _educationSprite,
-            [CardCategory.Development] = _developmentSprite,
-            [CardCategory.Economy] = _economySprite,
-            [CardCategory.ForeignPolicy] = _foreingPolicySprite,
-            [CardCategory.Health] = _healthSprite,
-            [CardCategory.Technology] = _technologySprite,
-            [CardCategory.Transport] = _transportSprite,
-        };
-
         _selectedPlayTypes = new HashSet<CardPlayType>();
+        _cardUI = GetComponent<CardUI>();
     }
 
     private void Start()
     {
         _game = FindObjectOfType<GameplayManager>();
-        _strings = FindObjectOfType<Strings>();
         _pauseManager = FindObjectOfType<PauseManager>();
         _liesManager = FindObjectOfType<LiesManager>();
-        _boardCardSlot= FindObjectOfType<BoardCardSlot>();
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
         _boxCollider = GetComponent<BoxCollider2D>();
 
@@ -108,27 +65,6 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             _eventBus.Register<PausedEvent>(this);
             _eventBus.Register<UnpausedEvent>(this);
         }
-
-        _titleText.text = _strings.GetString(_cardData.TitleId);
-        _leftAttributeText.text = _strings.GetString(_cardData.LeftAttributeId);
-        _rightAttributeText.text = _strings.GetString(_cardData.RightAttributeId);
-
-        _moneyText.text = $"+{_cardData.MoneyWon}";
-
-        var votersWon = _cardData.VotersWon;
-        if (_liesManager.IsLiesCountersFull)
-        {
-            votersWon--;
-        }
-        _votersText.text = $"+{votersWon}";
-
-        _negativeVotersText.text = $"-{_cardData.VotersLost}";
-        _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
-
-        _spriteRenderer.sprite = _spriteByCardCategory[_cardData.Category];
-
-        _spriteSortingOrder = _spriteRenderer.sortingOrder;
-        _textSortingOrder = _titleText.sortingOrder;
 
         _originalPosition = transform.position;
     }
@@ -152,53 +88,6 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         _eventBus.Unregister<UnpausedEvent>(this);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        foreach(var tag in PlayTypeByTag.Keys)
-        {
-            if (collision.CompareTag(tag))
-            {
-                _selectedPlayTypes.Add(PlayTypeByTag[tag]);
-
-                if (_highlightableZonesTags.Contains(tag))
-                {
-                    var spriteRenderer = collision.gameObject.GetComponentInChildren<SpriteRenderer>();
-                    SetSpriteRendererAlpha(spriteRenderer, 1);
-                }
-
-                _soundEffectPlayer.PlayClip(SoundNames.Menu.MouseHover);
-
-                return;
-            }
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        foreach (var tag in PlayTypeByTag.Keys)
-        {
-            if (collision.CompareTag(tag))
-            {
-                _selectedPlayTypes.Remove(PlayTypeByTag[tag]);
-
-                if (_highlightableZonesTags.Contains(tag))
-                {
-                    var spriteRenderer = collision.gameObject.GetComponentInChildren<SpriteRenderer>();
-                    SetSpriteRendererAlpha(spriteRenderer, .8f);
-                }
-
-                return;
-            }
-        }
-    }
-
-    private void SetSpriteRendererAlpha(SpriteRenderer spriteRenderer, float alpha)
-    {
-        //var color = spriteRenderer.color;
-        //color.a = alpha;
-        //spriteRenderer.color = color;
-    }
-
     private void OnMouseEnter()
     {
         _mouseOver = true;
@@ -220,8 +109,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         gameObject.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
         MoveCardUp();
 
-        _spriteRenderer.sortingOrder = _selectedCardSpriteSortingOrder;
-        SetTextsSortingOrder(_selectedCardTextSortingOrder);
+        _cardUI.SetSpriteSortingOrder(_selectedCardSpriteSortingOrder);
+        _cardUI.SetTextsSortingOrder(_selectedCardTextSortingOrder);
     }
 
     private void MoveCardUp()
@@ -250,19 +139,8 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         gameObject.transform.position = _originalPosition;
 
-        _spriteRenderer.sortingOrder = _spriteSortingOrder;
-        SetTextsSortingOrder(_textSortingOrder);
-    }
-
-    private void SetTextsSortingOrder(int sortingOrder)
-    {
-        _titleText.sortingOrder = sortingOrder;
-        _leftAttributeText.sortingOrder = sortingOrder;
-        _rightAttributeText.sortingOrder = sortingOrder;
-        _votersText.sortingOrder = sortingOrder;
-        _negativeVotersText.sortingOrder = sortingOrder;
-        _moneyText.sortingOrder = sortingOrder;
-        _negativeMoneyText.sortingOrder = sortingOrder;
+        _cardUI.ResetSpriteSortingOrder();
+        _cardUI.ResetTextsSortingOrder();
     }
 
     void OnMouseDown()
@@ -345,19 +223,28 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
         {
             return;
         }
-
-        var voters = Math.Max(_cardData.VotersWon - 1, 0);
-        _votersText.text = $"+{voters}";
+        UpdateVotersWonText();
     }
 
     public void HandleEvent(LiesResetEvent @event)
     {
-        _votersText.text = $"+{_cardData.VotersWon}";
+        UpdateVotersWonText();
+    }
+
+    public void UpdateVotersWonText()
+    {
+        _cardUI.SetVotersWonText(VotersWon);
+    }
+
+    public void UpdateMoneyWonText()
+    {
+        _cardUI.SetMoneyWonText(MoneyWon);
     }
 
     public void SetCardData(CardData cardData)
     {
         _cardData = cardData;
+        _cardUI.SetCardData(cardData);
     }
 
     public void HandleEvent(PausedEvent @event)
@@ -375,6 +262,4 @@ public class Card : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<
             EnterPreview();
         }
     }
-
-   
 }
