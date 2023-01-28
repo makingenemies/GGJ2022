@@ -82,6 +82,18 @@ public class CardUI : MonoBehaviour
         }
     }
 
+    public void SetVotersLostText(int votersLost)
+    {
+        if (votersLost > 0)
+        {
+            _negativeVotersText.text = $"-{votersLost}";
+        }
+        else
+        {
+            _negativeVotersText.text = $"{votersLost}";
+        }
+    }
+
     public void SetMoneyWonText(int moneyWon)
     {
         if (moneyWon > 0)
@@ -91,6 +103,18 @@ public class CardUI : MonoBehaviour
         else
         {
             _moneyText.text = $"{moneyWon}";
+        }
+    }
+
+    public void SetMoneyLostText(int moneyLost)
+    {
+        if (moneyLost > 0)
+        {
+            _negativeMoneyText.text = $"-{moneyLost}";
+        }
+        else
+        {
+            _negativeMoneyText.text = $"{moneyLost}";
         }
     }
 

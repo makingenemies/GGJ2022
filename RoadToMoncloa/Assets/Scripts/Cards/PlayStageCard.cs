@@ -34,11 +34,13 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     public string Id => _id;
     public CardData CardData => _cardData;
     public int MoneyWonModifier { get; set;}
-    public int VotersWonModifier { get; set;}
+    public int VotersWonModifier { get; set; }
+    public int MoneyLostModifier { get; set; }
+    public int VotersLostModifier { get; set; }
     public int MoneyWon => CardData.MoneyWon + MoneyWonModifier + (_liesManager.IsLiesCountersFull ? -1 : 0);
     public int VotersWon => CardData.VotersWon + VotersWonModifier;
-    public int MoneyLost => CardData.MoneyLost;
-    public int VotersLost => CardData.VotersLost;
+    public int MoneyLost => CardData.MoneyLost + MoneyLostModifier;
+    public int VotersLost => CardData.VotersLost + VotersLostModifier;
 
     private void Awake()
     {
@@ -272,9 +274,19 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         _cardUI.SetVotersWonText(VotersWon);
     }
 
+    public void UpdateVotersLostText()
+    {
+        _cardUI.SetVotersLostText(VotersLost);
+    }
+
     public void UpdateMoneyWonText()
     {
         _cardUI.SetMoneyWonText(MoneyWon);
+    }
+
+    public void UpdateMoneyLostText()
+    {
+        _cardUI.SetMoneyLostText(MoneyLost);
     }
 
     public void SetCardData(CardData cardData)

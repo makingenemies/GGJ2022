@@ -40,6 +40,8 @@ public class PlayCardsStageGameplayManager :
     private Animator _votersZoneAnimator;
     private Dictionary<string, BoardCardSlot> _boardCardSlotsById;
     private Dictionary<string, PlayStageCard> _cardsById;
+    private Dictionary<CardPlayType, List<PlayStageCard>> _cardsPlayedByPlayType = new Dictionary<CardPlayType, List<PlayStageCard>>();
+    private Dictionary<Type, IComboProcessor> _comboProcessorsByComboSOType = new Dictionary<Type, IComboProcessor>();
     private System.Random _random;
 
     private int _cardsCount;
@@ -53,9 +55,12 @@ public class PlayCardsStageGameplayManager :
 
     public bool IsAnyCardSelected { get; private set; }
 
+    public Dictionary<CardPlayType, List<PlayStageCard>> CardsPlayedByPlayType => _cardsPlayedByPlayType;
+
     private void Awake()
     {
         _random = new System.Random();
+        InitializeCombos();
     }
 
     private void Start()
@@ -90,6 +95,8 @@ public class PlayCardsStageGameplayManager :
         _moneyZoneAnimator = GameObject.FindGameObjectWithTag(Tags.MoneyCardDropZone).GetComponentInChildren<Animator>();
 
         _playCardsPanel.SetActive(false);
+
+        InitializePlayedCardsLists();
     }
 
     private void RegisterToEvents()
@@ -113,6 +120,14 @@ public class PlayCardsStageGameplayManager :
         _eventBus.Unregister<BoardCardSlotExitedEvent>(this);
         _eventBus.Unregister<CardDragStartedEvent>(this);
         _eventBus.Unregister<CardDragFinishedEvent>(this);
+    }
+
+    private void InitializePlayedCardsLists()
+    {
+        foreach (var cardPlayType in (CardPlayType[])Enum.GetValues(typeof(CardPlayType)))
+        {
+            _cardsPlayedByPlayType[cardPlayType] = new List<PlayStageCard>();
+        }
     }
 
     public void EnterStage(List<CardData> _cardDatas)
@@ -188,8 +203,8 @@ public class PlayCardsStageGameplayManager :
         }
         if (cardPlayed)
         {
-            ProcessCombos(card);
-            TrackPlayedCard(card);
+            ProcessCombos(card, _selectedSlot.PlayType);
+            TrackPlayedCard(card, _selectedSlot.PlayType);
         }
         return cardPlayed;
     }
@@ -267,13 +282,15 @@ public class PlayCardsStageGameplayManager :
         Destroy(card.gameObject);
     }
 
-    private void TrackPlayedCard(PlayStageCard card)
+    private void TrackPlayedCard(PlayStageCard card, CardPlayType playType)
     {
         _cardsCount--;
         if (_cardsCount <= 0)
         {
             _gameplayManager.EndRound();
         }
+
+        _cardsPlayedByPlayType[playType].Add(card);
     }
 
     public void ExitStage()
@@ -344,28 +361,29 @@ public class PlayCardsStageGameplayManager :
         IsAnyCardSelected = false;
     }
 
-    private void ProcessCombos(PlayStageCard playedCard)
+    private void InitializeCombos()
     {
-        var comboPerType = new Dictionary<Type, Action<CardComboSO>>
-        {
-            [typeof(CardComboChildSO)] = (CardComboSO combo) =>
-            {
-                var cardComboChild = combo as CardComboChildSO;
-                Debug.Log(cardComboChild.TestString);
-            },
-            [typeof(CardComboChild2SO)] = (CardComboSO combo) =>
-            {
-                var cardComboChild = combo as CardComboChild2SO;
-                Debug.Log(cardComboChild.TestInt);
-            }
-        };
+        _comboProcessorsByComboSOType[typeof(SameCardOnSameSpecificPlayTypeComboSO)] = new SameCardOnSameSpecificPlayTypeComboProcessor(this);
+    }
 
+    private void ProcessCombos(PlayStageCard playedCard, CardPlayType cardPlayType)
+    {
         foreach (var combo in playedCard.CardData.Combos)
         {
-            if (comboPerType.TryGetValue(combo.GetType(), out var action))
+            if (_comboProcessorsByComboSOType.TryGetValue(combo.GetType(), out var processor))
             {
-                action(combo);
+                processor.ProcessComboAfterPlayImpl(combo, playedCard, cardPlayType);
             }
         }
+    }
+
+    public void UpdateVotersCounter(int votersCounterDelta)
+    {
+        _votersCounter.UpdateCurrentAmount(votersCounterDelta);
+    }
+
+    public void UpdateMoneyCounter(int moneyCounterDelta)
+    {
+        _moneyCounter.UpdateCurrentAmount(moneyCounterDelta);
     }
 }
