@@ -188,6 +188,7 @@ public class PlayCardsStageGameplayManager :
         }
         if (cardPlayed)
         {
+            ProcessCombos(card);
             TrackPlayedCard(card);
         }
         return cardPlayed;
@@ -341,5 +342,30 @@ public class PlayCardsStageGameplayManager :
     public void HandleEvent(CardDragFinishedEvent @event)
     {
         IsAnyCardSelected = false;
+    }
+
+    private void ProcessCombos(PlayStageCard playedCard)
+    {
+        var comboPerType = new Dictionary<Type, Action<CardComboSO>>
+        {
+            [typeof(CardComboChildSO)] = (CardComboSO combo) =>
+            {
+                var cardComboChild = combo as CardComboChildSO;
+                Debug.Log(cardComboChild.TestString);
+            },
+            [typeof(CardComboChild2SO)] = (CardComboSO combo) =>
+            {
+                var cardComboChild = combo as CardComboChild2SO;
+                Debug.Log(cardComboChild.TestInt);
+            }
+        };
+
+        foreach (var combo in playedCard.CardData.Combos)
+        {
+            if (comboPerType.TryGetValue(combo.GetType(), out var action))
+            {
+                action(combo);
+            }
+        }
     }
 }

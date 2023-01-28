@@ -11,4 +11,5 @@ public class CardData : ScriptableObject
     public int VotersLost;
     public int MoneyLost;
     public CardCategory Category;
+    public CardComboSO[] Combos;
 }
