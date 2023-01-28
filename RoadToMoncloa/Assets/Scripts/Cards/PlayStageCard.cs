@@ -116,6 +116,8 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         gameObject.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
         MoveCardUp();
         PutUIOnTopOfOtherCards();
+
+        _cardUI.ShowComboDetailBox();
     }
 
     private void PutUIOnTopOfOtherCards()
@@ -159,6 +161,8 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         gameObject.transform.position = _originalPosition;
 
         RestoreUISortingLayer();
+
+        _cardUI.HideComboDetailBox();
     }
 
     void OnMouseDown()

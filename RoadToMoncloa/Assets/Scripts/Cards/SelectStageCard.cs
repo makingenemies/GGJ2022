@@ -76,6 +76,8 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
         _onPreview = true;
 
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.MouseHoverCard);
+
+        _cardUI.ShowComboDetailBox();
     }
 
     private void OnMouseExit()
@@ -93,6 +95,8 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     private void ExitPreview()
     {
         _onPreview = false;
+
+        _cardUI.HideComboDetailBox();
     }
 
     void OnMouseDown()

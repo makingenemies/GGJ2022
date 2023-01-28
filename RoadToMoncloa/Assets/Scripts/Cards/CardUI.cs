@@ -12,6 +12,7 @@ public class CardUI : MonoBehaviour
     [SerializeField] TextMeshPro _moneyText;
     [SerializeField] TextMeshPro _negativeMoneyText;
     [SerializeField] SpriteRenderer _spriteRenderer;
+    [SerializeField] GameObject _comboDetailBox;
 
     [Header("Sprites")]
     [SerializeField] Sprite _educationSprite;
@@ -29,6 +30,7 @@ public class CardUI : MonoBehaviour
     CardData _cardData;
     private int _spriteSortingOrder;
     private int _textSortingOrder;
+    private bool _hasComboText;
 
     private void Awake()
     {
@@ -68,6 +70,8 @@ public class CardUI : MonoBehaviour
 
         _spriteSortingOrder = _spriteRenderer.sortingOrder;
         _textSortingOrder = _titleText.sortingOrder;
+
+        HideComboDetailBox();
     }
 
     public void SetVotersWonText(int votersWon)
@@ -121,6 +125,23 @@ public class CardUI : MonoBehaviour
     public void SetCardData(CardData cardData)
     {
         _cardData = cardData;
+
+        _hasComboText = cardData.Combos.Length > 0;
+
+        if (_hasComboText)
+        {
+            var comboDetailText = string.Empty;
+            foreach (var combo in cardData.Combos)
+            {
+                if (!string.IsNullOrEmpty(comboDetailText))
+                {
+                    comboDetailText += System.Environment.NewLine;
+                }
+                comboDetailText += combo.Description;
+            }
+
+            _comboDetailBox.GetComponentInChildren<TextMeshPro>().text = comboDetailText;
+        }
     }
 
     public void SetSpriteSortingOrder(int sortingOrder)
@@ -147,5 +168,21 @@ public class CardUI : MonoBehaviour
     public void ResetTextsSortingOrder()
     {
         SetTextsSortingOrder(_textSortingOrder);
+    }
+
+    public void ShowComboDetailBox()
+    {
+        if (_hasComboText)
+        {
+            _comboDetailBox.SetActive(true);
+        }
+    }
+
+    public void HideComboDetailBox()
+    {
+        if (_hasComboText)
+        {
+            _comboDetailBox.SetActive(false);
+        }
     }
 }

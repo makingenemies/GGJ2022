@@ -1379,7 +1379,6 @@ GameObject:
   - component: {fileID: 8806348977340509320}
   - component: {fileID: 8806348977340509321}
   - component: {fileID: 8806348977340509322}
-  - component: {fileID: 8806348977340509323}
   - component: {fileID: 8806348977340509333}
   m_Layer: 0
   m_Name: CardArt
@@ -1484,35 +1483,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.94177735}
   m_EdgeRadius: 0
---- !u!114 &8806348977340509323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8806348977340509326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27b49cc4a09c3f541b6395df09be32c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _moneyIcons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _voterIcons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _titleText: {fileID: 278116736484870411}
-  _negativeVotersText: {fileID: 0}
-  _negativeMoneyText: {fileID: 0}
 --- !u!50 &8806348977340509333
 Rigidbody2D:
   serializedVersion: 4

@@ -643,6 +643,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moneyAmountInputField: {fileID: 0}
   _votersCountInputField: {fileID: 0}
+  _liesEnabledInFirstLevel: 1
 --- !u!4 &567561190
 Transform:
   m_ObjectHideFlags: 0
@@ -1594,7 +1595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1514675674725947744, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -170
+      value: -119.8
       objectReference: {fileID: 0}
     - target: {fileID: 2149718950190333547, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
       propertyPath: m_CullTransparentMesh
@@ -1602,7 +1603,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2676802060130200538, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -212.2
+      value: -162
+      objectReference: {fileID: 0}
+    - target: {fileID: 2676802060221004579, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2676802060544254768, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
       propertyPath: m_RootOrder
