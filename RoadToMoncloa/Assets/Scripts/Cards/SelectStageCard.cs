@@ -9,6 +9,10 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     private PauseManager _pauseManager;
     private SoundEffectPlayer _soundEffectPlayer;
 
+    private CardUI _cardUI;
+
+    private CardData _cardData;
+
     private bool _mouseOver;
     private bool _onPreview;
 
@@ -17,6 +21,7 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     private void Awake()
     {
         Id = Guid.NewGuid().ToString();
+        _cardUI = GetComponent<CardUI>();
     }
 
     private void Start()
@@ -45,6 +50,12 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     {
         _eventBus.Unregister<PausedEvent>(this);
         _eventBus.Unregister<UnpausedEvent>(this);
+    }
+
+    public void SetCardData(CardData cardData)
+    {
+        _cardData = cardData;
+        _cardUI.SetCardData(cardData);
     }
 
     private void OnMouseEnter()
