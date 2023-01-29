@@ -65,7 +65,7 @@ public class PlayCardsStageGameplayManager :
         _moneyCounter = FindObjectOfType<MoneyCounter>();
         _votersCounter = FindObjectOfType<VotersCounter>();
         _liesManager = FindObjectOfType<LiesManager>();
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
         _playCardsPanel = FindObjectOfType<PlayCardsPanel>();
 
         var cards = FindObjectsOfType<PlayStageCard>();

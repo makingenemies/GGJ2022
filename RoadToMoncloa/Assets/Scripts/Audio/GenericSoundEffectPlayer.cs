@@ -8,7 +8,7 @@ public class GenericSoundEffectPlayer : MonoBehaviour
 
     private void Start()
     {
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
     }
 
     public void PlaySound(string clipName)

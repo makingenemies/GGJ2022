@@ -19,8 +19,9 @@ public class BShopSelectCardsPanel : MonoBehaviour
 
     private void Start()
     {
+        _gameState = GameState.Instance;
+
         _eventBus = FindObjectOfType<EventBus>();
-        _gameState = FindObjectOfType<GameState>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
         _confirmSelectionButton.interactable = false;
     }
@@ -38,7 +39,7 @@ public class BShopSelectCardsPanel : MonoBehaviour
     public void UpdateUI(int totalCardsCount, int selectedCardsCost)
     {
         _cardsSelectedCostText.text = $"Coste Actual: {selectedCardsCost} €";
-        _cardsSelectedCostText.color = selectedCardsCost <= _gameState.BMoneyAmount ? Color.black : Color.red;
+        _cardsSelectedCostText.color = selectedCardsCost <= _gameState.MoneyAmount ? Color.black : Color.red;
 
 
         _totalNumberOfCardsText.text = $"Cartas en caja B: {totalCardsCount}";
@@ -49,7 +50,7 @@ public class BShopSelectCardsPanel : MonoBehaviour
 
     private void ToggleButton(int totalCardsCount, int selectedCardsCost)
     {
-        if (selectedCardsCost > 0 && selectedCardsCost <= _gameState.BMoneyAmount && totalCardsCount <= _generalSettings.MaxNumberOfCardsInBAccount)
+        if (selectedCardsCost > 0 && selectedCardsCost <= _gameState.MoneyAmount && totalCardsCount <= _generalSettings.MaxNumberOfCardsInBAccount)
         {
             _confirmSelectionButton.interactable = true;
         }

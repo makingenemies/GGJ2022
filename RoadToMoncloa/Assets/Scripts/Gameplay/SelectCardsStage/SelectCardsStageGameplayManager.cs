@@ -21,7 +21,7 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
     private void Start()
     {
         _gameplayManager = FindObjectOfType<GameplayManager>();
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
 
         RegisterToEvents();
     }

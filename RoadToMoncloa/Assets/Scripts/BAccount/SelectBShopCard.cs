@@ -27,8 +27,7 @@ public class SelectBShopCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
 
     private void Start()
     {
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
-        
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
 
         if (_eventBus == null)
         {

@@ -6,20 +6,19 @@ public class GameState : MonoBehaviour
 {
     [SerializeField] private int _moneyAmount;
     [SerializeField] private int _votersCount;
-    [SerializeField] private int _bMoneyAmount;
     [SerializeField] private CardData[] _bAccountCards;
 
-    private static GameState _instance;
+    public static GameState Instance { get; private set; }
 
     public void Awake()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
             DontDestroyOnLoad(this.gameObject);
-            _instance = this;
+            Instance = this;
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
-        else if (_instance != this)
+        else if (Instance != this)
         {
             Destroy(this.gameObject);
             return;
@@ -31,7 +30,7 @@ public class GameState : MonoBehaviour
         if (string.Equals(scene.name, "StartGame", System.StringComparison.InvariantCultureIgnoreCase))
         {
             Destroy(gameObject);
-            _instance = null;
+            Instance = null;
         }
     }
 
@@ -60,16 +59,6 @@ public class GameState : MonoBehaviour
         }
     }
 
-    public int BMoneyAmount
-    {
-        get => _bMoneyAmount;
-        set
-        {
-            PreviousBMoneyAmount = _bMoneyAmount;
-            _bMoneyAmount = value;
-        }
-    }
-
     public int VotersCount
     {
         get => _votersCount;
@@ -83,7 +72,6 @@ public class GameState : MonoBehaviour
     public int PreviousMoneyAmount { get; private set; }
 
     public int PreviousVotersCount { get; private set; }
-    public int PreviousBMoneyAmount { get; private set; }
 
     public int LiesCount { get; set; }
 

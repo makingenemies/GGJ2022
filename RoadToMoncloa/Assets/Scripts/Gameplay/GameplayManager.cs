@@ -40,7 +40,7 @@ public class GameplayManager : MonoBehaviour
         _selectCardsStage = FindObjectOfType<SelectCardsStageGameplayManager>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
         _donationManager = FindObjectOfType<DonationManager>();
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
 
         _votersCounter.SetMaxAmount(CurrentLevelData.VotersGoal);
 
@@ -62,6 +62,7 @@ public class GameplayManager : MonoBehaviour
             _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
         }
 
+        Debug.Log($"Using {_soundEffectPlayer.GetInstanceID()}");
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
 
         StartNextRound();
@@ -94,8 +95,6 @@ public class GameplayManager : MonoBehaviour
 
     private void EndLevel()
     {
-        _gameState.BMoneyAmount += _moneyCounter.CurrentAmount;
-
         if (_votersCounter.CurrentAmount >= CurrentLevelData.VotersGoal)
         {
             if (_gameState.CurrentLevelIndex < _generalSettings.LevelsData.Length - 1)

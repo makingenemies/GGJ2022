@@ -21,8 +21,8 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 
     private void Start()
     {
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
-        _gameState= FindObjectOfType<GameState>();
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
+        _gameState = GameState.Instance;
         _generalSettings = FindObjectOfType<GeneralSettings>();
         _bMoneyCounter = FindObjectOfType<BMoneyCounter>();
 
@@ -102,7 +102,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 
     private void UpdateBMoney()
     {
-        _gameState.BMoneyAmount -= _cardsSelectedCost;
+        _gameState.MoneyAmount -= _cardsSelectedCost;
     }
 
     private void UnselectCard(string cardId)

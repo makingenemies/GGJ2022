@@ -52,7 +52,7 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         _game = FindObjectOfType<PlayCardsStageGameplayManager>();
         _pauseManager = FindObjectOfType<PauseManager>();
         _liesManager = FindObjectOfType<LiesManager>();
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
         _boxCollider = GetComponent<BoxCollider2D>();
 
         if (_eventBus == null)
