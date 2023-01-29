@@ -117,7 +117,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 
         foreach (var cardId in _selectedCardsIds)
         {
-            ownedCardsList.Add(cardId);
+            ownedCardsList.Add(_cardsById[cardId].CardData);
             Destroy(_cardsById[cardId].gameObject.GetComponentInParent<CardPriceTextController>().gameObject);
         }
 
