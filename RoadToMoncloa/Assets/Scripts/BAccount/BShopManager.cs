@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>, IEventHandler<CardsSelectionConfirmEvent>
 {
@@ -139,5 +140,10 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
             Destroy(card.gameObject);
         }
         _selectCardsPanel.gameObject.SetActive(false);
+    }
+
+    public void Exit()
+    {
+        SceneManager.LoadScene(SceneNames.PrototypeMenu);
     }
 }
