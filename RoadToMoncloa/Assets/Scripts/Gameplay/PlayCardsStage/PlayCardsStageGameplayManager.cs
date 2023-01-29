@@ -21,6 +21,7 @@ public class PlayCardsStageGameplayManager :
     private GameplayManager _gameplayManager;
     private GameState _gameState;
     private GeneralSettings _generalSettings;
+    private GameplayDebugManager _gameplayDebugManager;
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
     private LiesManager _liesManager;
@@ -60,6 +61,7 @@ public class PlayCardsStageGameplayManager :
         _gameplayManager = FindObjectOfType<GameplayManager>();
         _gameState = FindObjectOfType<GameState>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
+        _gameplayDebugManager = FindObjectOfType<GameplayDebugManager>();
         _moneyCounter = FindObjectOfType<MoneyCounter>();
         _votersCounter = FindObjectOfType<VotersCounter>();
         _liesManager = FindObjectOfType<LiesManager>();
@@ -88,6 +90,8 @@ public class PlayCardsStageGameplayManager :
         {
             _boardCardSlotsById[slot.Id] = slot;
         }
+
+        SetUpBCards();
 
         _playCardsPanel.SetActive(false);
     }
@@ -120,6 +124,21 @@ public class PlayCardsStageGameplayManager :
         foreach (var cardPlayType in (CardPlayType[])Enum.GetValues(typeof(CardPlayType)))
         {
             _cardsPlayedByPlayType[cardPlayType] = new List<PlayStageCard>();
+        }
+    }
+
+    private void SetUpBCards()
+    {
+        var bCards = _gameplayDebugManager.BCardsInGameplayOverride;
+        if (bCards is null || bCards.Length == 0)
+        {
+            bCards = _gameState.BAccountCards;
+        }
+
+        for (var i = 0; i < bCards.Length; i++)
+        {
+            var card = _playCardsPanel.BCardsPanel.InstantiateCard();
+            card.SetCardData(bCards[i]);
         }
     }
 

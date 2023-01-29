@@ -67,11 +67,7 @@ public class GameplayManager : MonoBehaviour
         StartNextRound();
     }
 
-    /// <summary>
-    /// This is temporary, setting up the same data for both rounds
-    /// until we have the layout for 3 cards and the card selection stage.
-    /// </summary>
-    private void StartNextRound()
+   private void StartNextRound()
     {
         _playCardsStage.ExitStage();
 

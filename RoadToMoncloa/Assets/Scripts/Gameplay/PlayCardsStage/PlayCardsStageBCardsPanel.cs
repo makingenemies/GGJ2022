@@ -9,6 +9,9 @@ public class PlayCardsStageBCardsPanel : MonoBehaviour
 
     public PlayStageCard InstantiateCard()
     {
-        return Instantiate(_cardPrefab, _cardPlaceholders[_cardsCounter++]).GetComponent<PlayStageCard>();
+        var card = Instantiate(_cardPrefab, _cardPlaceholders[_cardsCounter]).GetComponent<PlayStageCard>();
+        card.GetComponentInChildren<CardUI>().IncreaseSortingLayer(_cardsCounter);
+        _cardsCounter++;
+        return card;
     }
 }

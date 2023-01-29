@@ -644,7 +644,10 @@ MonoBehaviour:
   _moneyAmountInputField: {fileID: 0}
   _votersCountInputField: {fileID: 0}
   _liesEnabledInFirstLevel: 1
-  _bCardsInGameplayOverride: []
+  _bCardsInGameplayOverride:
+  - {fileID: 11400000, guid: 282413d07a3ef4915b4c1270bbb1f9cd, type: 2}
+  - {fileID: 11400000, guid: 32a7287d0eadb4ea982606cd30e33ce0, type: 2}
+  - {fileID: 11400000, guid: 8e7b3bc5d1c5ee941930698ddedddebb, type: 2}
 --- !u!4 &567561190
 Transform:
   m_ObjectHideFlags: 0

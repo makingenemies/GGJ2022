@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 8806348977340509322}
   - component: {fileID: 8806348977340509323}
   - component: {fileID: 8806348977340509333}
+  - component: {fileID: -7942906238780653724}
   m_Layer: 0
-  m_Name: PlayCardsStageCard
+  m_Name: PlayCardsStageNormalCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,8 +125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27b49cc4a09c3f541b6395df09be32c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _selectedCardSpriteSortingOrder: 2
-  _selectedCardTextSortingOrder: 3
+  _selectedCardSpriteSortingOrder: 10
+  _selectedCardTextSortingOrder: 11
   _cardUI: {fileID: 2238580438875681109}
 --- !u!50 &8806348977340509333
 Rigidbody2D:
@@ -148,6 +149,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-7942906238780653724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8806348977340509326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f34c5690758d3094b8efb4c22d360f6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7593249261878124734
 PrefabInstance:
   m_ObjectHideFlags: 0

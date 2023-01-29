@@ -13,6 +13,7 @@ public class PlayCardsPanel : MonoBehaviour
     [SerializeField] GameObject _cards5SpotsPrefab;
     [SerializeField] GameObject _cards6SpotsPrefab;
     [SerializeField] private Button _pickMoreCardsButton;
+    [SerializeField] private PlayCardsStageBCardsPanel _bCardsPanel;
 
     private GameState _gameState;
     private GameplayDebugManager _gameplayDebugManager;
@@ -21,6 +22,8 @@ public class PlayCardsPanel : MonoBehaviour
     private int _cardsCounter;
 
     private Dictionary<int, GameObject> _cardsPlaceholderPrefabByNumberOfCards;
+
+    public PlayCardsStageBCardsPanel BCardsPanel => _bCardsPanel;
 
     private void Awake()
     {

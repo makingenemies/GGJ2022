@@ -79,10 +79,13 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
 
     private void OnDisable()
     {
-        _eventBus.Unregister<LiePlayedEvent>(this);
-        _eventBus.Unregister<LiesResetEvent>(this);
-        _eventBus.Unregister<PausedEvent>(this);
-        _eventBus.Unregister<UnpausedEvent>(this);
+        if (_eventBus != null)
+        {
+            _eventBus.Unregister<LiePlayedEvent>(this);
+            _eventBus.Unregister<LiesResetEvent>(this);
+            _eventBus.Unregister<PausedEvent>(this);
+            _eventBus.Unregister<UnpausedEvent>(this);
+        }
     }
 
     private void OnMouseEnter()
@@ -111,8 +114,8 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
 
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.MouseHoverCard);
 
-        gameObject.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
-        MoveCardUp();
+        GetComponent<PlayCardStagePreview>().Enter();
+
         PutUIOnTopOfOtherCards();
 
         _cardUI.ShowComboDetailBox();
@@ -132,13 +135,6 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         _isUIOnTopOfOtherCards = false;
     }
 
-    private void MoveCardUp()
-    {
-        var position = gameObject.transform.position;
-        position.y += .6f;
-        gameObject.transform.position = position;
-    }
-
     private void OnMouseExit()
     {
         _mouseOver = false;
@@ -155,7 +151,7 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     {
         _onPreview = false;
 
-        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+        GetComponent<PlayCardStagePreview>().Exit();
         gameObject.transform.position = _originalPosition;
 
         RestoreUISortingLayer();
@@ -241,10 +237,6 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     private void RestoreCardPosition()
     {
         transform.position = _originalPosition;
-        if (_mouseOver)
-        {
-            MoveCardUp();
-        }
     }
 
     public void SetCardScale(float scale)
