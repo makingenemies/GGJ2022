@@ -730,6 +730,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 64a021e07a75d4f12aa84ab427a909f8, type: 2}
   _initialVoterCount: 2
   _initialMoneyAmount: 2
+  _maxNumberOfCardsInBAccount: 3
 --- !u!1 &619239449
 GameObject:
   m_ObjectHideFlags: 0

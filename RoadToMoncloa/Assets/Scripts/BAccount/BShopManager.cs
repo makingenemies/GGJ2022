@@ -26,9 +26,14 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _generalSettings = FindObjectOfType<GeneralSettings>();
         _bMoneyCounter = FindObjectOfType<BMoneyCounter>();
 
-        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
+        UpdateUI();
         SetUpCards();
         RegisterToEvents();
+    }
+
+    private void UpdateUI()
+    {
+        _selectCardsPanel.UpdateUI(_gameState.BAccountCards.Length + _selectedCardsIds.Count, _cardsSelectedCost);
     }
 
     private void RegisterToEvents()
@@ -92,7 +97,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _cardsById[cardId].MoveCardDown();
         _cardsSelectedCost += _cardsById[cardId].CardData.BCardPrice;
 
-        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
+        UpdateUI();
     }
 
     private void UpdateBMoney()
@@ -106,7 +111,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardUp();
         _cardsSelectedCost -= _cardsById[cardId].CardData.BCardPrice;
-        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
+        UpdateUI();
     }
 
     public void ConfirmPurchase()
@@ -123,9 +128,8 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 
         _gameState.BAccountCards = ownedCardsList.ToArray();
         _cardsSelectedCost = 0;
-        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
         _selectedCardsIds.Clear();
-
+        UpdateUI();
     }
 
     public void HandleEvent(CardsSelectionConfirmEvent @event)

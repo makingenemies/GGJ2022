@@ -135,7 +135,9 @@ public class PlayCardsStageGameplayManager :
             bCards = _gameState.BAccountCards;
         }
 
-        for (var i = 0; i < bCards.Length; i++)
+        var numberOfBCards = Math.Min(bCards.Length, _generalSettings.MaxNumberOfCardsInBAccount);
+
+        for (var i = 0; i < numberOfBCards; i++)
         {
             var card = _playCardsPanel.BCardsPanel.InstantiateCard();
             card.SetCardData(bCards[i]);

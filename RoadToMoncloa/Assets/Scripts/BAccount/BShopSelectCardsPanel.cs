@@ -9,9 +9,11 @@ public class BShopSelectCardsPanel : MonoBehaviour
     [SerializeField] private List<Transform> _cardPlaceHolders;
     [SerializeField] private SelectBShopCard _cardPrefab;
     [SerializeField] private TextMeshProUGUI _cardsSelectedCostText;
+    [SerializeField] private TextMeshProUGUI _totalNumberOfCardsText;
 
     private EventBus _eventBus;
     private GameState _gameState;
+    private GeneralSettings _generalSettings;
 
     private int _cardsCounter;
 
@@ -19,6 +21,7 @@ public class BShopSelectCardsPanel : MonoBehaviour
     {
         _eventBus = FindObjectOfType<EventBus>();
         _gameState = FindObjectOfType<GameState>();
+        _generalSettings = FindObjectOfType<GeneralSettings>();
         _confirmSelectionButton.interactable = false;
     }
 
@@ -32,22 +35,21 @@ public class BShopSelectCardsPanel : MonoBehaviour
         return Instantiate(_cardPrefab, _cardPlaceHolders[_cardsCounter++]).GetComponent<SelectBShopCard>();
     }
 
-    public void UpdateCostText(int selectedCardsCost)
+    public void UpdateUI(int totalCardsCount, int selectedCardsCost)
     {
         _cardsSelectedCostText.text = $"Coste Actual: {selectedCardsCost} €";
-        ToggleTextColor(selectedCardsCost);
-        ToggleButton(selectedCardsCost);
+        _cardsSelectedCostText.color = selectedCardsCost <= _gameState.BMoneyAmount ? Color.black : Color.red;
+
+
+        _totalNumberOfCardsText.text = $"Cartas en caja B: {totalCardsCount}";
+        _totalNumberOfCardsText.color = totalCardsCount <= _generalSettings.MaxNumberOfCardsInBAccount ? Color.black : Color.red;
+
+        ToggleButton(totalCardsCount, selectedCardsCost);
     }
 
-    private void ToggleTextColor(int selectedCardsCost)
+    private void ToggleButton(int totalCardsCount, int selectedCardsCost)
     {
-        var textColor = selectedCardsCost <= _gameState.BMoneyAmount ? Color.black : Color.red;
-        _cardsSelectedCostText.color = textColor;
-    }
-
-    private void ToggleButton(int selectedCardsCost)
-    {
-        if (selectedCardsCost > 0 && selectedCardsCost <= _gameState.BMoneyAmount)
+        if (selectedCardsCost > 0 && selectedCardsCost <= _gameState.BMoneyAmount && totalCardsCount <= _generalSettings.MaxNumberOfCardsInBAccount)
         {
             _confirmSelectionButton.interactable = true;
         }
