@@ -3,10 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - VotersCardDropZone
-  - MoneyCardDropZone
-  - LiesBox
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -43,13 +40,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: GameplayBackground
-    uniqueID: 53416061
-    locked: 0
-  - name: GameplayStaticElements
-    uniqueID: 2049122773
-    locked: 0
-  - name: Cards
-    uniqueID: 1741360731
     locked: 0

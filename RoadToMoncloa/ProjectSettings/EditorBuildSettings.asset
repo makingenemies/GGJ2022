@@ -6,42 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/StartGame.unity
-    guid: f5c8eff99a9e743f280f10b9b308c1b1
-  - enabled: 1
-    path: Assets/Scenes/Options.unity
-    guid: 5966f4149760c436484be2b213ce872d
-  - enabled: 1
-    path: Assets/Scenes/Map.unity
-    guid: 6e5c3401278274457abded4528e86ce1
-  - enabled: 1
-    path: Assets/Scenes/Credits.unity
-    guid: 47c747e2691c148a3a0bbb54a639ee31
-  - enabled: 1
-    path: Assets/Scenes/Brief1.unity
-    guid: acd26cb7a0b5e46688622ae2be4b5e50
-  - enabled: 1
-    path: Assets/Scenes/GameplayLegacy.unity
+    path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
-    path: Assets/Scenes/LevelSelection.unity
-    guid: cab55dd2ac64c044597091da74268b0c
-  - enabled: 1
-    path: Assets/Scenes/Gameplay.unity
-    guid: fe7e2bf2ed0a12149a125a65a497cd29
-  - enabled: 1
-    path: Assets/Scenes/Tutorial.unity
-    guid: 0c38e71afb6844a689bbb3beeaef79fb
-  - enabled: 1
-    path: Assets/Scenes/LevelSummary.unity
-    guid: 5be77a448076b418dbdf2432c8b8345d
-  - enabled: 1
-    path: Assets/Scenes/ClickBait.unity
-    guid: 3e60a1fc48291d24284c82660c1c700c
-  - enabled: 1
-    path: Assets/Scenes/LevelIntroduction.unity
-    guid: e7374f29ccc0a4152ad4eb7da08e5ae7
-  - enabled: 1
-    path: Assets/Scenes/End.unity
-    guid: 2b677e9a6e2b1488daf389b488fc4beb
   m_configObjects: {}
