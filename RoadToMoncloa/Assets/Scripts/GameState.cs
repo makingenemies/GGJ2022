@@ -6,7 +6,6 @@ public class GameState : MonoBehaviour
 {
     [SerializeField] private int _moneyAmount;
     [SerializeField] private int _votersCount;
-    [SerializeField] private CardData[] _bAccountCards;
 
     public static GameState Instance { get; private set; }
 
@@ -39,14 +38,13 @@ public class GameState : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public CardData[] BAccountCards 
-    { 
-        get => _bAccountCards; 
-        set 
-        { 
-            _bAccountCards= value; 
-        }
-    }
+    public CardData[] BAccountOwnedCards { get; set; } = new CardData[0];
+
+    public CardData[] BAccountShopCurrentCards { get; set; }
+
+    public bool IsBShopInitialized { get; set; }
+
+
     public int CurrentLevelIndex { get; set; }
 
     public int MoneyAmount 
@@ -77,10 +75,17 @@ public class GameState : MonoBehaviour
 
     public bool LiesDisabled { get; set; }
 
-    public void RemoveBAccountCard(CardData cardData)
+    public void RemoveBAccountOwnedCard(CardData cardData)
     {
-        var bCardsList = BAccountCards.ToList();
+        var bCardsList = BAccountOwnedCards.ToList();
         bCardsList.RemoveAll(c => c.CardId == cardData.CardId);
-        BAccountCards = bCardsList.ToArray();
+        BAccountOwnedCards = bCardsList.ToArray();
+    }
+
+    public void RemoveBAccountShopCard(CardData cardData)
+    {
+        var bCardsList = BAccountShopCurrentCards.ToList();
+        bCardsList.RemoveAll(c => c.CardId == cardData.CardId);
+        BAccountShopCurrentCards = bCardsList.ToArray();
     }
 }

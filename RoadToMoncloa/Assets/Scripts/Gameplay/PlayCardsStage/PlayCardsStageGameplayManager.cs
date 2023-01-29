@@ -132,7 +132,7 @@ public class PlayCardsStageGameplayManager :
         var bCards = _gameplayDebugManager.BCardsInGameplayOverride;
         if (bCards is null || bCards.Length == 0)
         {
-            bCards = _gameState.BAccountCards;
+            bCards = _gameState.BAccountOwnedCards;
         }
 
         var numberOfBCards = Math.Min(bCards.Length, _generalSettings.MaxNumberOfCardsInBAccount);
@@ -309,7 +309,7 @@ public class PlayCardsStageGameplayManager :
 
     private void TrackPlayedBCard(PlayStageCard card)
     {
-        _gameState.RemoveBAccountCard(card.CardData);
+        _gameState.RemoveBAccountOwnedCard(card.CardData);
     }
 
     public void ExitStage()

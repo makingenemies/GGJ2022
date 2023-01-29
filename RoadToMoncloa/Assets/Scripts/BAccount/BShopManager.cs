@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>, IEventHandler<CardsSelectionConfirmEvent>
 {
     [SerializeField] private BShopSelectCardsPanel _selectCardsPanel;
-    [SerializeField] CardData[] _cards;
+    [SerializeField] CardData[] _initialCards;
 
     private EventBus _eventBus;
     private GameState _gameState;
@@ -27,6 +28,12 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _generalSettings = GeneralSettings.Instance;
         _bMoneyCounter = FindObjectOfType<BMoneyCounter>();
 
+        if (!_gameState.IsBShopInitialized)
+        {
+            _gameState.IsBShopInitialized = true;
+            _gameState.BAccountShopCurrentCards = _initialCards.ToArray();
+        }
+
         UpdateUI();
         SetUpCards();
         RegisterToEvents();
@@ -34,7 +41,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 
     private void UpdateUI()
     {
-        _selectCardsPanel.UpdateUI(_gameState.BAccountCards.Length + _selectedCardsIds.Count, _cardsSelectedCost);
+        _selectCardsPanel.UpdateUI(_gameState.BAccountOwnedCards.Length + _selectedCardsIds.Count, _cardsSelectedCost);
     }
 
     private void RegisterToEvents()
@@ -68,12 +75,16 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
     {
         _selectCardsPanel.SetActive(true);
 
-        for(int i = 0; i<_cards.Length; i++)
+        var numCards = Math.Min(_gameState.BAccountShopCurrentCards.Length, _selectCardsPanel.CardSlotsCount);
+
+        for(int i = 0; i < numCards; i++)
         {
             var card = _selectCardsPanel.InstantiateCard();
-            card.SetCardData(_cards[i]);
+            card.SetCardData(_initialCards[i]);
             _cardsById[card.CardData.CardId] = card;
         }
+
+        _selectCardsPanel.ClearUnusedSlots();
     }
 
     public void HandleEvent(BShopCardSelectedEvent @event)
@@ -119,15 +130,16 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
     {
         UpdateBMoney();
         _bMoneyCounter.UpdateCurrentAmount(-_cardsSelectedCost);
-        var ownedCardsList = _gameState.BAccountCards.ToList();
+        var ownedCardsList = _gameState.BAccountOwnedCards.ToList();
 
         foreach (var cardId in _selectedCardsIds)
         {
             ownedCardsList.Add(_cardsById[cardId].CardData);
+            _gameState.RemoveBAccountShopCard(_cardsById[cardId].CardData);
             Destroy(_cardsById[cardId].gameObject.GetComponentInParent<CardPriceTextController>().gameObject);
         }
 
-        _gameState.BAccountCards = ownedCardsList.ToArray();
+        _gameState.BAccountOwnedCards = ownedCardsList.ToArray();
         _cardsSelectedCost = 0;
         _selectedCardsIds.Clear();
         UpdateUI();

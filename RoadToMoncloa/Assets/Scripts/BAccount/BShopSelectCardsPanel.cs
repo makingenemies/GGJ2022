@@ -17,6 +17,9 @@ public class BShopSelectCardsPanel : MonoBehaviour
 
     private int _cardsCounter;
 
+    public int CardSlotsCount => _cardPlaceHolders.Count;
+
+
     private void Start()
     {
         _gameState = GameState.Instance;
@@ -34,6 +37,14 @@ public class BShopSelectCardsPanel : MonoBehaviour
     public SelectBShopCard InstantiateCard()
     {
         return Instantiate(_cardPrefab, _cardPlaceHolders[_cardsCounter++]).GetComponent<SelectBShopCard>();
+    }
+
+    public void ClearUnusedSlots()
+    {
+        foreach (var slot in _cardPlaceHolders)
+        {
+            slot.gameObject.SetActive(slot.GetComponentInChildren<SelectBShopCard>() != null);
+        }
     }
 
     public void UpdateUI(int totalCardsCount, int selectedCardsCost)
