@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: JornadaLaboral
   m_EditorClassIdentifier: 
+  CardId: JornadaLaboral
   TitleId: Jornada Laboral
   LeftAttributeId: "4 d\xEDas"
   RightAttributeId: "6 d\xEDas"
@@ -19,4 +20,5 @@ MonoBehaviour:
   MoneyWon: 3
   VotersLost: 1
   MoneyLost: 3
+  BCardPrice: 1000000
   Category: 1

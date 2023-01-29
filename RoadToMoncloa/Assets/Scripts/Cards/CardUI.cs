@@ -56,7 +56,7 @@ public class CardUI : MonoBehaviour
         _rightAttributeText.text = _strings.GetString(_cardData.RightAttributeId);
 
         var votersWon = _cardData.VotersWon;
-        if (_liesManager.IsLiesCountersFull)
+        if (_liesManager != null && _liesManager.IsLiesCountersFull)
         {
             votersWon--;
         }

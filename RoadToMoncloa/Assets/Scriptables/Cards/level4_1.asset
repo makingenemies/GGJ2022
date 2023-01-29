@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: level4_1
   m_EditorClassIdentifier: 
+  CardId: FondosEuropeos
   TitleId: Fondos europeos
   LeftAttributeId: Cine
   RightAttributeId: Fragatas
@@ -19,4 +20,5 @@ MonoBehaviour:
   MoneyWon: 5
   VotersLost: 2
   MoneyLost: 7
+  BCardPrice: 1000000
   Category: 2

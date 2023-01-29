@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: SeguroDental
   m_EditorClassIdentifier: 
+  CardId: SeguroDental
   TitleId: Seguro Dental
   LeftAttributeId: "P\xFAblico"
   RightAttributeId: Privado
@@ -19,6 +20,7 @@ MonoBehaviour:
   MoneyWon: 1
   VotersLost: 1
   MoneyLost: 1
+  BCardPrice: 1000000
   Category: 4
   Combos:
   - {fileID: 11400000, guid: 43bd7912b75d12b44b9acb908cd68465, type: 2}
