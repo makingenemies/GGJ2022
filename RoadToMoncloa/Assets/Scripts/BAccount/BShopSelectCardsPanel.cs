@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,15 +7,19 @@ public class BShopSelectCardsPanel : MonoBehaviour
 {
     [SerializeField] private Button _confirmSelectionButton;
     [SerializeField] private List<Transform> _cardPlaceHolders;
-
-    public List<Transform> CardPlaceHolders => _cardPlaceHolders;
+    [SerializeField] private SelectBShopCard _cardPrefab;
+    [SerializeField] private TextMeshProUGUI _cardsSelectedCostText;
 
     private EventBus _eventBus;
+    private GameState _gameState;
+
+    private int _cardsCounter;
 
     private void Start()
     {
         _eventBus = FindObjectOfType<EventBus>();
-        DisableConfirmSelectionButton();
+        _gameState = FindObjectOfType<GameState>();
+        _confirmSelectionButton.interactable = false;
     }
 
     public void SetActive(bool active)
@@ -22,14 +27,34 @@ public class BShopSelectCardsPanel : MonoBehaviour
         gameObject.SetActive(active);
     }
 
-    public void EnableConfirmSelectionButton()
+    public SelectBShopCard InstantiateCard()
     {
-        _confirmSelectionButton.interactable = true;
+        return Instantiate(_cardPrefab, _cardPlaceHolders[_cardsCounter++]).GetComponent<SelectBShopCard>();
     }
 
-    public void DisableConfirmSelectionButton()
+    public void UpdateCostText(int selectedCardsCost)
     {
-        _confirmSelectionButton.interactable = false;
+        _cardsSelectedCostText.text = $"Coste Actual: {selectedCardsCost} €";
+        ToggleTextColor(selectedCardsCost);
+        ToggleButton(selectedCardsCost);
+    }
+
+    private void ToggleTextColor(int selectedCardsCost)
+    {
+        var textColor = selectedCardsCost <= _gameState.BMoneyAmount ? Color.black : Color.red;
+        _cardsSelectedCostText.color = textColor;
+    }
+
+    private void ToggleButton(int selectedCardsCost)
+    {
+        if (selectedCardsCost > 0 && selectedCardsCost <= _gameState.BMoneyAmount)
+        {
+            _confirmSelectionButton.interactable = true;
+        }
+        else
+        {
+            _confirmSelectionButton.interactable = false;
+        }
     }
 
     public void ConfirmSelection()

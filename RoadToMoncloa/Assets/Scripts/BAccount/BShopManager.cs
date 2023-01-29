@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>, IEventHandler<CardsSelectionConfirmEvent>
 {
     [SerializeField] private BShopSelectCardsPanel _selectCardsPanel;
-    [SerializeField] private SelectBShopCard _cardPrefab;
     [SerializeField] CardData[] _cards;
-    [SerializeField] private TextMeshProUGUI _cardsSelectedCostText;
 
     private EventBus _eventBus;
     private GameState _gameState;
@@ -29,7 +26,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _generalSettings = FindObjectOfType<GeneralSettings>();
         _bMoneyCounter = FindObjectOfType<BMoneyCounter>();
 
-        UpdateCostText();
+        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
         SetUpCards();
         RegisterToEvents();
     }
@@ -67,7 +64,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 
         for(int i = 0; i<_cards.Length; i++)
         {
-            var card = Instantiate(_cardPrefab, _selectCardsPanel.CardPlaceHolders[i]);
+            var card = _selectCardsPanel.InstantiateCard();
             card.SetCardData(_cards[i]);
             _cardsById[card.CardData.CardId] = card;
         }
@@ -94,14 +91,8 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardDown();
         _cardsSelectedCost += _cardsById[cardId].CardData.BCardPrice;
-        UpdateCostText();
-        ToggleButton();
-        ToggleTextColor();
-    }
 
-    private void UpdateCostText()
-    {
-        _cardsSelectedCostText.text = $"Coste Actual: {_cardsSelectedCost} €";
+        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
     }
 
     private void UpdateBMoney()
@@ -115,27 +106,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardUp();
         _cardsSelectedCost -= _cardsById[cardId].CardData.BCardPrice;
-        UpdateCostText();
-        ToggleTextColor();
-        ToggleButton();
-    }
-
-    private void ToggleTextColor()
-    {
-        var textColor = _cardsSelectedCost <= _gameState.BMoneyAmount ? Color.black : Color.red;
-        _cardsSelectedCostText.color = textColor;
-    }
-
-    private void ToggleButton()
-    {
-        if (_cardsSelectedCost > 0 && _cardsSelectedCost <= _gameState.BMoneyAmount)
-        {
-            _selectCardsPanel.EnableConfirmSelectionButton();
-        }
-        else
-        {
-            _selectCardsPanel.DisableConfirmSelectionButton();
-        }
+        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
     }
 
     public void ConfirmPurchase()
@@ -152,9 +123,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 
         _gameState.BAccountCards = ownedCardsList.ToArray();
         _cardsSelectedCost = 0;
-        UpdateCostText();
-        ToggleButton();
-        ToggleTextColor();
+        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
         _selectedCardsIds.Clear();
 
     }
