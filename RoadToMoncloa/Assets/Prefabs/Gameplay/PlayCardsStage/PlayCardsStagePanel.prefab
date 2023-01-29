@@ -4458,6 +4458,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9e06105db4dd840acbe31815c5dfe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _liesZone: {fileID: 6174869139391819094}
+  _donateButton: {fileID: 6174869139848544699}
+  _cardPrefab: {fileID: 8806348977340509323, guid: b853236cf3120394cbc98457105b03b1, type: 3}
+  _cardsPlaceholderParent: {fileID: 6174869139663277891}
+  _cards3SpotsPrefab: {fileID: 3842414228185030258, guid: 8a11ccf2e4bc3934d867f426adeca904, type: 3}
+  _cards4SpotsPrefab: {fileID: 5642138180221056665, guid: 6ba9307444ac22545abec755009dfee9, type: 3}
+  _cards5SpotsPrefab: {fileID: 3842414228185030258, guid: 778a74201626aa249a126623752e4c14, type: 3}
+  _cards6SpotsPrefab: {fileID: 3010333269669986365, guid: 59d20f8981bd9cf41a5aafd7759e635a, type: 3}
   _pickMoreCardsButton: {fileID: 3295790262211682314}
 --- !u!1 &6174869139021692101
 GameObject:

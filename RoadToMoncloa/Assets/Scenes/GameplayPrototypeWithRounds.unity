@@ -669,11 +669,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &597839988 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6174869139391819094, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
-  m_PrefabInstance: {fileID: 6174869138794282274}
-  m_PrefabAsset: {fileID: 0}
 --- !u!212 &597839989 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6174869139391819095, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
@@ -1502,11 +1497,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1417425505 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6174869139663277891, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
-  m_PrefabInstance: {fileID: 6174869138794282274}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1451753253
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,21 +1641,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1893772990}
     - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _liesZone
-      value: 
-      objectReference: {fileID: 597839988}
-    - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _donateButton
-      value: 
-      objectReference: {fileID: 1600863385}
-    - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
       propertyPath: _wrongCardText
       value: 
       objectReference: {fileID: 593308584}
-    - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
-      propertyPath: _cardsPlaceholderParent
-      value: 
-      objectReference: {fileID: 1417425505}
     - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
       propertyPath: _defeatPanel
       value: 

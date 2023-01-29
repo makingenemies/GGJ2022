@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayCardsStageGameplayManager : 
     MonoBehaviour, 
@@ -12,25 +11,16 @@ public class PlayCardsStageGameplayManager :
     IEventHandler<CardDragStartedEvent>,
     IEventHandler<CardDragFinishedEvent>
 {
-    [SerializeField] GameObject _liesZone;
-    [SerializeField] Button _donateButton;
-    [SerializeField] PlayStageCard _cardPrefab;
-    [SerializeField] GameObject _cardsPlaceholderParent;
-    [SerializeField] GameObject _cards3SpotsPrefab;
-    [SerializeField] GameObject _cards4SpotsPrefab;
-    [SerializeField] GameObject _cards5SpotsPrefab;
-    [SerializeField] GameObject _cards6SpotsPrefab;
+    [SerializeField] float _playedCardScale;
     [SerializeField] string[] _zoneAnimationTriggerNames;
     [SerializeField] string _wrongVotersCardMessage;
     [SerializeField] string _wrongMoneyCardMessage;
     [SerializeField] TextMeshPro _wrongCardText;
-    [SerializeField] float _playedCardScale;
     [SerializeField] private bool _areModifiersActive;
 
     private GameplayManager _gameplayManager;
     private GameState _gameState;
     private GeneralSettings _generalSettings;
-    private GameplayDebugManager _gameplayDebugManager;
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
     private LiesManager _liesManager;
@@ -49,7 +39,6 @@ public class PlayCardsStageGameplayManager :
 
     private int _cardsCount;
     private BoardCardSlot _selectedSlot;
-    private GameObject _cardsPlaceholder;
     private Coroutine _wrongCardMessageCoroutine;
 
     public LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
@@ -71,22 +60,14 @@ public class PlayCardsStageGameplayManager :
         _gameplayManager = FindObjectOfType<GameplayManager>();
         _gameState = FindObjectOfType<GameState>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
-        _gameplayDebugManager = FindObjectOfType<GameplayDebugManager>();
         _moneyCounter = FindObjectOfType<MoneyCounter>();
         _votersCounter = FindObjectOfType<VotersCounter>();
         _liesManager = FindObjectOfType<LiesManager>();
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
         _playCardsPanel = FindObjectOfType<PlayCardsPanel>();
 
-        var boardCardSlots = FindObjectsOfType<BoardCardSlot>();
         var cards = FindObjectsOfType<PlayStageCard>();
-        _boardCardSlotsById = new Dictionary<string, BoardCardSlot>();
         _cardsById = new Dictionary<string, PlayStageCard>();
-
-        foreach (var slot in boardCardSlots)
-        {
-            _boardCardSlotsById[slot.Id] = slot;
-        }
 
         foreach (var card in cards)
         {
@@ -99,7 +80,14 @@ public class PlayCardsStageGameplayManager :
         _moneyZoneAnimator = GameObject.FindGameObjectWithTag(Tags.MoneyCardDropZone).GetComponentInChildren<Animator>();
 
         InitializePlayedCardsLists();
-        SetUpLiesUI();
+
+        _playCardsPanel.SetUpLiesUI();
+        _boardCardSlotsById = new Dictionary<string, BoardCardSlot>();
+        var boardCardSlots = FindObjectsOfType<BoardCardSlot>();
+        foreach (var slot in boardCardSlots)
+        {
+            _boardCardSlotsById[slot.Id] = slot;
+        }
 
         _playCardsPanel.SetActive(false);
     }
@@ -127,18 +115,6 @@ public class PlayCardsStageGameplayManager :
         _eventBus.Unregister<CardDragFinishedEvent>(this);
     }
 
-    private void SetUpLiesUI()
-    {
-        _donateButton.gameObject.SetActive(_gameState.CurrentLevelIndex > 0 || _gameplayDebugManager.LiesEnabledInFirstLevel);
-        _liesZone.SetActive(_gameState.CurrentLevelIndex > 0 || _gameplayDebugManager.LiesEnabledInFirstLevel);
-
-        if (_liesZone.activeInHierarchy)
-        {
-            var liesSlot = _liesZone.GetComponentInChildren<BoardCardSlot>();
-            _boardCardSlotsById[liesSlot.Id] = liesSlot;
-        }
-    }
-
     private void InitializePlayedCardsLists()
     {
         foreach (var cardPlayType in (CardPlayType[])Enum.GetValues(typeof(CardPlayType)))
@@ -159,19 +135,11 @@ public class PlayCardsStageGameplayManager :
 
     private void SetUpCards(List<CardData> _cardDatas)
     {
-        var cardsPlaceholderPrefabByNumberOfCards = new Dictionary<int, GameObject>
-        {
-            [3] = _cards3SpotsPrefab,
-            [4] = _cards4SpotsPrefab,
-            [5] = _cards5SpotsPrefab,
-            [6] = _cards6SpotsPrefab,
-        };
-
-        _cardsPlaceholder = Instantiate(cardsPlaceholderPrefabByNumberOfCards[_cardDatas.Count], _cardsPlaceholderParent.transform);
+        _playCardsPanel.SetUp(_cardDatas.Count);
 
         for (var i = 0; i < _cardDatas.Count; i++)
         {
-            var card = Instantiate(_cardPrefab, _cardsPlaceholder.transform.GetChild(i));
+            var card = _playCardsPanel.InstantiateCard();
             card.SetCardData(_cardDatas[i]);
         }
 
@@ -310,7 +278,7 @@ public class PlayCardsStageGameplayManager :
 
     public void ExitStage()
     {
-        Destroy(_cardsPlaceholder);
+        _playCardsPanel.Teardown();
         _playCardsPanel.SetActive(false);
     }
 
