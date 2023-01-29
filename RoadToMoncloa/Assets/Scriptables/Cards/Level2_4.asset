@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: Level2_4
   m_EditorClassIdentifier: 
+  CardId: Digitalizacion
   TitleId: "Digitalizaci\xF3n"
   LeftAttributeId: Renovables
   RightAttributeId: Reactores
@@ -19,4 +20,5 @@ MonoBehaviour:
   MoneyWon: 1
   VotersLost: 2
   MoneyLost: 1
+  BCardPrice: 1000000
   Category: 5

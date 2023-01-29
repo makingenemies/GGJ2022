@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: Level3_4
   m_EditorClassIdentifier: 
+  CardId: Alquileres
   TitleId: Alquileres
   LeftAttributeId: Regulados
   RightAttributeId: Sin regular
@@ -19,4 +20,5 @@ MonoBehaviour:
   MoneyWon: 3
   VotersLost: 3
   MoneyLost: 3
+  BCardPrice: 1000000
   Category: 2

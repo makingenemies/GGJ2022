@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: level4_4
   m_EditorClassIdentifier: 
+  CardId: GastosOficiales
   TitleId: Gastos oficiales
   LeftAttributeId: Bajar
   RightAttributeId: Aumentar
@@ -19,4 +20,5 @@ MonoBehaviour:
   MoneyWon: 7
   VotersLost: 5
   MoneyLost: 2
+  BCardPrice: 1000000
   Category: 3

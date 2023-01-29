@@ -5,6 +5,8 @@ public class GameState : MonoBehaviour
 {
     [SerializeField] private int _moneyAmount;
     [SerializeField] private int _votersCount;
+    [SerializeField] private int _bMoneyAmount;
+    [SerializeField] private string[] _bAccountCards;
 
     private static GameState _instance;
 
@@ -37,6 +39,14 @@ public class GameState : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    public string[] BAccountCards 
+    { 
+        get => _bAccountCards; 
+        set 
+        { 
+            _bAccountCards= value; 
+        }
+    }
     public int CurrentLevelIndex { get; set; }
 
     public int MoneyAmount 
@@ -46,6 +56,16 @@ public class GameState : MonoBehaviour
         {
             PreviousMoneyAmount = _moneyAmount;
             _moneyAmount = value;
+        }
+    }
+
+    public int BMoneyAmount
+    {
+        get => _bMoneyAmount;
+        set
+        {
+            PreviousBMoneyAmount = _bMoneyAmount;
+            _bMoneyAmount = value;
         }
     }
 
@@ -62,6 +82,7 @@ public class GameState : MonoBehaviour
     public int PreviousMoneyAmount { get; private set; }
 
     public int PreviousVotersCount { get; private set; }
+    public int PreviousBMoneyAmount { get; private set; }
 
     public int LiesCount { get; set; }
 

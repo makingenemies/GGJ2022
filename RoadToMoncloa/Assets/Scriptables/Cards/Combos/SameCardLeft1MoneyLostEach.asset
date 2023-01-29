@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd9c96b3be07d334b874fb58f2d65e8f, type: 3}
+  m_Name: SameCardLeft1MoneyLostEach
+  m_EditorClassIdentifier: 
+  Description: Si juegas dos cartas del mismo tipo a la izquierda, el coste de ambas
+    incrementa en 1.
+  PlayType: 0
+  MoneyWonModifier: 0
+  MoneyLostModifier: 1
+  VotersWonModifier: 0
+  VotersLostModifier: 0
