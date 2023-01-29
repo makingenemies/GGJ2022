@@ -125,4 +125,12 @@ public class SelectBShopCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
         position.y -= .6f;
         gameObject.transform.position = position;
     }
+
+    public void DestroySlot(string id)
+    {
+        if (id.Equals(Id))
+        {
+            Destroy(gameObject);
+        }
+    }
 }

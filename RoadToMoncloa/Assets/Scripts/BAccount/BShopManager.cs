@@ -151,7 +151,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         foreach (var cardId in _selectedCardsIds)
         {
             ownedCardsList.Add(cardId);
-            _cardsById[cardId].gameObject.SetActive(false);
+            Destroy(_cardsById[cardId].gameObject.GetComponentInParent<CardPriceTextController>().gameObject);
         }
 
         _gameState.BAccountCards = ownedCardsList.ToArray();
@@ -160,6 +160,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         ToggleButton();
         ToggleTextColor();
         _selectedCardsIds.Clear();
+
     }
 
     public void HandleEvent(CardsSelectionConfirmEvent @event)
