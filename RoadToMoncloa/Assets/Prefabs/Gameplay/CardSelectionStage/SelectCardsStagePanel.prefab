@@ -364,6 +364,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _confirmSelectionButton: {fileID: 7410172402576184166}
   _selectNCardsText: {fileID: 7282525100594794533}
+  _cardPrefab: {fileID: 8202027566859505698, guid: d68a2ee4feab831428f8e341dbfda60e, type: 3}
+  _cardsPanel3CardsPrefab: {fileID: 2120495698100275151, guid: 2b51c36de6a2c834d867f3b8de2d0b92, type: 3}
+  _cardsPanel4CardsPrefab: {fileID: -7579739602878751642, guid: 3f8ab63cae36ce24e8d5c4ad5ef9d32d, type: 3}
+  _cardsPanel5CardsPrefab: {fileID: 8137832502137245678, guid: a348e07c2d001434495771bf86b926ac, type: 3}
+  _cardsPanel6CardsPrefab: {fileID: 459224872566966720, guid: 5c7d102ac33205d44a640d45b4819e9d, type: 3}
+  _cardsPanel7CardsPrefab: {fileID: 6185446348000577336, guid: 7725630d7407ac942a9e44625a1ac3d5, type: 3}
 --- !u!1001 &6847135824463299840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -489,7 +495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9127442494846627075, guid: e7d97cd15b754be49b6d8b8a8f872f8e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 313
+      value: 312.4
       objectReference: {fileID: 0}
     - target: {fileID: 9127442494846627075, guid: e7d97cd15b754be49b6d8b8a8f872f8e, type: 3}
       propertyPath: m_AnchoredPosition.y
