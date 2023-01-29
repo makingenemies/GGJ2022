@@ -48,26 +48,6 @@ public class CardUI : MonoBehaviour
 
     private void Start()
     {
-        _strings = FindObjectOfType<Strings>();
-        _liesManager = FindObjectOfType<LiesManager>();
-
-        _titleText.text = _strings.GetString(_cardData.TitleId);
-        _leftAttributeText.text = _strings.GetString(_cardData.LeftAttributeId);
-        _rightAttributeText.text = _strings.GetString(_cardData.RightAttributeId);
-
-        var votersWon = _cardData.VotersWon;
-        if (_liesManager != null && _liesManager.IsLiesCountersFull)
-        {
-            votersWon--;
-        }
-        SetVotersWonText(votersWon);
-        SetMoneyWonText(_cardData.MoneyWon);
-
-        _negativeVotersText.text = $"-{_cardData.VotersLost}";
-        _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
-
-        _spriteRenderer.sprite = _spriteByCardCategory[_cardData.Category];
-
         _spriteSortingOrder = _spriteRenderer.sortingOrder;
         _textSortingOrder = _titleText.sortingOrder;
 
@@ -125,6 +105,26 @@ public class CardUI : MonoBehaviour
     public void SetCardData(CardData cardData)
     {
         _cardData = cardData;
+
+        _strings = FindObjectOfType<Strings>();
+        _liesManager = FindObjectOfType<LiesManager>();
+
+        _titleText.text = _strings.GetString(_cardData.TitleId);
+        _leftAttributeText.text = _strings.GetString(_cardData.LeftAttributeId);
+        _rightAttributeText.text = _strings.GetString(_cardData.RightAttributeId);
+
+        var votersWon = _cardData.VotersWon;
+        if (_liesManager != null && _liesManager.IsLiesCountersFull)
+        {
+            votersWon--;
+        }
+        SetVotersWonText(votersWon);
+        SetMoneyWonText(_cardData.MoneyWon);
+
+        _negativeVotersText.text = $"-{_cardData.VotersLost}";
+        _negativeMoneyText.text = $"-{_cardData.MoneyLost}";
+
+        _spriteRenderer.sprite = _spriteByCardCategory[_cardData.Category];
 
         _hasComboText = cardData.Combos.Length > 0;
 

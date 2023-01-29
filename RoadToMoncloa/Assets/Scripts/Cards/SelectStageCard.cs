@@ -5,11 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEventHandler<UnpausedEvent>
 {
+    [SerializeField] private CardUI _cardUI;
+
     private EventBus _eventBus;
     private PauseManager _pauseManager;
     private SoundEffectPlayer _soundEffectPlayer;
-
-    private CardUI _cardUI;
 
     private CardData _cardData;
 
@@ -22,7 +22,6 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     private void Awake()
     {
         Id = Guid.NewGuid().ToString();
-        _cardUI = GetComponent<CardUI>();
     }
 
     private void Start()
@@ -56,6 +55,7 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     public void SetCardData(CardData cardData)
     {
         _cardData = cardData;
+
         _cardUI.SetCardData(cardData);
     }
 

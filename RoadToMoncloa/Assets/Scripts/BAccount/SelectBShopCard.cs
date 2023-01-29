@@ -5,11 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class SelectBShopCard : MonoBehaviour, IEventHandler<PausedEvent>, IEventHandler<UnpausedEvent>
 {
+    [SerializeField] private CardUI _cardUI;
+
     private EventBus _eventBus;
     private SoundEffectPlayer _soundEffectPlayer;
     private CardPriceTextController _cardPriceTextController;
-
-    private CardUI _cardUI;
 
     private CardData _cardData;
 
@@ -23,7 +23,6 @@ public class SelectBShopCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     private void Awake()
     {
         Id = Guid.NewGuid().ToString();
-        _cardUI = GetComponent<CardUI>();
     }
 
     private void Start()
@@ -57,7 +56,7 @@ public class SelectBShopCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     public void SetCardData(CardData cardData)
     {
         _cardData = cardData;
-        _cardUI.SetCardData(cardData);
+
         var price = cardData.BCardPrice;
         _cardPriceTextController = GetComponentInParent<CardPriceTextController>();
 

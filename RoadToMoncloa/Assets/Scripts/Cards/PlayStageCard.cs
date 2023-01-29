@@ -9,16 +9,15 @@ using UnityEngine;
 public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEventHandler<LiesResetEvent>, IEventHandler<PausedEvent>, IEventHandler<UnpausedEvent>
 {
     [Header("Selected card")]
-    [SerializeField] int _selectedCardSpriteSortingOrder;
-    [SerializeField] int _selectedCardTextSortingOrder;
+    [SerializeField] private int _selectedCardSpriteSortingOrder;
+    [SerializeField] private int _selectedCardTextSortingOrder;
+    [SerializeField] private CardUI _cardUI;
 
     private PlayCardsStageGameplayManager _game;
     private EventBus _eventBus;
     private PauseManager _pauseManager;
     private LiesManager _liesManager;
     private SoundEffectPlayer _soundEffectPlayer;
-
-    private CardUI _cardUI;
 
     private Vector3 _screenPoint;
     private Vector3 _offset;
@@ -45,7 +44,6 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     private void Awake()
     {
         _id = Guid.NewGuid().ToString();
-        _cardUI = GetComponent<CardUI>();
     }
 
     private void Start()
@@ -296,6 +294,7 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     public void SetCardData(CardData cardData)
     {
         _cardData = cardData;
+
         _cardUI.SetCardData(cardData);
     }
 
