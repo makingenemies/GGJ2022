@@ -6,7 +6,7 @@ public class GameState : MonoBehaviour
     [SerializeField] private int _moneyAmount;
     [SerializeField] private int _votersCount;
     [SerializeField] private int _bMoneyAmount;
-    [SerializeField] private string[] _bAccountCards;
+    [SerializeField] private CardData[] _bAccountCards;
 
     private static GameState _instance;
 
@@ -39,7 +39,7 @@ public class GameState : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public string[] BAccountCards 
+    public CardData[] BAccountCards 
     { 
         get => _bAccountCards; 
         set 

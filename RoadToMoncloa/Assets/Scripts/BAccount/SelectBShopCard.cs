@@ -57,6 +57,8 @@ public class SelectBShopCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     {
         _cardData = cardData;
 
+        _cardUI.SetCardData(cardData);
+
         var price = cardData.BCardPrice;
         _cardPriceTextController = GetComponentInParent<CardPriceTextController>();
 

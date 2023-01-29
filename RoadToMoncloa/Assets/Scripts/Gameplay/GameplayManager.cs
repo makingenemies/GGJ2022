@@ -98,6 +98,8 @@ public class GameplayManager : MonoBehaviour
 
     private void EndLevel()
     {
+        _gameState.BMoneyAmount += _moneyCounter.CurrentAmount;
+
         if (_votersCounter.CurrentAmount >= CurrentLevelData.VotersGoal)
         {
             if (_gameState.CurrentLevelIndex < _generalSettings.LevelsData.Length - 1)
