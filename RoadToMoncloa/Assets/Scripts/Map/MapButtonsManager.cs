@@ -11,7 +11,7 @@ public class MapButtonsManager : MonoBehaviour
 
     void Start()
     {
-        _gameState = FindObjectOfType<GameState>();
+        _gameState = GameState.Instance;
         SetUpButtons();
     }
 

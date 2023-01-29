@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class GeneralSettings : MonoBehaviour
 {
-    private static GeneralSettings _instance;
-
     [SerializeField] private Language _language;
     [SerializeField] private LevelData[] _levelsData;
     [SerializeField] private int _initialVoterCount;
     [SerializeField] private int _initialMoneyAmount;
     [SerializeField] private int _maxNumberOfCardsInBAccount;
+
+    public static GeneralSettings Instance { get; private set; }
 
     public Language Language => _language;
     public LevelData[] LevelsData => _levelsData.ToArray();
@@ -19,12 +19,12 @@ public class GeneralSettings : MonoBehaviour
 
     public void Awake()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
             DontDestroyOnLoad(this.gameObject);
-            _instance = this;
+            Instance = this;
         }
-        else if (_instance != this)
+        else if (Instance != this)
         {
             Destroy(this.gameObject);
             return;

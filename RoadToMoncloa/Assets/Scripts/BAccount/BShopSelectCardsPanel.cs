@@ -22,7 +22,7 @@ public class BShopSelectCardsPanel : MonoBehaviour
         _gameState = GameState.Instance;
 
         _eventBus = FindObjectOfType<EventBus>();
-        _generalSettings = FindObjectOfType<GeneralSettings>();
+        _generalSettings = GeneralSettings.Instance;
         _confirmSelectionButton.interactable = false;
     }
 

@@ -24,7 +24,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
     {
         _soundEffectPlayer = SoundEffectPlayer.Instance;
         _gameState = GameState.Instance;
-        _generalSettings = FindObjectOfType<GeneralSettings>();
+        _generalSettings = GeneralSettings.Instance;
         _bMoneyCounter = FindObjectOfType<BMoneyCounter>();
 
         UpdateUI();

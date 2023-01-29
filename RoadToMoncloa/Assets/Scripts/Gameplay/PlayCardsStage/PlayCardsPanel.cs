@@ -38,7 +38,7 @@ public class PlayCardsPanel : MonoBehaviour
 
     private void Start()
     {
-        _gameState = FindObjectOfType<GameState>();
+        _gameState = GameState.Instance;
         _gameplayDebugManager = FindObjectOfType<GameplayDebugManager>();
     }
 

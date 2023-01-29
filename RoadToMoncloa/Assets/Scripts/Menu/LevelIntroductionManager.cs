@@ -6,7 +6,7 @@ public class LevelIntroductionManager : MonoBehaviour
 
     private void Start()
     {
-        var gameState = FindObjectOfType<GameState>();
+        var gameState = GameState.Instance;
 
         foreach (var dayInfoPanel in _dayInfoPanels)
         {

@@ -35,10 +35,10 @@ public class GameplayManager : MonoBehaviour
         _moneyCounter = FindObjectOfType<MoneyCounter>();
         _votersCounter = FindObjectOfType<VotersCounter>();
         _liesManager = FindObjectOfType<LiesManager>();
-        _gameState = FindObjectOfType<GameState>();
+        _gameState = GameState.Instance;
         _playCardsStage = FindObjectOfType<PlayCardsStageGameplayManager>();
         _selectCardsStage = FindObjectOfType<SelectCardsStageGameplayManager>();
-        _generalSettings = FindObjectOfType<GeneralSettings>();
+        _generalSettings = GeneralSettings.Instance;
         _donationManager = FindObjectOfType<DonationManager>();
         _soundEffectPlayer = SoundEffectPlayer.Instance;
 

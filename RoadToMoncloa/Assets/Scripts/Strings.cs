@@ -7,7 +7,7 @@ public class Strings : MonoBehaviour
 
     private void Start()
     {
-        _generalSettings = FindObjectOfType<GeneralSettings>();
+        _generalSettings = GeneralSettings.Instance;
     }
 
     public string GetString(string stringId)

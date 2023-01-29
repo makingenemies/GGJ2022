@@ -59,8 +59,8 @@ public class PlayCardsStageGameplayManager :
     private void Start()
     {
         _gameplayManager = FindObjectOfType<GameplayManager>();
-        _gameState = FindObjectOfType<GameState>();
-        _generalSettings = FindObjectOfType<GeneralSettings>();
+        _gameState = GameState.Instance;
+        _generalSettings = GeneralSettings.Instance;
         _gameplayDebugManager = FindObjectOfType<GameplayDebugManager>();
         _moneyCounter = FindObjectOfType<MoneyCounter>();
         _votersCounter = FindObjectOfType<VotersCounter>();

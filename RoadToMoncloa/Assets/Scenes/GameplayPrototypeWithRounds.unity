@@ -2222,6 +2222,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DebugManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7265313151562526219, guid: c73fec083b91e5148beedc17e7ae2db8, type: 3}
+      propertyPath: _bCardsInGameplayOverride.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c73fec083b91e5148beedc17e7ae2db8, type: 3}
 --- !u!1 &7395854272931468785 stripped

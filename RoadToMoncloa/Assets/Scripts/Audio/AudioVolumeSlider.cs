@@ -8,7 +8,7 @@ public class AudioVolumeSlider : Slider
     protected override void Start()
     {
         base.Start();
-        _audioVolumeController = FindObjectOfType<AudioVolumeController>();
+        _audioVolumeController = AudioVolumeController.Instance;
         value = _audioVolumeController.AudioVolume;
     }
 

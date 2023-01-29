@@ -4,23 +4,23 @@ using UnityEngine.SceneManagement;
 
 public class AudioVolumeController : MonoBehaviour
 {
-    private static AudioVolumeController _instance;
-
     [SerializeField] private int _audioVolume;
 
     private AudioSource[] _audioSources;
+
+    public static AudioVolumeController Instance { get; private set; }
 
     public float AudioVolume => _audioVolume;
 
     private void Awake()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
             DontDestroyOnLoad(this.gameObject);
-            _instance = this;
+            Instance = this;
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
-        else if (_instance != this)
+        else if (Instance != this)
         {
             Destroy(this.gameObject);
             return;
