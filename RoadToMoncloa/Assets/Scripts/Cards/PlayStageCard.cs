@@ -36,8 +36,8 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     public int VotersWonModifier { get; set; }
     public int MoneyLostModifier { get; set; }
     public int VotersLostModifier { get; set; }
-    public int MoneyWon => CardData.MoneyWon + MoneyWonModifier + (_liesManager.IsLiesCountersFull ? -1 : 0);
-    public int VotersWon => CardData.VotersWon + VotersWonModifier;
+    public int MoneyWon => CardData.MoneyWon + MoneyWonModifier;
+    public int VotersWon => CardData.VotersWon + VotersWonModifier + (_liesManager.IsLiesCountersFull ? -1 : 0);
     public int MoneyLost => CardData.MoneyLost + MoneyLostModifier;
     public int VotersLost => CardData.VotersLost + VotersLostModifier;
     public PlayStageCardType PlayStageCardType { get; set; }
@@ -252,15 +252,26 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
 
     public void HandleEvent(LiePlayedEvent @event)
     {
+        if (PlayStageCardType == PlayStageCardType.BCard)
+        {
+            return;
+        }
+
         if (!@event.IsLiesCounterFull)
         {
             return;
         }
+
         UpdateVotersWonText();
     }
 
     public void HandleEvent(LiesResetEvent @event)
     {
+        if (PlayStageCardType == PlayStageCardType.BCard)
+        {
+            return;
+        }
+
         UpdateVotersWonText();
     }
 

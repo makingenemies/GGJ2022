@@ -223,14 +223,8 @@ public class PlayCardsStageGameplayManager :
         }
 
         ApplyModifiers(card);
-        var votersWon = card.VotersWon;
 
-        if (_liesManager.IsLiesCountersFull)
-        {
-            votersWon = Math.Max(0, votersWon - 1);
-        }
-
-        _votersCounter.UpdateCurrentAmount(votersWon);
+        _votersCounter.UpdateCurrentAmount(card.VotersWon);
         _moneyCounter.UpdateCurrentAmount(-card.MoneyLost);
         _votersZoneAnimator.SetTrigger(GetRandomZoneAnimationTriggerName());
 
