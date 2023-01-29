@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -87,4 +88,11 @@ public class GameState : MonoBehaviour
     public int LiesCount { get; set; }
 
     public bool LiesDisabled { get; set; }
+
+    public void RemoveBAccountCard(CardData cardData)
+    {
+        var bCardsList = BAccountCards.ToList();
+        bCardsList.RemoveAll(c => c.CardId == cardData.CardId);
+        BAccountCards = bCardsList.ToArray();
+    }
 }

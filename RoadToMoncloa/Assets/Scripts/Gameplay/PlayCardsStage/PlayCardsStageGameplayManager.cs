@@ -139,6 +139,7 @@ public class PlayCardsStageGameplayManager :
         {
             var card = _playCardsPanel.BCardsPanel.InstantiateCard();
             card.SetCardData(bCards[i]);
+            card.PlayStageCardType = PlayStageCardType.BCard;
         }
     }
 
@@ -160,6 +161,7 @@ public class PlayCardsStageGameplayManager :
         {
             var card = _playCardsPanel.InstantiateCard();
             card.SetCardData(_cardDatas[i]);
+            card.PlayStageCardType = PlayStageCardType.NormalCard;
         }
 
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
@@ -286,13 +288,32 @@ public class PlayCardsStageGameplayManager :
 
     private void TrackPlayedCard(PlayStageCard card, CardPlayType playType)
     {
+        switch (card.PlayStageCardType)
+        {
+            case PlayStageCardType.NormalCard:
+                TrackPlayedNormalCard();
+                break;
+            case PlayStageCardType.BCard:
+                TrackPlayedBCard(card);
+                break;
+            default:
+                break;
+        }
+        _cardsPlayedByPlayType[playType].Add(card);
+    }
+
+    private void TrackPlayedNormalCard()
+    {
         _cardsCount--;
         if (_cardsCount <= 0)
         {
             _gameplayManager.EndRound();
         }
+    }
 
-        _cardsPlayedByPlayType[playType].Add(card);
+    private void TrackPlayedBCard(PlayStageCard card)
+    {
+        _gameState.RemoveBAccountCard(card.CardData);
     }
 
     public void ExitStage()

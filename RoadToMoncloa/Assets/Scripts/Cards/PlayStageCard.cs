@@ -40,6 +40,7 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     public int VotersWon => CardData.VotersWon + VotersWonModifier;
     public int MoneyLost => CardData.MoneyLost + MoneyLostModifier;
     public int VotersLost => CardData.VotersLost + VotersLostModifier;
+    public PlayStageCardType PlayStageCardType { get; set; }
 
     private void Awake()
     {
