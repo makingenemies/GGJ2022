@@ -9,7 +9,9 @@ public class PlayCardsStageGameplayManager :
     IEventHandler<BoardCardSlotEnteredEvent>, 
     IEventHandler<BoardCardSlotExitedEvent>,
     IEventHandler<CardDragStartedEvent>,
-    IEventHandler<CardDragFinishedEvent>
+    IEventHandler<CardDragFinishedEvent>,
+    IEventHandler<PausedEvent>,
+    IEventHandler<UnpausedEvent>
 {
     [SerializeField] float _playedCardScale;
     [SerializeField] string[] _zoneAnimationTriggerNames;
@@ -41,6 +43,7 @@ public class PlayCardsStageGameplayManager :
     private int _cardsCount;
     private BoardCardSlot _selectedSlot;
     private Coroutine _wrongCardMessageCoroutine;
+    private bool _isStageActive;
 
     public LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
 
@@ -109,6 +112,8 @@ public class PlayCardsStageGameplayManager :
         _eventBus.Register<BoardCardSlotExitedEvent>(this);
         _eventBus.Register<CardDragStartedEvent>(this);
         _eventBus.Register<CardDragFinishedEvent>(this);
+        _eventBus.Register<PausedEvent>(this);
+        _eventBus.Register<UnpausedEvent>(this);
     }
 
     private void UnregisterFromEvents()
@@ -117,6 +122,8 @@ public class PlayCardsStageGameplayManager :
         _eventBus.Unregister<BoardCardSlotExitedEvent>(this);
         _eventBus.Unregister<CardDragStartedEvent>(this);
         _eventBus.Unregister<CardDragFinishedEvent>(this);
+        _eventBus.Unregister<PausedEvent>(this);
+        _eventBus.Unregister<UnpausedEvent>(this);
     }
 
     private void InitializePlayedCardsLists()
@@ -153,6 +160,8 @@ public class PlayCardsStageGameplayManager :
         _selectedSlot = null;
 
         SetUpCards(_cardDatas);
+
+        _isStageActive = true;
     }
 
     private void SetUpCards(List<CardData> _cardDatas)
@@ -316,6 +325,8 @@ public class PlayCardsStageGameplayManager :
     {
         _playCardsPanel.Teardown();
         _playCardsPanel.SetActive(false);
+
+        _isStageActive = false;
     }
 
     private void TrackPlayedActionCard(PlayStageCard card)
@@ -409,5 +420,21 @@ public class PlayCardsStageGameplayManager :
     public void EnableButtonToMoveToNextStage()
     {
         _playCardsPanel.EnableRoundEndedUIComponents();
+    }
+
+    public void HandleEvent(PausedEvent @event)
+    {
+        if (_isStageActive)
+        {
+            _playCardsPanel.SetActive(false);
+        }
+    }
+
+    public void HandleEvent(UnpausedEvent @event)
+    {
+        if (_isStageActive)
+        {
+            _playCardsPanel.SetActive(true);
+        }
     }
 }

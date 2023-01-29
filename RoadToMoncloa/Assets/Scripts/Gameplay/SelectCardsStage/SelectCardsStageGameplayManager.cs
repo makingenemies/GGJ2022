@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<SelectStageCardClickedEvent>, IEventHandler<CardsSelectionConfirmEvent>
+public class SelectCardsStageGameplayManager : 
+    MonoBehaviour, 
+    IEventHandler<SelectStageCardClickedEvent>, 
+    IEventHandler<CardsSelectionConfirmEvent>,
+    IEventHandler<PausedEvent>,
+    IEventHandler<UnpausedEvent>
 {
     [SerializeField] private SelectCardsStageMainPanel _selectCardsMainPanel;
 
@@ -11,10 +16,11 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
     private EventBus _eventBus;
     private SoundEffectPlayer _soundEffectPlayer;
 
-    private HashSet<string> _selectedCardsIds = new HashSet<string>();
-    private Dictionary<string, SelectStageCard> _cardsById = new Dictionary<string, SelectStageCard>();
     private CardsSelectionRoundConfig _cardSelectionConfig;
     private List<CardData> _nonOfferedCards;
+    private bool _isStageActive;
+    private Dictionary<string, SelectStageCard> _cardsById = new Dictionary<string, SelectStageCard>();
+    private HashSet<string> _selectedCardsIds = new HashSet<string>();
 
     private int SelectedCardsCount => _selectedCardsIds.Count;
 
@@ -34,6 +40,8 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
 
             _eventBus.Register<SelectStageCardClickedEvent>(this);
             _eventBus.Register<CardsSelectionConfirmEvent>(this);
+            _eventBus.Register<PausedEvent>(this);
+            _eventBus.Register<UnpausedEvent>(this);
         }
     }
 
@@ -41,6 +49,8 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
     {
         _eventBus.Unregister<SelectStageCardClickedEvent>(this);
         _eventBus.Unregister<CardsSelectionConfirmEvent>(this);
+        _eventBus.Unregister<PausedEvent>(this);
+        _eventBus.Unregister<UnpausedEvent>(this);
     }
 
     private void OnEnable()
@@ -77,6 +87,8 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         _cardsById.Clear();
 
         SetUpCards();
+
+        _isStageActive = true;
     }
 
     private void ValidateCardSelectionConfig()
@@ -168,6 +180,24 @@ public class SelectCardsStageGameplayManager : MonoBehaviour, IEventHandler<Sele
         _selectCardsMainPanel.Teardown();
         _selectCardsMainPanel.SetActive(false);
 
+        _isStageActive = false;
+
         _gameplayManager.StartPlayCardsStage(_selectedCardsIds.Select(cardId => _cardsById[cardId].CardData).ToList());
+    }
+
+    public void HandleEvent(PausedEvent @event)
+    {
+        if (_isStageActive)
+        {
+            _selectCardsMainPanel.SetActive(false);
+        }
+    }
+
+    public void HandleEvent(UnpausedEvent @event)
+    {
+        if (_isStageActive)
+        {
+            _selectCardsMainPanel.SetActive(true);
+        }
     }
 }
