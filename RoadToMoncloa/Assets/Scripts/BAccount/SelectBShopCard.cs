@@ -7,6 +7,7 @@ public class SelectBShopCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
 {
     private EventBus _eventBus;
     private SoundEffectPlayer _soundEffectPlayer;
+    private CardPriceTextController _cardPriceTextController;
 
     private CardUI _cardUI;
 
@@ -18,6 +19,7 @@ public class SelectBShopCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     public string Id { get; private set; }
     public CardData CardData => _cardData;
 
+
     private void Awake()
     {
         Id = Guid.NewGuid().ToString();
@@ -27,6 +29,7 @@ public class SelectBShopCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     private void Start()
     {
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        
 
         if (_eventBus == null)
         {
@@ -55,6 +58,10 @@ public class SelectBShopCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     {
         _cardData = cardData;
         _cardUI.SetCardData(cardData);
+        var price = cardData.BCardPrice;
+        _cardPriceTextController = GetComponentInParent<CardPriceTextController>();
+
+        _cardPriceTextController.UpdateCardPriceText(price);
     }
 
     private void OnMouseEnter()
@@ -83,9 +90,9 @@ public class SelectBShopCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
 
     void OnMouseDown()
     {
-        _eventBus.PublishEvent(new SelectStageCardClickedEvent
+        _eventBus.PublishEvent(new BShopCardSelectedEvent
         {
-            CardId = Id,
+            CardId = _cardData.CardId,
         });
     }
 

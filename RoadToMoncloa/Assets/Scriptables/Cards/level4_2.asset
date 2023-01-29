@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: level4_2
   m_EditorClassIdentifier: 
+  CardId: RelacionesInternacionales
   TitleId: Relaciones internacionales
   LeftAttributeId: USA
   RightAttributeId: Europa
@@ -19,4 +20,5 @@ MonoBehaviour:
   MoneyWon: 6
   VotersLost: 4
   MoneyLost: 6
+  BCardPrice: 1000000
   Category: 3

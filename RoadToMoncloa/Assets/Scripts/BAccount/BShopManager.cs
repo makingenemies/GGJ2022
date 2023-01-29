@@ -1,21 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
-public class BShopManager : MonoBehaviour, IEventHandler<SelectStageCardClickedEvent>, IEventHandler<CardsSelectionConfirmEvent>
+public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>, IEventHandler<CardsSelectionConfirmEvent>
 {
     private const int NumberOfRequiredCards = 3;
 
     [SerializeField] private SelectCardsPanel _selectCardsPanel;
     [SerializeField] private SelectBShopCard _cardPrefab;
     [SerializeField] CardData[] _cards;
+    [SerializeField] private TextMeshProUGUI _cardsSelectedCostText;
 
     private EventBus _eventBus;
     private GameState _gameState;
     private SoundEffectPlayer _soundEffectPlayer;
     private GeneralSettings _generalSettings;
 
-    private int _usedCardsCounter = 0;
+    private int _cardsSelectedCost;
     private HashSet<string> _selectedCardsIds = new HashSet<string>();
     private Dictionary<string, SelectBShopCard> _cardsById = new Dictionary<string, SelectBShopCard>();
 
@@ -29,6 +31,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<SelectStageCardClickedE
         _gameState= FindObjectOfType<GameState>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
 
+        UpdateCostText();
         SetUpCards();
         RegisterToEvents();
     }
@@ -39,14 +42,14 @@ public class BShopManager : MonoBehaviour, IEventHandler<SelectStageCardClickedE
         {
             _eventBus = FindObjectOfType<EventBus>();
 
-            _eventBus.Register<SelectStageCardClickedEvent>(this);
+            _eventBus.Register<BShopCardSelectedEvent>(this);
             _eventBus.Register<CardsSelectionConfirmEvent>(this);
         }
     }
 
     private void UnregisterFromEvents()
     {
-        _eventBus.Unregister<SelectStageCardClickedEvent>(this);
+        _eventBus.Unregister<BShopCardSelectedEvent>(this);
         _eventBus.Unregister<CardsSelectionConfirmEvent>(this);
     }
 
@@ -62,24 +65,21 @@ public class BShopManager : MonoBehaviour, IEventHandler<SelectStageCardClickedE
 
     public void SetUpCards()
     {
-        _usedCardsCounter = 0;
         _selectCardsPanel.SetActive(true);
 
-        foreach (var cardPlaceHolder in _selectCardsPanel.CardPlaceHolders)
+        for(int i = 0; i<_cards.Length; i++)
         {
-            var card = Instantiate(_cardPrefab, cardPlaceHolder);
-            card.SetCardData(_cards[_usedCardsCounter]);
-            _cardsById[card.Id] = card;
-
-            _usedCardsCounter++;
-            _usedCardsCounter %= CurrentLevelData.Cards.Length;
+            var card = Instantiate(_cardPrefab, _selectCardsPanel.CardPlaceHolders[i]);
+            card.SetCardData(_cards[i]);
+            _cardsById[card.CardData.CardId] = card;
         }
     }
 
-    public void HandleEvent(SelectStageCardClickedEvent @event)
+    public void HandleEvent(BShopCardSelectedEvent @event)
     {
         if (!IsCardSelected(@event.CardId))
         {
+
             TrySelectCard(@event.CardId);
         }
         else
@@ -92,19 +92,28 @@ public class BShopManager : MonoBehaviour, IEventHandler<SelectStageCardClickedE
 
     private void TrySelectCard(string cardId)
     {
-        if (SelectedCardsCount >= NumberOfRequiredCards)
-        {
-            return;
-        }
-
         _selectedCardsIds.Add(cardId);
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardDown();
+        _cardsSelectedCost += _cardsById[cardId].CardData.BCardPrice;
+        UpdateCostText();
 
-        if (SelectedCardsCount >= NumberOfRequiredCards)
+        if (_cardsSelectedCost > 0 && _cardsSelectedCost <= _gameState.BMoneyAmount)
         {
             _selectCardsPanel.EnableConfirmSelectionButton();
         }
+        else
+        {
+            _selectCardsPanel.DisableConfirmSelectionButton();
+        }
+
+        var textColor = _cardsSelectedCost <= _gameState.BMoneyAmount ? Color.black: Color.red;
+        _cardsSelectedCostText.color= textColor;
+    }
+
+    private void UpdateCostText()
+    {
+        _cardsSelectedCostText.text = $"Coste Actual: {_cardsSelectedCost} €";
     }
 
     private void UnselectCard(string cardId)
@@ -112,8 +121,29 @@ public class BShopManager : MonoBehaviour, IEventHandler<SelectStageCardClickedE
         _selectedCardsIds.Remove(cardId);
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardUp();
+        _cardsSelectedCost -= _cardsById[cardId].CardData.BCardPrice;
+        UpdateCostText();
+        var textColor = _cardsSelectedCost <= _gameState.BMoneyAmount ? Color.black : Color.red;
+        _cardsSelectedCostText.color = textColor;
 
-        _selectCardsPanel.DisableConfirmSelectionButton();
+        if (_cardsSelectedCost > 0 && _cardsSelectedCost <= _gameState.BMoneyAmount)
+        {
+            _selectCardsPanel.EnableConfirmSelectionButton();
+        }
+        else
+        {
+            _selectCardsPanel.DisableConfirmSelectionButton();
+        }
+    }
+
+    public void ConfirmPurchase()
+    {
+        var ownedCardsList = _gameState.BAccountCards.ToList();
+        foreach (var cardId in _selectedCardsIds)
+        {
+            ownedCardsList.Add(cardId);
+        }
+        _gameState.BAccountCards = ownedCardsList.ToArray();
     }
 
     public void HandleEvent(CardsSelectionConfirmEvent @event)

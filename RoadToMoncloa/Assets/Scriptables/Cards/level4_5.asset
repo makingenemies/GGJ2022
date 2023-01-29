@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: level4_5
   m_EditorClassIdentifier: 
+  CardId: TerrenoEdificable
   TitleId: Terreno edificable
   LeftAttributeId: colegio
   RightAttributeId: residencia oficial
@@ -19,4 +20,5 @@ MonoBehaviour:
   MoneyWon: 9
   VotersLost: 7
   MoneyLost: 4
+  BCardPrice: 1000000
   Category: 1
