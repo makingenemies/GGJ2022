@@ -5,11 +5,14 @@ public class GameplayDebugManager : MonoBehaviour
     [SerializeField] private TMPro.TMP_InputField _moneyAmountInputField;
     [SerializeField] private TMPro.TMP_InputField _votersCountInputField;
     [SerializeField] private bool _liesEnabledInFirstLevel;
+    [SerializeField] private CardData[] _bCardsInGameplayOverride;
 
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
 
     public bool LiesEnabledInFirstLevel => _liesEnabledInFirstLevel;
+
+    public CardData[] BCardsInGameplayOverride => _bCardsInGameplayOverride;
 
     private void Start()
     {

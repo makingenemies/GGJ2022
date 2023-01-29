@@ -644,6 +644,7 @@ MonoBehaviour:
   _moneyAmountInputField: {fileID: 0}
   _votersCountInputField: {fileID: 0}
   _liesEnabledInFirstLevel: 1
+  _bCardsInGameplayOverride: []
 --- !u!4 &567561190
 Transform:
   m_ObjectHideFlags: 0
@@ -1644,6 +1645,10 @@ PrefabInstance:
       propertyPath: _wrongCardText
       value: 
       objectReference: {fileID: 593308584}
+    - target: {fileID: 5346737730957765966, guid: a25468952c551584f841d73e31c206ab, type: 3}
+      propertyPath: _playedCardScale
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
       propertyPath: _defeatPanel
       value: 
@@ -2118,10 +2123,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1490171862700432405, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3295790262211682314, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
