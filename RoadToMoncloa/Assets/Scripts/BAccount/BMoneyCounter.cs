@@ -37,6 +37,6 @@ public class BMoneyCounter : MonoBehaviour
 
     private void RefreshText()
     {
-        _text.text = $"Fondos Caja B: {_currentAmount}";
+        _text.text = $"Fondos Caja B: {_currentAmount} €";
     }
 }

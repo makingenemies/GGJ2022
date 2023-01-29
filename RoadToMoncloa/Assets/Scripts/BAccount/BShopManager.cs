@@ -16,6 +16,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
     private GameState _gameState;
     private SoundEffectPlayer _soundEffectPlayer;
     private GeneralSettings _generalSettings;
+    private BMoneyCounter _bMoneyCounter;
 
     private int _cardsSelectedCost;
     private HashSet<string> _selectedCardsIds = new HashSet<string>();
@@ -30,6 +31,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
         _gameState= FindObjectOfType<GameState>();
         _generalSettings = FindObjectOfType<GeneralSettings>();
+        _bMoneyCounter = FindObjectOfType<BMoneyCounter>();
 
         UpdateCostText();
         SetUpCards();
@@ -97,23 +99,18 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _cardsById[cardId].MoveCardDown();
         _cardsSelectedCost += _cardsById[cardId].CardData.BCardPrice;
         UpdateCostText();
-
-        if (_cardsSelectedCost > 0 && _cardsSelectedCost <= _gameState.BMoneyAmount)
-        {
-            _selectCardsPanel.EnableConfirmSelectionButton();
-        }
-        else
-        {
-            _selectCardsPanel.DisableConfirmSelectionButton();
-        }
-
-        var textColor = _cardsSelectedCost <= _gameState.BMoneyAmount ? Color.black: Color.red;
-        _cardsSelectedCostText.color= textColor;
+        ToggleButton();
+        ToggleTextColor();
     }
 
     private void UpdateCostText()
     {
         _cardsSelectedCostText.text = $"Coste Actual: {_cardsSelectedCost} €";
+    }
+
+    private void UpdateBMoney()
+    {
+        _gameState.BMoneyAmount -= _cardsSelectedCost;
     }
 
     private void UnselectCard(string cardId)
@@ -123,9 +120,18 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _cardsById[cardId].MoveCardUp();
         _cardsSelectedCost -= _cardsById[cardId].CardData.BCardPrice;
         UpdateCostText();
+        ToggleTextColor();
+        ToggleButton();
+    }
+
+    private void ToggleTextColor()
+    {
         var textColor = _cardsSelectedCost <= _gameState.BMoneyAmount ? Color.black : Color.red;
         _cardsSelectedCostText.color = textColor;
+    }
 
+    private void ToggleButton()
+    {
         if (_cardsSelectedCost > 0 && _cardsSelectedCost <= _gameState.BMoneyAmount)
         {
             _selectCardsPanel.EnableConfirmSelectionButton();
@@ -138,12 +144,22 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 
     public void ConfirmPurchase()
     {
+        UpdateBMoney();
+        _bMoneyCounter.UpdateCurrentAmount(-_cardsSelectedCost);
         var ownedCardsList = _gameState.BAccountCards.ToList();
+
         foreach (var cardId in _selectedCardsIds)
         {
             ownedCardsList.Add(cardId);
+            _cardsById[cardId].gameObject.SetActive(false);
         }
+
         _gameState.BAccountCards = ownedCardsList.ToArray();
+        _cardsSelectedCost = 0;
+        UpdateCostText();
+        ToggleButton();
+        ToggleTextColor();
+        _selectedCardsIds.Clear();
     }
 
     public void HandleEvent(CardsSelectionConfirmEvent @event)
