@@ -35,12 +35,12 @@ public class GameplayManager : MonoBehaviour
         _moneyCounter = FindObjectOfType<MoneyCounter>();
         _votersCounter = FindObjectOfType<VotersCounter>();
         _liesManager = FindObjectOfType<LiesManager>();
-        _gameState = FindObjectOfType<GameState>();
+        _gameState = GameState.Instance;
         _playCardsStage = FindObjectOfType<PlayCardsStageGameplayManager>();
         _selectCardsStage = FindObjectOfType<SelectCardsStageGameplayManager>();
-        _generalSettings = FindObjectOfType<GeneralSettings>();
+        _generalSettings = GeneralSettings.Instance;
         _donationManager = FindObjectOfType<DonationManager>();
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
 
         _votersCounter.SetMaxAmount(CurrentLevelData.VotersGoal);
 
@@ -62,16 +62,13 @@ public class GameplayManager : MonoBehaviour
             _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
         }
 
+        Debug.Log($"Using {_soundEffectPlayer.GetInstanceID()}");
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
 
         StartNextRound();
     }
 
-    /// <summary>
-    /// This is temporary, setting up the same data for both rounds
-    /// until we have the layout for 3 cards and the card selection stage.
-    /// </summary>
-    private void StartNextRound()
+   private void StartNextRound()
     {
         _playCardsStage.ExitStage();
 
@@ -98,8 +95,6 @@ public class GameplayManager : MonoBehaviour
 
     private void EndLevel()
     {
-        _gameState.BMoneyAmount += _moneyCounter.CurrentAmount;
-
         if (_votersCounter.CurrentAmount >= CurrentLevelData.VotersGoal)
         {
             if (_gameState.CurrentLevelIndex < _generalSettings.LevelsData.Length - 1)

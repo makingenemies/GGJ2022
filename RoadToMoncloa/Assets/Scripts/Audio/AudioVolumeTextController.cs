@@ -9,7 +9,7 @@ public class AudioVolumeTextController : MonoBehaviour
 
     protected void Start()
     {
-        _audioVolumeController = FindObjectOfType<AudioVolumeController>();
+        _audioVolumeController = AudioVolumeController.Instance;
         _valueText.text = ((int)_audioVolumeController.AudioVolume).ToString();
     }
 

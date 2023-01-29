@@ -23,7 +23,7 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
         _eventBus = FindObjectOfType<EventBus>();
         _pauseManager = FindObjectOfType<PauseManager>();
         _gameplayManager = FindObjectOfType<GameplayManager>();
-        soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        soundEffectPlayer = SoundEffectPlayer.Instance;
 
         _eventBus.Register(this);
     }

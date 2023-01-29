@@ -7,7 +7,7 @@ public class LevelSelectionDebugManager : MonoBehaviour
 
     private void Start()
     {
-        _gameState = FindObjectOfType<GameState>();
+        _gameState = GameState.Instance;
     }
 
     public void StartLevel(int levelIndex)

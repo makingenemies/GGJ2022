@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class SoundEffectPlayer : MonoBehaviour
 {
-    private static SoundEffectPlayer _instance;
+    public static SoundEffectPlayer Instance { get; private set; }
 
     [SerializeField] private AudioClip[] _audioClips;
 
@@ -14,14 +14,17 @@ public class SoundEffectPlayer : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance == null)
+        Debug.Log("A");
+        if (Instance == null)
         {
+            Debug.Log($"Setting {GetInstanceID()} as singleton");
             DontDestroyOnLoad(this.gameObject);
-            _instance = this;
+            Instance = this;
         }
-        else if (_instance != this)
+        else if (Instance != this)
         {
-            Destroy(this.gameObject);
+            Debug.Log($"Destroying {GetInstanceID()}");
+            Destroy(this);
             return;
         }
 
@@ -35,6 +38,7 @@ public class SoundEffectPlayer : MonoBehaviour
 
     public void PlayClip(string clipName)
     {
+        Debug.Log("B");
         _audioSource.PlayOneShot(_audioClipsByName[clipName]);
     }
 }

@@ -29,7 +29,7 @@ public class ClickbaitManager : MonoBehaviour
 
     private void Start()
     {
-        _gameState = FindObjectOfType<GameState>();
+        _gameState = GameState.Instance;
 
         _responsePanel.SetActive(false);
         _headlineTitleText.gameObject.SetActive(false);

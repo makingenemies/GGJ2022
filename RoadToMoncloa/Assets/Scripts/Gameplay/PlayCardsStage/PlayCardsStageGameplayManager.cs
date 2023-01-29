@@ -9,7 +9,9 @@ public class PlayCardsStageGameplayManager :
     IEventHandler<BoardCardSlotEnteredEvent>, 
     IEventHandler<BoardCardSlotExitedEvent>,
     IEventHandler<CardDragStartedEvent>,
-    IEventHandler<CardDragFinishedEvent>
+    IEventHandler<CardDragFinishedEvent>,
+    IEventHandler<PausedEvent>,
+    IEventHandler<UnpausedEvent>
 {
     [SerializeField] float _playedCardScale;
     [SerializeField] string[] _zoneAnimationTriggerNames;
@@ -21,6 +23,7 @@ public class PlayCardsStageGameplayManager :
     private GameplayManager _gameplayManager;
     private GameState _gameState;
     private GeneralSettings _generalSettings;
+    private GameplayDebugManager _gameplayDebugManager;
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
     private LiesManager _liesManager;
@@ -40,6 +43,7 @@ public class PlayCardsStageGameplayManager :
     private int _cardsCount;
     private BoardCardSlot _selectedSlot;
     private Coroutine _wrongCardMessageCoroutine;
+    private bool _isStageActive;
 
     public LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
 
@@ -58,12 +62,13 @@ public class PlayCardsStageGameplayManager :
     private void Start()
     {
         _gameplayManager = FindObjectOfType<GameplayManager>();
-        _gameState = FindObjectOfType<GameState>();
-        _generalSettings = FindObjectOfType<GeneralSettings>();
+        _gameState = GameState.Instance;
+        _generalSettings = GeneralSettings.Instance;
+        _gameplayDebugManager = FindObjectOfType<GameplayDebugManager>();
         _moneyCounter = FindObjectOfType<MoneyCounter>();
         _votersCounter = FindObjectOfType<VotersCounter>();
         _liesManager = FindObjectOfType<LiesManager>();
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
         _playCardsPanel = FindObjectOfType<PlayCardsPanel>();
 
         var cards = FindObjectsOfType<PlayStageCard>();
@@ -89,6 +94,8 @@ public class PlayCardsStageGameplayManager :
             _boardCardSlotsById[slot.Id] = slot;
         }
 
+        SetUpBCards();
+
         _playCardsPanel.SetActive(false);
     }
 
@@ -105,6 +112,8 @@ public class PlayCardsStageGameplayManager :
         _eventBus.Register<BoardCardSlotExitedEvent>(this);
         _eventBus.Register<CardDragStartedEvent>(this);
         _eventBus.Register<CardDragFinishedEvent>(this);
+        _eventBus.Register<PausedEvent>(this);
+        _eventBus.Register<UnpausedEvent>(this);
     }
 
     private void UnregisterFromEvents()
@@ -113,6 +122,8 @@ public class PlayCardsStageGameplayManager :
         _eventBus.Unregister<BoardCardSlotExitedEvent>(this);
         _eventBus.Unregister<CardDragStartedEvent>(this);
         _eventBus.Unregister<CardDragFinishedEvent>(this);
+        _eventBus.Unregister<PausedEvent>(this);
+        _eventBus.Unregister<UnpausedEvent>(this);
     }
 
     private void InitializePlayedCardsLists()
@@ -120,6 +131,24 @@ public class PlayCardsStageGameplayManager :
         foreach (var cardPlayType in (CardPlayType[])Enum.GetValues(typeof(CardPlayType)))
         {
             _cardsPlayedByPlayType[cardPlayType] = new List<PlayStageCard>();
+        }
+    }
+
+    private void SetUpBCards()
+    {
+        var bCards = _gameplayDebugManager.BCardsInGameplayOverride;
+        if (bCards is null || bCards.Length == 0)
+        {
+            bCards = _gameState.BAccountOwnedCards;
+        }
+
+        var numberOfBCards = Math.Min(bCards.Length, _generalSettings.MaxNumberOfCardsInBAccount);
+
+        for (var i = 0; i < numberOfBCards; i++)
+        {
+            var card = _playCardsPanel.BCardsPanel.InstantiateCard();
+            card.SetCardData(bCards[i]);
+            card.PlayStageCardType = PlayStageCardType.BCard;
         }
     }
 
@@ -131,6 +160,8 @@ public class PlayCardsStageGameplayManager :
         _selectedSlot = null;
 
         SetUpCards(_cardDatas);
+
+        _isStageActive = true;
     }
 
     private void SetUpCards(List<CardData> _cardDatas)
@@ -141,6 +172,7 @@ public class PlayCardsStageGameplayManager :
         {
             var card = _playCardsPanel.InstantiateCard();
             card.SetCardData(_cardDatas[i]);
+            card.PlayStageCardType = PlayStageCardType.NormalCard;
         }
 
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
@@ -202,14 +234,8 @@ public class PlayCardsStageGameplayManager :
         }
 
         ApplyModifiers(card);
-        var votersWon = card.VotersWon;
 
-        if (_liesManager.IsLiesCountersFull)
-        {
-            votersWon = Math.Max(0, votersWon - 1);
-        }
-
-        _votersCounter.UpdateCurrentAmount(votersWon);
+        _votersCounter.UpdateCurrentAmount(card.VotersWon);
         _moneyCounter.UpdateCurrentAmount(-card.MoneyLost);
         _votersZoneAnimator.SetTrigger(GetRandomZoneAnimationTriggerName());
 
@@ -267,19 +293,40 @@ public class PlayCardsStageGameplayManager :
 
     private void TrackPlayedCard(PlayStageCard card, CardPlayType playType)
     {
+        switch (card.PlayStageCardType)
+        {
+            case PlayStageCardType.NormalCard:
+                TrackPlayedNormalCard();
+                break;
+            case PlayStageCardType.BCard:
+                TrackPlayedBCard(card);
+                break;
+            default:
+                break;
+        }
+        _cardsPlayedByPlayType[playType].Add(card);
+    }
+
+    private void TrackPlayedNormalCard()
+    {
         _cardsCount--;
         if (_cardsCount <= 0)
         {
             _gameplayManager.EndRound();
         }
+    }
 
-        _cardsPlayedByPlayType[playType].Add(card);
+    private void TrackPlayedBCard(PlayStageCard card)
+    {
+        _gameState.RemoveBAccountOwnedCard(card.CardData);
     }
 
     public void ExitStage()
     {
         _playCardsPanel.Teardown();
         _playCardsPanel.SetActive(false);
+
+        _isStageActive = false;
     }
 
     private void TrackPlayedActionCard(PlayStageCard card)
@@ -373,5 +420,21 @@ public class PlayCardsStageGameplayManager :
     public void EnableButtonToMoveToNextStage()
     {
         _playCardsPanel.EnableRoundEndedUIComponents();
+    }
+
+    public void HandleEvent(PausedEvent @event)
+    {
+        if (_isStageActive)
+        {
+            _playCardsPanel.SetActive(false);
+        }
+    }
+
+    public void HandleEvent(UnpausedEvent @event)
+    {
+        if (_isStageActive)
+        {
+            _playCardsPanel.SetActive(true);
+        }
     }
 }

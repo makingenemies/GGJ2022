@@ -27,7 +27,7 @@ public class SelectStageCard : MonoBehaviour, IEventHandler<PausedEvent>, IEvent
     private void Start()
     {
         _pauseManager = FindObjectOfType<PauseManager>();
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
 
         if (_eventBus == null)
         {

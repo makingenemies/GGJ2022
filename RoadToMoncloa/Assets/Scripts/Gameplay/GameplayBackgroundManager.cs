@@ -9,7 +9,7 @@ public class GameplayBackgroundManager : MonoBehaviour
 
     private void Start()
     {
-        var gameState = FindObjectOfType<GameState>();
+        var gameState = GameState.Instance;
         Instantiate(_leftZoneBackgroundPrefabs[gameState.CurrentLevelIndex], _leftZoneParent.transform);
         Instantiate(_rightZoneBackgroundPrefabs[gameState.CurrentLevelIndex], _rightZoneParent.transform);
     }

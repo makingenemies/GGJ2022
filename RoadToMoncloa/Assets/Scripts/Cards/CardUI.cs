@@ -54,6 +54,15 @@ public class CardUI : MonoBehaviour
         HideComboDetailBox();
     }
 
+    public void IncreaseSortingLayer(int numberOfCardsBelow)
+    {
+        _spriteRenderer.sortingOrder += numberOfCardsBelow * 2;
+        _spriteSortingOrder = _spriteRenderer.sortingOrder;
+
+        SetTextsSortingOrder(_titleText.sortingOrder + numberOfCardsBelow * 2);
+        _textSortingOrder = _titleText.sortingOrder;
+    }
+
     public void SetVotersWonText(int votersWon)
     {
         if (votersWon > 0)

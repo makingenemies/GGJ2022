@@ -18,8 +18,8 @@ public class BMoneyCounter : MonoBehaviour
 
     private void Start()
     {
-        _gameState = FindObjectOfType<GameState>();
-        _currentAmount = _gameState.BMoneyAmount;
+        _gameState = GameState.Instance;
+        _currentAmount = _gameState.MoneyAmount;
         RefreshText();
     }
 

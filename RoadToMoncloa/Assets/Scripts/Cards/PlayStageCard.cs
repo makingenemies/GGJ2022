@@ -36,10 +36,11 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     public int VotersWonModifier { get; set; }
     public int MoneyLostModifier { get; set; }
     public int VotersLostModifier { get; set; }
-    public int MoneyWon => CardData.MoneyWon + MoneyWonModifier + (_liesManager.IsLiesCountersFull ? -1 : 0);
-    public int VotersWon => CardData.VotersWon + VotersWonModifier;
+    public int MoneyWon => CardData.MoneyWon + MoneyWonModifier;
+    public int VotersWon => CardData.VotersWon + VotersWonModifier + (_liesManager.IsLiesCountersFull ? -1 : 0);
     public int MoneyLost => CardData.MoneyLost + MoneyLostModifier;
     public int VotersLost => CardData.VotersLost + VotersLostModifier;
+    public PlayStageCardType PlayStageCardType { get; set; }
 
     private void Awake()
     {
@@ -51,7 +52,7 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         _game = FindObjectOfType<PlayCardsStageGameplayManager>();
         _pauseManager = FindObjectOfType<PauseManager>();
         _liesManager = FindObjectOfType<LiesManager>();
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
         _boxCollider = GetComponent<BoxCollider2D>();
 
         if (_eventBus == null)
@@ -79,10 +80,13 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
 
     private void OnDisable()
     {
-        _eventBus.Unregister<LiePlayedEvent>(this);
-        _eventBus.Unregister<LiesResetEvent>(this);
-        _eventBus.Unregister<PausedEvent>(this);
-        _eventBus.Unregister<UnpausedEvent>(this);
+        if (_eventBus != null)
+        {
+            _eventBus.Unregister<LiePlayedEvent>(this);
+            _eventBus.Unregister<LiesResetEvent>(this);
+            _eventBus.Unregister<PausedEvent>(this);
+            _eventBus.Unregister<UnpausedEvent>(this);
+        }
     }
 
     private void OnMouseEnter()
@@ -111,8 +115,8 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
 
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.MouseHoverCard);
 
-        gameObject.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
-        MoveCardUp();
+        GetComponent<PlayCardStagePreview>().Enter();
+
         PutUIOnTopOfOtherCards();
 
         _cardUI.ShowComboDetailBox();
@@ -132,13 +136,6 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
         _isUIOnTopOfOtherCards = false;
     }
 
-    private void MoveCardUp()
-    {
-        var position = gameObject.transform.position;
-        position.y += .6f;
-        gameObject.transform.position = position;
-    }
-
     private void OnMouseExit()
     {
         _mouseOver = false;
@@ -155,7 +152,7 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     {
         _onPreview = false;
 
-        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+        GetComponent<PlayCardStagePreview>().Exit();
         gameObject.transform.position = _originalPosition;
 
         RestoreUISortingLayer();
@@ -241,10 +238,6 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
     private void RestoreCardPosition()
     {
         transform.position = _originalPosition;
-        if (_mouseOver)
-        {
-            MoveCardUp();
-        }
     }
 
     public void SetCardScale(float scale)
@@ -259,15 +252,26 @@ public class PlayStageCard : MonoBehaviour, IEventHandler<LiePlayedEvent>, IEven
 
     public void HandleEvent(LiePlayedEvent @event)
     {
+        if (PlayStageCardType == PlayStageCardType.BCard)
+        {
+            return;
+        }
+
         if (!@event.IsLiesCounterFull)
         {
             return;
         }
+
         UpdateVotersWonText();
     }
 
     public void HandleEvent(LiesResetEvent @event)
     {
+        if (PlayStageCardType == PlayStageCardType.BCard)
+        {
+            return;
+        }
+
         UpdateVotersWonText();
     }
 

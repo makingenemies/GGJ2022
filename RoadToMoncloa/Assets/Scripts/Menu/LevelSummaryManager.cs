@@ -13,7 +13,7 @@ public class LevelSummaryManager : MonoBehaviour
 
     private void Start()
     {
-        _gameState = FindObjectOfType<GameState>();
+        _gameState = GameState.Instance;
 
         foreach (var dayInfoPanel in _dayInfoPanels)
         {

@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>, IEventHandler<CardsSelectionConfirmEvent>
 {
     [SerializeField] private BShopSelectCardsPanel _selectCardsPanel;
-    [SerializeField] CardData[] _cards;
+    [SerializeField] CardData[] _initialCards;
 
     private EventBus _eventBus;
     private GameState _gameState;
@@ -21,14 +23,25 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 
     private void Start()
     {
-        _soundEffectPlayer = FindObjectOfType<SoundEffectPlayer>();
-        _gameState= FindObjectOfType<GameState>();
-        _generalSettings = FindObjectOfType<GeneralSettings>();
+        _soundEffectPlayer = SoundEffectPlayer.Instance;
+        _gameState = GameState.Instance;
+        _generalSettings = GeneralSettings.Instance;
         _bMoneyCounter = FindObjectOfType<BMoneyCounter>();
 
-        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
+        if (!_gameState.IsBShopInitialized)
+        {
+            _gameState.IsBShopInitialized = true;
+            _gameState.BAccountShopCurrentCards = _initialCards.ToArray();
+        }
+
+        UpdateUI();
         SetUpCards();
         RegisterToEvents();
+    }
+
+    private void UpdateUI()
+    {
+        _selectCardsPanel.UpdateUI(_gameState.BAccountOwnedCards.Length + _selectedCardsIds.Count, _cardsSelectedCost);
     }
 
     private void RegisterToEvents()
@@ -62,12 +75,16 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
     {
         _selectCardsPanel.SetActive(true);
 
-        for(int i = 0; i<_cards.Length; i++)
+        var numCards = Math.Min(_gameState.BAccountShopCurrentCards.Length, _selectCardsPanel.CardSlotsCount);
+
+        for(int i = 0; i < numCards; i++)
         {
             var card = _selectCardsPanel.InstantiateCard();
-            card.SetCardData(_cards[i]);
+            card.SetCardData(_initialCards[i]);
             _cardsById[card.CardData.CardId] = card;
         }
+
+        _selectCardsPanel.ClearUnusedSlots();
     }
 
     public void HandleEvent(BShopCardSelectedEvent @event)
@@ -92,12 +109,12 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _cardsById[cardId].MoveCardDown();
         _cardsSelectedCost += _cardsById[cardId].CardData.BCardPrice;
 
-        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
+        UpdateUI();
     }
 
     private void UpdateBMoney()
     {
-        _gameState.BMoneyAmount -= _cardsSelectedCost;
+        _gameState.MoneyAmount -= _cardsSelectedCost;
     }
 
     private void UnselectCard(string cardId)
@@ -106,26 +123,26 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardUp();
         _cardsSelectedCost -= _cardsById[cardId].CardData.BCardPrice;
-        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
+        UpdateUI();
     }
 
     public void ConfirmPurchase()
     {
         UpdateBMoney();
         _bMoneyCounter.UpdateCurrentAmount(-_cardsSelectedCost);
-        var ownedCardsList = _gameState.BAccountCards.ToList();
+        var ownedCardsList = _gameState.BAccountOwnedCards.ToList();
 
         foreach (var cardId in _selectedCardsIds)
         {
             ownedCardsList.Add(_cardsById[cardId].CardData);
+            _gameState.RemoveBAccountShopCard(_cardsById[cardId].CardData);
             Destroy(_cardsById[cardId].gameObject.GetComponentInParent<CardPriceTextController>().gameObject);
         }
 
-        _gameState.BAccountCards = ownedCardsList.ToArray();
+        _gameState.BAccountOwnedCards = ownedCardsList.ToArray();
         _cardsSelectedCost = 0;
-        _selectCardsPanel.UpdateCostText(_cardsSelectedCost);
         _selectedCardsIds.Clear();
-
+        UpdateUI();
     }
 
     public void HandleEvent(CardsSelectionConfirmEvent @event)
@@ -135,5 +152,10 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
             Destroy(card.gameObject);
         }
         _selectCardsPanel.gameObject.SetActive(false);
+    }
+
+    public void Exit()
+    {
+        SceneManager.LoadScene(SceneNames.PrototypeMenu);
     }
 }

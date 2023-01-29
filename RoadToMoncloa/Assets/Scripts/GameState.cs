@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,20 +6,18 @@ public class GameState : MonoBehaviour
 {
     [SerializeField] private int _moneyAmount;
     [SerializeField] private int _votersCount;
-    [SerializeField] private int _bMoneyAmount;
-    [SerializeField] private CardData[] _bAccountCards;
 
-    private static GameState _instance;
+    public static GameState Instance { get; private set; }
 
     public void Awake()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
             DontDestroyOnLoad(this.gameObject);
-            _instance = this;
+            Instance = this;
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
-        else if (_instance != this)
+        else if (Instance != this)
         {
             Destroy(this.gameObject);
             return;
@@ -30,7 +29,7 @@ public class GameState : MonoBehaviour
         if (string.Equals(scene.name, "StartGame", System.StringComparison.InvariantCultureIgnoreCase))
         {
             Destroy(gameObject);
-            _instance = null;
+            Instance = null;
         }
     }
 
@@ -39,14 +38,13 @@ public class GameState : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public CardData[] BAccountCards 
-    { 
-        get => _bAccountCards; 
-        set 
-        { 
-            _bAccountCards= value; 
-        }
-    }
+    public CardData[] BAccountOwnedCards { get; set; } = new CardData[0];
+
+    public CardData[] BAccountShopCurrentCards { get; set; }
+
+    public bool IsBShopInitialized { get; set; }
+
+
     public int CurrentLevelIndex { get; set; }
 
     public int MoneyAmount 
@@ -56,16 +54,6 @@ public class GameState : MonoBehaviour
         {
             PreviousMoneyAmount = _moneyAmount;
             _moneyAmount = value;
-        }
-    }
-
-    public int BMoneyAmount
-    {
-        get => _bMoneyAmount;
-        set
-        {
-            PreviousBMoneyAmount = _bMoneyAmount;
-            _bMoneyAmount = value;
         }
     }
 
@@ -82,9 +70,22 @@ public class GameState : MonoBehaviour
     public int PreviousMoneyAmount { get; private set; }
 
     public int PreviousVotersCount { get; private set; }
-    public int PreviousBMoneyAmount { get; private set; }
 
     public int LiesCount { get; set; }
 
     public bool LiesDisabled { get; set; }
+
+    public void RemoveBAccountOwnedCard(CardData cardData)
+    {
+        var bCardsList = BAccountOwnedCards.ToList();
+        bCardsList.RemoveAll(c => c.CardId == cardData.CardId);
+        BAccountOwnedCards = bCardsList.ToArray();
+    }
+
+    public void RemoveBAccountShopCard(CardData cardData)
+    {
+        var bCardsList = BAccountShopCurrentCards.ToList();
+        bCardsList.RemoveAll(c => c.CardId == cardData.CardId);
+        BAccountShopCurrentCards = bCardsList.ToArray();
+    }
 }

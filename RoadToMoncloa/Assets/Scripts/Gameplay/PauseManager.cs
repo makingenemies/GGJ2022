@@ -65,7 +65,7 @@ public class PauseManager : MonoBehaviour
 
         if (_exitToMainMenuButtonClicked)
         {
-            SceneManager.LoadScene("StartGame");
+            SceneManager.LoadScene(SceneNames.PrototypeMenu);
             return;
         }
 
@@ -85,7 +85,7 @@ public class PauseManager : MonoBehaviour
 
         if (_restartButtonClicked)
         {
-            SceneManager.LoadScene("Gameplay");
+            SceneManager.LoadScene(SceneNames.Gameplay);
             return;
         }
 
