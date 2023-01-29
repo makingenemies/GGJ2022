@@ -73,16 +73,13 @@ public class GameplayManager : MonoBehaviour
     /// </summary>
     private void StartNextRound()
     {
+        _playCardsStage.ExitStage();
+
         if (_roundCounterText != null)
         {
             _roundCounterText.text = $"{_playedRoundsCounter + 1}";
         }
 
-        StartSelectCardsStage();
-    }
-
-    private void StartSelectCardsStage()
-    {
         _selectCardsStage.EnterStage();
     }
 
@@ -95,8 +92,7 @@ public class GameplayManager : MonoBehaviour
         }
         else
         {
-            _playCardsStage.ExitStage();
-            StartNextRound();
+            _playCardsStage.EnableButtonToMoveToNextStage();
         }
     }
 
@@ -160,5 +156,10 @@ public class GameplayManager : MonoBehaviour
         return CurrentRoundIndex < CurrentLevelData.CardSelectionRoundConfigs.Length
             ? CurrentLevelData.CardSelectionRoundConfigs[CurrentRoundIndex]
             : CardsSelectionRoundConfig.GetDefaultConfig();
+    }
+
+    public void StartSelectCardsStage()
+    {
+        StartNextRound();
     }
 }

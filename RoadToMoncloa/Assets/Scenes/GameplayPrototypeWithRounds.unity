@@ -1589,25 +1589,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1514675674725947744, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
+    - target: {fileID: 2427116220321884163, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1514675674725947744, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -119.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2149718950190333547, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
-      propertyPath: m_CullTransparentMesh
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2676802060130200538, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -162
-      objectReference: {fileID: 0}
-    - target: {fileID: 2676802060221004579, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
-      propertyPath: m_UiScaleMode
-      value: 1
+      value: 312.4
       objectReference: {fileID: 0}
     - target: {fileID: 2676802060544254768, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
       propertyPath: m_RootOrder
@@ -1656,18 +1640,6 @@ PrefabInstance:
     - target: {fileID: 2676802060544254774, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
       propertyPath: m_Name
       value: SelectCardsStagePanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 7282525100594794533, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
-      propertyPath: m_fontSize
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 7282525100594794533, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 7282525100594794533, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
-      propertyPath: m_VerticalAlignment
-      value: 512
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e0beeaf483da7449a77ecf6de28a624, type: 3}
@@ -1879,6 +1851,17 @@ MonoBehaviour:
   - {fileID: 2019794185}
   _mainSprite: {fileID: 597839989}
   _label: {fileID: 1877555014}
+--- !u!114 &1820976039 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5346737731336387484, guid: a25468952c551584f841d73e31c206ab, type: 3}
+  m_PrefabInstance: {fileID: 1492404758}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee86b5e2ad5f2424698b4342463aac6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1830763897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1994,6 +1977,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moneyAmount: 4
   _votersCount: 0
+  _bMoneyAmount: 0
+  _bAccountCards: []
 --- !u!212 &2019794185 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6174869140268474411, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
@@ -2159,14 +2144,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3427855011676178115, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
-      propertyPath: _modifier
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3427855012578952921, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
-      propertyPath: _modifier
+    - target: {fileID: 1490171862700432405, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3295790262211682314, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1820976039}
     - target: {fileID: 3680233106499752933, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -2175,18 +2160,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1097045801}
-    - target: {fileID: 3777415619396804091, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
-      propertyPath: _modifier
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3777415619852402443, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
-      propertyPath: _modifier
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3777415620510806850, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
-      propertyPath: _modifier
-      value: -1
-      objectReference: {fileID: 0}
     - target: {fileID: 5313671568264846342, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

@@ -24,7 +24,7 @@ public class SameCardOnSameSpecificPlayTypeComboProcessor : BaseComboProcessor<S
         foreach (var card in _gameplayManager.CardsPlayedByPlayType[playType])
         {
             // TODO: Compare Id instead of TitleId
-            if (card.CardData.TitleId == playedCard.CardData.TitleId)
+            if (card.CardData.Category == card.CardData.Category)
             {
                 similarCardsCount++;
                 similarCard = card;

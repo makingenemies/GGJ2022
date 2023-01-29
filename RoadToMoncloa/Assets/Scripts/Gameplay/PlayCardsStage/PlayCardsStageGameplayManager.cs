@@ -150,6 +150,7 @@ public class PlayCardsStageGameplayManager :
     public void EnterStage(List<CardData> _cardDatas)
     {
         _playCardsPanel.SetActive(true);
+        _playCardsPanel.DisableRoundEndedUIComponents();
 
         _selectedSlot = null;
 
@@ -399,5 +400,10 @@ public class PlayCardsStageGameplayManager :
     public void UpdateMoneyCounter(int moneyCounterDelta)
     {
         _moneyCounter.UpdateCurrentAmount(moneyCounterDelta);
+    }
+
+    public void EnableButtonToMoveToNextStage()
+    {
+        _playCardsPanel.EnableRoundEndedUIComponents();
     }
 }

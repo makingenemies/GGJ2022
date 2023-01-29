@@ -37,6 +37,6 @@ public class SelectCardsStageMainPanel : MonoBehaviour
 
     public void UpdateTextOfNumberOfCardsToSelect(int numberOfCardsToSelect)
     {
-        _selectNCardsText.text = $"Pick {numberOfCardsToSelect} cards";
+        _selectNCardsText.text = $"Elige {numberOfCardsToSelect} cartas";
     }
 }
