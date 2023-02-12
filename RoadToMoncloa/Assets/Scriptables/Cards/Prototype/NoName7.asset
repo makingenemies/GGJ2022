@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: NoName7
   m_EditorClassIdentifier: 
+  CardId: NoName7
   TitleId: NoName7
   LeftAttributeId: Votos
   RightAttributeId: Dinerito
@@ -19,6 +20,7 @@ MonoBehaviour:
   MoneyWon: 4
   VotersLost: 3
   MoneyLost: 3
+  BCardPrice: 0
   Category: 1
   Combos:
   - {fileID: 11400000, guid: 99da4821a66a4ae4786b49491cd7ce15, type: 2}

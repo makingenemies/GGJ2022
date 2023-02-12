@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: SexEducation
   m_EditorClassIdentifier: 
+  CardId: SexEducation
   TitleId: Formacion Sexual
   LeftAttributeId: Charlas
   RightAttributeId: Desestimar
@@ -19,5 +20,6 @@ MonoBehaviour:
   MoneyWon: 3
   VotersLost: 1
   MoneyLost: 3
+  BCardPrice: 0
   Category: 0
   Combos: []

@@ -16,11 +16,14 @@ public class SelectCardsStageGameplayManager :
     private EventBus _eventBus;
     private SoundEffectPlayer _soundEffectPlayer;
 
-    private CardsSelectionRoundConfig _cardSelectionConfig;
-    private List<CardData> _nonOfferedCards;
+    private RoundConfig _cardSelectionConfig;
+    private List<CardData> _nonUsedCards;
     private bool _isStageActive;
+    private LevelData _levelData;
+    private Dictionary<string, CardData> _cardDatasById = new Dictionary<string, CardData>();
     private Dictionary<string, SelectStageCard> _cardsById = new Dictionary<string, SelectStageCard>();
     private HashSet<string> _selectedCardsIds = new HashSet<string>();
+    private HashSet<string> _selectedCardDatasIds = new HashSet<string>();
 
     private int SelectedCardsCount => _selectedCardsIds.Count;
 
@@ -29,6 +32,10 @@ public class SelectCardsStageGameplayManager :
         _gameplayManager = FindObjectOfType<GameplayManager>();
         _soundEffectPlayer = SoundEffectPlayer.Instance;
 
+        foreach (CardData cardData in _gameplayManager.CurrentLevelData.Cards)
+        {
+            _cardDatasById.Add(cardData.CardId, cardData);
+        }
         RegisterToEvents();
     }
 
@@ -71,10 +78,10 @@ public class SelectCardsStageGameplayManager :
         {
             _gameplayManager = FindObjectOfType<GameplayManager>();
         }
-        if (_nonOfferedCards is null)
+        if (_nonUsedCards is null)
         {
-            _nonOfferedCards = _gameplayManager.CurrentLevelData.Cards.ToList();
-            _nonOfferedCards.Shuffle();
+            _nonUsedCards = _gameplayManager.CurrentLevelData.Cards.ToList();
+            _nonUsedCards.Shuffle();
         }
 
         _selectCardsMainPanel.SetActive(true);
@@ -84,6 +91,7 @@ public class SelectCardsStageGameplayManager :
         ValidateCardSelectionConfig();
 
         _selectedCardsIds.Clear();
+        _selectedCardDatasIds.Clear();
         _cardsById.Clear();
 
         SetUpCards();
@@ -95,7 +103,7 @@ public class SelectCardsStageGameplayManager :
     {
         const int minCardsToOffer = 3;
         const int maxCardsToOffer = 7;
-        const int minCardsToSelect = 3;
+        const int minCardsToSelect = 2;
         const int maxCardsToSelect = 6;
 
         if (_cardSelectionConfig.NumberOfOfferedCards < minCardsToOffer || _cardSelectionConfig.NumberOfOfferedCards > maxCardsToOffer)
@@ -119,8 +127,8 @@ public class SelectCardsStageGameplayManager :
         _selectCardsMainPanel.SetUp(_cardSelectionConfig.NumberOfOfferedCards);
         for (var i = 0; i < _cardSelectionConfig.NumberOfOfferedCards; i++)
         {
-            var cardData = _nonOfferedCards.First();
-            _nonOfferedCards.RemoveAt(0);
+            var cardData = _nonUsedCards.First();
+            _nonUsedCards.RemoveAt(0);
 
             var card = _selectCardsMainPanel.InstantiateCard();
             card.SetCardData(cardData);
@@ -152,6 +160,7 @@ public class SelectCardsStageGameplayManager :
         }
 
         _selectedCardsIds.Add(cardId);
+        _selectedCardDatasIds.Add(_cardsById[cardId].CardData.CardId);
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardDown();
 
@@ -164,10 +173,23 @@ public class SelectCardsStageGameplayManager :
     private void UnselectCard(string cardId)
     {
         _selectedCardsIds.Remove(cardId);
+        _selectedCardDatasIds.Remove(_cardsById[cardId].CardData.CardId);
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
         _cardsById[cardId].MoveCardUp();
 
         _selectCardsMainPanel.DisableConfirmSelectionButton();
+    }
+
+    private void InsertRandomCards()
+    {
+        _nonUsedCards.Shuffle();
+
+        for (int i = 0; i < _cardSelectionConfig.NumberOfRandomCards; i++)
+        {
+            _selectedCardDatasIds.Add(_nonUsedCards.First().CardId);
+            _nonUsedCards.RemoveAt(0);
+        }
+
     }
 
     public void HandleEvent(CardsSelectionConfirmEvent @event)
@@ -181,8 +203,8 @@ public class SelectCardsStageGameplayManager :
         _selectCardsMainPanel.SetActive(false);
 
         _isStageActive = false;
-
-        _gameplayManager.StartPlayCardsStage(_selectedCardsIds.Select(cardId => _cardsById[cardId].CardData).ToList());
+        InsertRandomCards();
+        _gameplayManager.StartPlayCardsStage(_selectedCardDatasIds.Select(cardId => _cardDatasById[cardId]).ToList());
     }
 
     public void HandleEvent(PausedEvent @event)

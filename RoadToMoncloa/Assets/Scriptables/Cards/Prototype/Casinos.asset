@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: Casinos
   m_EditorClassIdentifier: 
+  CardId: Casinos
   TitleId: Casas de apuestas
   LeftAttributeId: Concienciar
   RightAttributeId: Publicitarlas
@@ -19,5 +20,6 @@ MonoBehaviour:
   MoneyWon: 6
   VotersLost: 2
   MoneyLost: 5
+  BCardPrice: 0
   Category: 2
   Combos: []

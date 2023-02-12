@@ -6,5 +6,5 @@ public class LevelData : ScriptableObject
     public CardData[] Cards;
     public int VotersGoal;
     public int DonationCost;
-    public CardsSelectionRoundConfig[] CardSelectionRoundConfigs;
+    public RoundConfig[] CardSelectionRoundConfigs;
 }

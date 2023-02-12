@@ -148,11 +148,11 @@ public class GameplayManager : MonoBehaviour
         _playCardsStage.EnterStage(_cardDatas);
     }
 
-    public CardsSelectionRoundConfig GetCurrentRoundCardSelectionConfig()
+    public RoundConfig GetCurrentRoundCardSelectionConfig()
     {
         return CurrentRoundIndex < CurrentLevelData.CardSelectionRoundConfigs.Length
             ? CurrentLevelData.CardSelectionRoundConfigs[CurrentRoundIndex]
-            : CardsSelectionRoundConfig.GetDefaultConfig();
+            : RoundConfig.GetDefaultConfig();
     }
 
     public void StartSelectCardsStage()
