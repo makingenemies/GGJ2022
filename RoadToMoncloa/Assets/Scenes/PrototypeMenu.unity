@@ -634,8 +634,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2401870291971488721, guid: 726cc7f42dcee224b955bb2e51c3bb5a, type: 3}
+      propertyPath: _owesMoney
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2401870291971488721, guid: 726cc7f42dcee224b955bb2e51c3bb5a, type: 3}
       propertyPath: _debtAmount
-      value: 1000000
+      value: 1000001
       objectReference: {fileID: 0}
     - target: {fileID: 2401870291971488721, guid: 726cc7f42dcee224b955bb2e51c3bb5a, type: 3}
       propertyPath: _moneyAmount
