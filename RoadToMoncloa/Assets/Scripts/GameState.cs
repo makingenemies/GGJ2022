@@ -6,6 +6,7 @@ public class GameState : MonoBehaviour
 {
     [SerializeField] private int _moneyAmount;
     [SerializeField] private int _votersCount;
+    [SerializeField] private int _roundsToPayDebt;
 
     public static GameState Instance { get; private set; }
 
@@ -22,6 +23,7 @@ public class GameState : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
+        _roundsToPayDebt = GeneralSettings.Instance.RoundsToPayDebt;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -44,6 +46,7 @@ public class GameState : MonoBehaviour
 
     public bool IsBShopInitialized { get; set; }
 
+    public bool OwesMoney { get; set; }
 
     public int CurrentLevelIndex { get; set; }
 
