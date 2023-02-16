@@ -88,32 +88,7 @@ public class GameplayManager : MonoBehaviour
         _playedRoundsCounter++;
         if (_playedRoundsCounter >= AmountOfRounds)
         {
-            if (_gameState.OwesMoney)
-            {
-                _defaulterChecker.UpdateDebt();
-
-                if (_defaulterChecker.MustPayDebts())
-                {
-                    if (_defaulterChecker.PayDebts())
-                    {
-                        //The debt has been paid
-                        EndLevel();
-                    }
-                    else
-                    {
-                        //The debt has not been paid
-                        _defaulterDefeatPanel.SetActive(true);
-                    }
-                }
-                else
-                {
-                    EndLevel();
-                }
-            }
-            else
-            {
-                EndLevel();
-            }   
+            EndLevel();
         }
         else
         {
@@ -123,6 +98,16 @@ public class GameplayManager : MonoBehaviour
 
     private void EndLevel()
     {
+        if (_gameState.OwesMoney)
+        {
+            _defaulterChecker.UpdateDebt();
+
+            if (_defaulterChecker.MustPayDebts() && !_defaulterChecker.PayDebts())
+            {
+                _defaulterDefeatPanel.SetActive(true);
+                return;
+            }
+        }
         if (_votersCounter.CurrentAmount >= CurrentLevelData.VotersGoal)
         {
             if (_gameState.CurrentLevelIndex < _generalSettings.LevelsData.Length - 1)
