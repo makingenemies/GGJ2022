@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,8 @@ public class GameState : MonoBehaviour
     [SerializeField] private int _moneyAmount;
     [SerializeField] private int _votersCount;
     [SerializeField] private int _roundsToPayDebt;
+    [SerializeField] private int _debtAmount;
+    [SerializeField] private bool _owesMoney;
 
     public static GameState Instance { get; private set; }
 
@@ -46,9 +49,11 @@ public class GameState : MonoBehaviour
 
     public bool IsBShopInitialized { get; set; }
 
-    public bool OwesMoney { get; set; }
+    public bool OwesMoney { get => _owesMoney; set { _owesMoney = value; } }
 
     public int CurrentLevelIndex { get; set; }
+    public int RoundsToPayDebt { get => _roundsToPayDebt; set { _roundsToPayDebt = value; } }
+    public int DebtAmount { get => _debtAmount; set { _debtAmount = value; } }
 
     public int MoneyAmount 
     { 
