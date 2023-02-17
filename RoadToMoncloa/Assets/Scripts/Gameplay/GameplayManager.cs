@@ -13,6 +13,8 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] GameObject _successfulGameEndPanel;
     [SerializeField] GameObject _defeatPanel;
     [SerializeField] GameObject _defaulterDefeatPanel;
+    [SerializeField] GameObject _defaulterPanel;
+    [SerializeField] TextMeshProUGUI _defaulterCounterText;
     [SerializeField] TextMeshProUGUI _roundCounterText;
 
     private MoneyCounter _moneyCounter;
@@ -63,6 +65,12 @@ public class GameplayManager : MonoBehaviour
         else
         {
             _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
+        }
+
+        if (_gameState.OwesMoney)
+        {
+            _defaulterPanel.SetActive(true);
+            _defaulterCounterText.text = $"Partidas Restantes: {_generalSettings.RoundsToPayDebt}";
         }
 
         //Debug.Log($"Using {_soundEffectPlayer.GetInstanceID()}");
