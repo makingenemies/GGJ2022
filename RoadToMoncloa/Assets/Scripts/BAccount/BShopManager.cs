@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +10,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 {
     [SerializeField] private BShopSelectCardsPanel _selectCardsPanel;
     [SerializeField] CardData[] _initialCards;
+    [SerializeField] private TextMeshProUGUI _defaulterText;
 
     private EventBus _eventBus;
     private GameState _gameState;
@@ -152,6 +155,25 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
             Destroy(card.gameObject);
         }
         _selectCardsPanel.gameObject.SetActive(false);
+    }
+
+    public void GetIntoDebt()
+    {
+        if (!_gameState.OwesMoney)
+        {
+            _gameState.OwesMoney = true;
+            _gameState.DebtAmount = 2000000;
+            _gameState.MoneyAmount += _gameState.DebtAmount;
+            _bMoneyCounter.UpdateCurrentAmount(_gameState.DebtAmount);
+            StartCoroutine(ShowDefaulterWarningMessage());
+        }
+    }
+
+    IEnumerator ShowDefaulterWarningMessage()
+    {
+        _defaulterText.enabled = true;
+        yield return new WaitForSeconds(3f);
+        _defaulterText.enabled = false;
     }
 
     public void Exit()

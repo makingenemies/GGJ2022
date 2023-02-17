@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TMPro;
 using UnityEngine;
 
 public class DefaulterChecker : MonoBehaviour
@@ -31,7 +32,7 @@ public class DefaulterChecker : MonoBehaviour
             _gameState.DebtAmount = 0;
             _gameState.RoundsToPayDebt = _generalSettings.RoundsToPayDebt;
             _gameState.OwesMoney = false;
-            //reset cards bought when you was already defaulter
+            _gameState.BAccountOwnedCards = new CardData [0]; 
             return false;
         }
     }
@@ -51,12 +52,5 @@ public class DefaulterChecker : MonoBehaviour
     public void UpdateDebt()
     {
         _gameState.RoundsToPayDebt--;
-    }
-
-    //tests purposes only
-    public void GetIntoDebt()
-    {
-        _gameState.OwesMoney = true;
-        _gameState.DebtAmount = 1000000;
     }
 }
