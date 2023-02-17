@@ -88,6 +88,7 @@ public class GameplayManager : MonoBehaviour
         _playedRoundsCounter++;
         if (_playedRoundsCounter >= AmountOfRounds)
         {
+            _gameState.MoneyAmount += _moneyCounter.CurrentAmount;
             EndLevel();
         }
         else

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class BShopSelectCardsPanel : MonoBehaviour
 {
     [SerializeField] private Button _confirmSelectionButton;
+    [SerializeField] private Button _defaulterButton;
     [SerializeField] private List<Transform> _cardPlaceHolders;
     [SerializeField] private SelectBShopCard _cardPrefab;
     [SerializeField] private TextMeshProUGUI _cardsSelectedCostText;
@@ -27,6 +28,7 @@ public class BShopSelectCardsPanel : MonoBehaviour
         _eventBus = FindObjectOfType<EventBus>();
         _generalSettings = GeneralSettings.Instance;
         _confirmSelectionButton.interactable = false;
+        ToggleDefaulterButton();
     }
 
     public void SetActive(bool active)
@@ -68,6 +70,18 @@ public class BShopSelectCardsPanel : MonoBehaviour
         else
         {
             _confirmSelectionButton.interactable = false;
+        }
+    }
+
+    public void ToggleDefaulterButton()
+    {
+        if (_gameState.OwesMoney)
+        {
+            _defaulterButton.interactable = false;
+        }
+        else
+        {
+            _defaulterButton.interactable = true;
         }
     }
 
