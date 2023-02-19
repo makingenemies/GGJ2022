@@ -232,6 +232,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 457647273982716993, guid: 0555f82919c13714c8242e3f81f6a632, type: 3}
+      propertyPath: _debtAmount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 457647273982716993, guid: 0555f82919c13714c8242e3f81f6a632, type: 3}
+      propertyPath: _debtIncrement
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 457647273982716993, guid: 0555f82919c13714c8242e3f81f6a632, type: 3}
       propertyPath: _roundsToPayDebt
       value: 1
       objectReference: {fileID: 0}
@@ -643,7 +651,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2401870291971488721, guid: 726cc7f42dcee224b955bb2e51c3bb5a, type: 3}
       propertyPath: _moneyAmount
-      value: 1000000
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2401870291971488721, guid: 726cc7f42dcee224b955bb2e51c3bb5a, type: 3}
       propertyPath: _votersCount

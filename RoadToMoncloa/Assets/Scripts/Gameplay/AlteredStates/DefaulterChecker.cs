@@ -17,10 +17,10 @@ public class DefaulterChecker : MonoBehaviour
 
     public bool PayDebts()
     {
-        if (_gameState.MoneyAmount >= _gameState.DebtAmount)
+        if (_gameState.MoneyAmount >= _gameState.IncrementedDebtAmount)
         {
-            _gameState.MoneyAmount -= _gameState.DebtAmount;
-            _gameState.DebtAmount = 0;
+            _gameState.MoneyAmount -= _gameState.IncrementedDebtAmount;
+            _gameState.IncrementedDebtAmount = 0;
             _gameState.RoundsToPayDebt = _generalSettings.RoundsToPayDebt; 
             _gameState.OwesMoney = false;
             return true;
@@ -29,7 +29,7 @@ public class DefaulterChecker : MonoBehaviour
         else
         {
             _gameState.MoneyAmount = 0;
-            _gameState.DebtAmount = 0;
+            _gameState.IncrementedDebtAmount = 0;
             _gameState.RoundsToPayDebt = _generalSettings.RoundsToPayDebt;
             _gameState.OwesMoney = false;
             _gameState.BAccountOwnedCards = new CardData [0]; 

@@ -7,9 +7,11 @@ public class GameState : MonoBehaviour
 {
     [SerializeField] private int _moneyAmount;
     [SerializeField] private int _votersCount;
-    [SerializeField] private int _roundsToPayDebt;
-    [SerializeField] private int _debtAmount;
+    [SerializeField] private int _incrementedDebtAmount;
     [SerializeField] private bool _owesMoney;
+
+    private int _roundsToPayDebt;
+    
 
     public static GameState Instance { get; private set; }
 
@@ -53,7 +55,7 @@ public class GameState : MonoBehaviour
 
     public int CurrentLevelIndex { get; set; }
     public int RoundsToPayDebt { get => _roundsToPayDebt; set { _roundsToPayDebt = value; } }
-    public int DebtAmount { get => _debtAmount; set { _debtAmount = value; } }
+    public int IncrementedDebtAmount { get => _incrementedDebtAmount; set { _incrementedDebtAmount = value; } }
 
     public int MoneyAmount 
     { 

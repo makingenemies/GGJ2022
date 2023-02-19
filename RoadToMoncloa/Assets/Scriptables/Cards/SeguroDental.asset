@@ -20,7 +20,7 @@ MonoBehaviour:
   MoneyWon: 1
   VotersLost: 1
   MoneyLost: 1
-  BCardPrice: 1000000
+  BCardPrice: 5
   Category: 4
   Combos:
   - {fileID: 11400000, guid: 43bd7912b75d12b44b9acb908cd68465, type: 2}

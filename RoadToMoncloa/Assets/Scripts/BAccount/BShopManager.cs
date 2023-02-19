@@ -161,12 +161,16 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         if (!_gameState.OwesMoney)
         {
             _gameState.OwesMoney = true;
-            _gameState.DebtAmount = 2000000;
-            _gameState.MoneyAmount += _gameState.DebtAmount;
-            _bMoneyCounter.UpdateCurrentAmount(_gameState.DebtAmount);
+            _gameState.MoneyAmount += _generalSettings.DebtAmount;
+            _bMoneyCounter.UpdateCurrentAmount(_generalSettings.DebtAmount);
+            _gameState.IncrementedDebtAmount = CalculateDebt();
         }
     }
-
+    private int CalculateDebt()
+    {
+        var _debtWithInterests = _generalSettings.DebtAmount + GeneralSettings.Instance.DebtIncrement;
+        return _debtWithInterests;
+    }
 
     public void Exit()
     {
