@@ -81,8 +81,9 @@ public class SelectCardsStageGameplayManager :
         if (_nonUsedCards is null)
         {
             _nonUsedCards = _gameplayManager.CurrentLevelData.Cards.ToList();
-            _nonUsedCards.Shuffle();
         }
+
+        _nonUsedCards.Shuffle();
 
         _selectCardsMainPanel.SetActive(true);
         _selectCardsMainPanel.DisableConfirmSelectionButton();
@@ -127,8 +128,7 @@ public class SelectCardsStageGameplayManager :
         _selectCardsMainPanel.SetUp(_cardSelectionConfig.NumberOfOfferedCards);
         for (var i = 0; i < _cardSelectionConfig.NumberOfOfferedCards; i++)
         {
-            var cardData = _nonUsedCards.First();
-            _nonUsedCards.RemoveAt(0);
+            var cardData = _nonUsedCards[i];
 
             var card = _selectCardsMainPanel.InstantiateCard();
             card.SetCardData(cardData);
@@ -180,18 +180,6 @@ public class SelectCardsStageGameplayManager :
         _selectCardsMainPanel.DisableConfirmSelectionButton();
     }
 
-    private void InsertRandomCards()
-    {
-        _nonUsedCards.Shuffle();
-
-        for (int i = 0; i < _cardSelectionConfig.NumberOfRandomCards; i++)
-        {
-            _selectedCardDatasIds.Add(_nonUsedCards.First().CardId);
-            _nonUsedCards.RemoveAt(0);
-        }
-
-    }
-
     public void HandleEvent(CardsSelectionConfirmEvent @event)
     {
         foreach (var card in _cardsById.Values)
@@ -204,7 +192,24 @@ public class SelectCardsStageGameplayManager :
 
         _isStageActive = false;
         InsertRandomCards();
+        TrackUsedCards();
         _gameplayManager.StartPlayCardsStage(_selectedCardDatasIds.Select(cardId => _cardDatasById[cardId]).ToList());
+    }
+
+    private void InsertRandomCards()
+    {
+        for (int i = _cardSelectionConfig.NumberOfOfferedCards; i < _cardSelectionConfig.NumberOfOfferedCards + _cardSelectionConfig.NumberOfRandomCards; i++)
+        {
+            _selectedCardDatasIds.Add(_nonUsedCards[i].CardId);
+        }
+    }
+
+    private void TrackUsedCards()
+    {
+        foreach (var cardDataId in _selectedCardDatasIds)
+        {
+            _nonUsedCards.RemoveAll(cardData => cardData.CardId == cardDataId);
+        }
     }
 
     public void HandleEvent(PausedEvent @event)

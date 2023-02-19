@@ -33,7 +33,7 @@ MonoBehaviour:
   CardSelectionRoundConfigs:
   - NumberOfOfferedCards: 5
     NumberOfCardsToSelect: 2
-    NumberOfCardsToPlay: 3
+    NumberOfCardsToPlay: 5
   - NumberOfOfferedCards: 5
-    NumberOfCardsToSelect: 3
+    NumberOfCardsToSelect: 2
     NumberOfCardsToPlay: 5
