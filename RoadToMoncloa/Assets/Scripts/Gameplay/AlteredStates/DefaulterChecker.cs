@@ -8,11 +8,21 @@ public class DefaulterChecker : MonoBehaviour
 {
     private GameState _gameState;
     private GeneralSettings _generalSettings;
+    [SerializeField] GameObject _defaulterPanel;
+    [SerializeField] TextMeshProUGUI _defaulterCounterText;
+    [SerializeField] TextMeshProUGUI _moneyInAccountText;
 
     private void Start()
     {
         _gameState = GameState.Instance;
         _generalSettings = GeneralSettings.Instance;
+
+        if (_gameState.OwesMoney)
+        {
+            _defaulterPanel.SetActive(true);
+            _defaulterCounterText.text = $"Partidas restantes: {_gameState.RoundsToPayDebt}";
+            _moneyInAccountText.text = $"Dinero en la cuenta: {_gameState.MoneyAmount} / {_gameState.IncrementedDebtAmount}";
+        }
     }
 
     public bool PayDebts()
