@@ -73,7 +73,10 @@ public class GameplayManager : MonoBehaviour
 
    private void StartNextRound()
     {
-        _playCardsStage.ExitStage();
+        if (_playedRoundsCounter > 0)
+        {
+            _playCardsStage.ExitStage();
+        }
 
         if (_roundCounterText != null)
         {
