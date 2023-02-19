@@ -20,5 +20,6 @@ MonoBehaviour:
   MoneyWon: 1
   VotersLost: 2
   MoneyLost: 1
-  BCardPrice: 1000000
+  BCardPrice: 5
   Category: 5
+  Combos: []
