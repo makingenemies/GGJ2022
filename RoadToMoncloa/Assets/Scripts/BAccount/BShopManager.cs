@@ -169,7 +169,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
     }
     private int CalculateDebt()
     {
-        var _debtWithInterests = _generalSettings.DebtAmount + GeneralSettings.Instance.DebtIncrement;
+        var _debtWithInterests = _generalSettings.DebtAmount + _generalSettings.DebtIncrement;
         return _debtWithInterests;
     }
 

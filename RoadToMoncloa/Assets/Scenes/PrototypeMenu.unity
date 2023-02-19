@@ -237,15 +237,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 457647273982716993, guid: 0555f82919c13714c8242e3f81f6a632, type: 3}
       propertyPath: _debtIncrement
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 457647273982716993, guid: 0555f82919c13714c8242e3f81f6a632, type: 3}
-      propertyPath: _roundsToPayDebt
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 457647273982716993, guid: 0555f82919c13714c8242e3f81f6a632, type: 3}
-      propertyPath: _initialMoneyAmount
+      propertyPath: _roundsToPayDebt
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 457647273982716993, guid: 0555f82919c13714c8242e3f81f6a632, type: 3}
+      propertyPath: _initialMoneyAmount
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 457647273982716995, guid: 0555f82919c13714c8242e3f81f6a632, type: 3}
       propertyPath: m_Name
@@ -643,7 +643,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2401870291971488721, guid: 726cc7f42dcee224b955bb2e51c3bb5a, type: 3}
       propertyPath: _owesMoney
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2401870291971488721, guid: 726cc7f42dcee224b955bb2e51c3bb5a, type: 3}
       propertyPath: _debtAmount
@@ -651,11 +651,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2401870291971488721, guid: 726cc7f42dcee224b955bb2e51c3bb5a, type: 3}
       propertyPath: _moneyAmount
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2401870291971488721, guid: 726cc7f42dcee224b955bb2e51c3bb5a, type: 3}
       propertyPath: _votersCount
-      value: 0
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2401870291971488721, guid: 726cc7f42dcee224b955bb2e51c3bb5a, type: 3}
+      propertyPath: _incrementedDebtAmount
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2401870291971488722, guid: 726cc7f42dcee224b955bb2e51c3bb5a, type: 3}
       propertyPath: m_RootOrder
