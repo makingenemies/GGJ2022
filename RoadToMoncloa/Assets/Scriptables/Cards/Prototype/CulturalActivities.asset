@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: CulturalActivities
   m_EditorClassIdentifier: 
+  CardId: CulturalActivities
   TitleId: Actividades culturales
   LeftAttributeId: Votos
   RightAttributeId: Dinerito
@@ -19,6 +20,7 @@ MonoBehaviour:
   MoneyWon: 4
   VotersLost: 3
   MoneyLost: 3
+  BCardPrice: 0
   Category: 0
   Combos:
   - {fileID: 11400000, guid: 016fbfe931fd09640a7d289cddedd35b, type: 2}

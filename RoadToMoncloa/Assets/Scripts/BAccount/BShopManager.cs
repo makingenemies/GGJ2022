@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -152,6 +154,22 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
             Destroy(card.gameObject);
         }
         _selectCardsPanel.gameObject.SetActive(false);
+    }
+
+    public void GetIntoDebt()
+    {
+        if (!_gameState.OwesMoney)
+        {
+            _gameState.OwesMoney = true;
+            _gameState.MoneyAmount += _generalSettings.DebtAmount;
+            _bMoneyCounter.UpdateCurrentAmount(_generalSettings.DebtAmount);
+            _gameState.IncrementedDebtAmount = CalculateDebt();
+        }
+    }
+    private int CalculateDebt()
+    {
+        var _debtWithInterests = _generalSettings.DebtAmount + GeneralSettings.Instance.DebtIncrement;
+        return _debtWithInterests;
     }
 
     public void Exit()

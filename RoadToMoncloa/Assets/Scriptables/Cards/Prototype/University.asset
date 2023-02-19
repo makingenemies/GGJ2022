@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: University
   m_EditorClassIdentifier: 
+  CardId: University
   TitleId: Universidad
   LeftAttributeId: "P\xFAblica"
   RightAttributeId: Privada
@@ -19,6 +20,7 @@ MonoBehaviour:
   MoneyWon: 5
   VotersLost: 4
   MoneyLost: 3
+  BCardPrice: 0
   Category: 0
   Combos:
   - {fileID: 11400000, guid: 43bd7912b75d12b44b9acb908cd68465, type: 2}
