@@ -15,10 +15,7 @@ MonoBehaviour:
   Cards:
   - {fileID: 11400000, guid: 2d085d3382edbbf439b2a83b10b8e994, type: 2}
   - {fileID: 11400000, guid: 6e89974a14b74a3458a1ab24b8623297, type: 2}
-  - {fileID: 11400000, guid: 6e89974a14b74a3458a1ab24b8623297, type: 2}
   - {fileID: 11400000, guid: 1c5f88d8dfa415e4c8647b189c864c2b, type: 2}
-  - {fileID: 11400000, guid: 1c5f88d8dfa415e4c8647b189c864c2b, type: 2}
-  - {fileID: 11400000, guid: 996eb68ca946c1f4cb920b209022ae24, type: 2}
   - {fileID: 11400000, guid: 996eb68ca946c1f4cb920b209022ae24, type: 2}
   - {fileID: 11400000, guid: 6ce3824036aec264aa6d3bf8234ec079, type: 2}
   - {fileID: 11400000, guid: b03286fa74d7f1141be4cdd5b563c8b7, type: 2}
@@ -27,13 +24,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d869d8b6c31028843b5e4561c8b2756e, type: 2}
   - {fileID: 11400000, guid: 7188a47ad9b85c24383149e9560a4ae5, type: 2}
   - {fileID: 11400000, guid: 083aa36a48aa54d46995381b563756f4, type: 2}
-  - {fileID: 11400000, guid: 083aa36a48aa54d46995381b563756f4, type: 2}
-  - {fileID: 11400000, guid: 22f8e11fb81e2ab4c8619d6521ddd3f9, type: 2}
   - {fileID: 11400000, guid: 22f8e11fb81e2ab4c8619d6521ddd3f9, type: 2}
   - {fileID: 11400000, guid: 7e7907a429bfaf3478420dab4e300172, type: 2}
-  - {fileID: 11400000, guid: b7d541e866298144da697ed38a27f3a4, type: 2}
   - {fileID: 11400000, guid: b7d541e866298144da697ed38a27f3a4, type: 2}
   - {fileID: 11400000, guid: 89ee1cd7acbb561479125651fd524118, type: 2}
   VotersGoal: 10
   DonationCost: 5
-  CardSelectionRoundConfigs: []
+  CardSelectionRoundConfigs:
+  - NumberOfOfferedCards: 5
+    NumberOfCardsToSelect: 2
+    NumberOfCardsToPlay: 5
+  - NumberOfOfferedCards: 5
+    NumberOfCardsToSelect: 2
+    NumberOfCardsToPlay: 5

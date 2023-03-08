@@ -12,11 +12,13 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] GameObject _successfulLevelEndPanel;
     [SerializeField] GameObject _successfulGameEndPanel;
     [SerializeField] GameObject _defeatPanel;
+    [SerializeField] GameObject _defaulterDefeatPanel;
     [SerializeField] TextMeshProUGUI _roundCounterText;
 
     private MoneyCounter _moneyCounter;
     private VotersCounter _votersCounter;
     private LiesManager _liesManager;
+    private DefaulterChecker _defaulterChecker;
     private GameState _gameState;
     private GeneralSettings _generalSettings;
     private DonationManager _donationManager;
@@ -35,6 +37,7 @@ public class GameplayManager : MonoBehaviour
         _moneyCounter = FindObjectOfType<MoneyCounter>();
         _votersCounter = FindObjectOfType<VotersCounter>();
         _liesManager = FindObjectOfType<LiesManager>();
+        _defaulterChecker= FindObjectOfType<DefaulterChecker>();
         _gameState = GameState.Instance;
         _playCardsStage = FindObjectOfType<PlayCardsStageGameplayManager>();
         _selectCardsStage = FindObjectOfType<SelectCardsStageGameplayManager>();
@@ -62,7 +65,7 @@ public class GameplayManager : MonoBehaviour
             _liesManager.SetPlayedLiesCount(_gameState.LiesCount);
         }
 
-        Debug.Log($"Using {_soundEffectPlayer.GetInstanceID()}");
+        //Debug.Log($"Using {_soundEffectPlayer.GetInstanceID()}");
         _soundEffectPlayer.PlayClip(SoundNames.Gameplay.ShuffleCards);
 
         StartNextRound();
@@ -70,7 +73,10 @@ public class GameplayManager : MonoBehaviour
 
    private void StartNextRound()
     {
-        _playCardsStage.ExitStage();
+        if (_playedRoundsCounter > 0)
+        {
+            _playCardsStage.ExitStage();
+        }
 
         if (_roundCounterText != null)
         {
@@ -85,6 +91,7 @@ public class GameplayManager : MonoBehaviour
         _playedRoundsCounter++;
         if (_playedRoundsCounter >= AmountOfRounds)
         {
+            _gameState.MoneyAmount += _moneyCounter.CurrentAmount;
             EndLevel();
         }
         else
@@ -95,6 +102,16 @@ public class GameplayManager : MonoBehaviour
 
     private void EndLevel()
     {
+        if (_gameState.OwesMoney)
+        {
+            _defaulterChecker.UpdateDebt();
+
+            if (_defaulterChecker.MustPayDebts() && !_defaulterChecker.PayDebts())
+            {
+                _defaulterDefeatPanel.SetActive(true);
+                return;
+            }
+        }
         if (_votersCounter.CurrentAmount >= CurrentLevelData.VotersGoal)
         {
             if (_gameState.CurrentLevelIndex < _generalSettings.LevelsData.Length - 1)
@@ -148,11 +165,11 @@ public class GameplayManager : MonoBehaviour
         _playCardsStage.EnterStage(_cardDatas);
     }
 
-    public CardsSelectionRoundConfig GetCurrentRoundCardSelectionConfig()
+    public RoundConfig GetCurrentRoundCardSelectionConfig()
     {
         return CurrentRoundIndex < CurrentLevelData.CardSelectionRoundConfigs.Length
             ? CurrentLevelData.CardSelectionRoundConfigs[CurrentRoundIndex]
-            : CardsSelectionRoundConfig.GetDefaultConfig();
+            : RoundConfig.GetDefaultConfig();
     }
 
     public void StartSelectCardsStage()

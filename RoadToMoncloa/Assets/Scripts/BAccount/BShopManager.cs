@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,7 +18,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
     private BMoneyCounter _bMoneyCounter;
 
     private int _cardsSelectedCost;
-    private HashSet<string> _selectedCardsIds = new HashSet<string>();
+    private string _selectedCardId;
     private Dictionary<string, SelectBShopCard> _cardsById = new Dictionary<string, SelectBShopCard>();
 
     public LevelData CurrentLevelData => _generalSettings.LevelsData[_gameState.CurrentLevelIndex];
@@ -41,7 +43,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 
     private void UpdateUI()
     {
-        _selectCardsPanel.UpdateUI(_gameState.BAccountOwnedCards.Length + _selectedCardsIds.Count, _cardsSelectedCost);
+        _selectCardsPanel.UpdateUI(_gameState.BAccountOwnedCards.Length + (string.IsNullOrEmpty(_selectedCardId) ? 0 : 1), _cardsSelectedCost);
     }
 
     private void RegisterToEvents()
@@ -91,21 +93,26 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
     {
         if (!IsCardSelected(@event.CardId))
         {
-
-            TrySelectCard(@event.CardId);
+            SelectCard(@event.CardId);
         }
         else
         {
             UnselectCard(@event.CardId);
         }
+
+        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
     }
 
-    private bool IsCardSelected(string cardId) => _selectedCardsIds.Contains(cardId);
+    private bool IsCardSelected(string cardId) => _selectedCardId == cardId;
 
-    private void TrySelectCard(string cardId)
+    private void SelectCard(string cardId)
     {
-        _selectedCardsIds.Add(cardId);
-        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
+        if (!string.IsNullOrEmpty(_selectedCardId))
+        {
+            UnselectCard(_selectedCardId);
+        }
+
+        _selectedCardId = cardId;
         _cardsById[cardId].MoveCardDown();
         _cardsSelectedCost += _cardsById[cardId].CardData.BCardPrice;
 
@@ -119,8 +126,7 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
 
     private void UnselectCard(string cardId)
     {
-        _selectedCardsIds.Remove(cardId);
-        _soundEffectPlayer.PlayClip(SoundNames.Gameplay.SelectCard);
+        _selectedCardId = string.Empty;
         _cardsById[cardId].MoveCardUp();
         _cardsSelectedCost -= _cardsById[cardId].CardData.BCardPrice;
         UpdateUI();
@@ -132,16 +138,13 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
         _bMoneyCounter.UpdateCurrentAmount(-_cardsSelectedCost);
         var ownedCardsList = _gameState.BAccountOwnedCards.ToList();
 
-        foreach (var cardId in _selectedCardsIds)
-        {
-            ownedCardsList.Add(_cardsById[cardId].CardData);
-            _gameState.RemoveBAccountShopCard(_cardsById[cardId].CardData);
-            Destroy(_cardsById[cardId].gameObject.GetComponentInParent<CardPriceTextController>().gameObject);
-        }
+        ownedCardsList.Add(_cardsById[_selectedCardId].CardData);
+        _gameState.RemoveBAccountShopCard(_cardsById[_selectedCardId].CardData);
+        Destroy(_cardsById[_selectedCardId].gameObject.GetComponentInParent<CardPriceTextController>().gameObject);
 
         _gameState.BAccountOwnedCards = ownedCardsList.ToArray();
         _cardsSelectedCost = 0;
-        _selectedCardsIds.Clear();
+        _selectedCardId = string.Empty;
         UpdateUI();
     }
 
@@ -152,6 +155,22 @@ public class BShopManager : MonoBehaviour, IEventHandler<BShopCardSelectedEvent>
             Destroy(card.gameObject);
         }
         _selectCardsPanel.gameObject.SetActive(false);
+    }
+
+    public void GetIntoDebt()
+    {
+        if (!_gameState.OwesMoney)
+        {
+            _gameState.OwesMoney = true;
+            _gameState.MoneyAmount += _generalSettings.DebtAmount;
+            _bMoneyCounter.UpdateCurrentAmount(_generalSettings.DebtAmount);
+            _gameState.IncrementedDebtAmount = CalculateDebt();
+        }
+    }
+    private int CalculateDebt()
+    {
+        var _debtWithInterests = _generalSettings.DebtAmount + _generalSettings.DebtIncrement;
+        return _debtWithInterests;
     }
 
     public void Exit()

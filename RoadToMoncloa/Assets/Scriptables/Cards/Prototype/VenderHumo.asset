@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707a197d02282024db8f6510cd8351e0, type: 3}
   m_Name: VenderHumo
   m_EditorClassIdentifier: 
+  CardId: VenderHumo
   TitleId: Vender Humo
   LeftAttributeId: Votos
   RightAttributeId: Dinerito
@@ -19,5 +20,6 @@ MonoBehaviour:
   MoneyWon: 1
   VotersLost: 0
   MoneyLost: 0
+  BCardPrice: 0
   Category: 2
   Combos: []
