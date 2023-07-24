@@ -29,6 +29,6 @@ public class VotersCounter : MonoBehaviour
 
     private void RefreshText()
     {
-        _text.text = $"{_currentAmount}M / {_maxAmount}M de votos";
+       // _text.text = $"{_currentAmount}M / {_maxAmount}M de votos";
     }
 }

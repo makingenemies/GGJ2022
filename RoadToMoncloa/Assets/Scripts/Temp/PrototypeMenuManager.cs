@@ -14,7 +14,8 @@ public class PrototypeMenuManager : MonoBehaviour
     private void Start()
     {
         _gameState = GameState.Instance;
-        UpdateTexts();
+        //MoneyAmount = _gameState.MoneyAmount;
+        //UpdateTexts();
     }
 
     private void Update()
@@ -23,7 +24,7 @@ public class PrototypeMenuManager : MonoBehaviour
         {
             _previousMoneyAmount = _gameState.MoneyAmount;
             _previousVotersAmount = _gameState.VotersCount;
-            UpdateTexts();
+           // UpdateTexts();
         }
     }
 
@@ -37,9 +38,9 @@ public class PrototypeMenuManager : MonoBehaviour
         SceneManager.LoadScene(SceneNames.BAccountShop);
     }
 
-    private void UpdateTexts()
-    {
-        _moneyText.text = $"Money: {_gameState.MoneyAmount} €";
-        _votersText.text = $"Voters: {_gameState.VotersCount}";
-    }
+    //private void UpdateTexts()
+    //{
+    //    _moneyText.text = $"Money: {_gameState.MoneyAmount} €";
+    //    _votersText.text = $"Voters: {_gameState.VotersCount}";
+    //}
 }

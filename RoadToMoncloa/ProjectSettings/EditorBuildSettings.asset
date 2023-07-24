@@ -14,4 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameplayPrototypeWithRounds.unity
     guid: 0a9d2af8b4c559a42a9dcf8c7468afcb
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 8db59adcd53a6c04ea9ed3102e993e32, type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: 04115c77e4f871c4d8fdaa5f31dd0533, type: 2}
