@@ -24,10 +24,18 @@ MonoBehaviour:
       de votos'
     m_Metadata:
       m_Items:
-      - id: 0
+      - id: 1
+  - m_Id: 142029220773888
+    m_Localized: kjbjhbjhbjhb
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0080005902000000
+    00000001:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0080005902000000

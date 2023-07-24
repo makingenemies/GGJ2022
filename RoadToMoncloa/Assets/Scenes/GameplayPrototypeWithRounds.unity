@@ -408,7 +408,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:5b41e3058561b8c4e89b1bb193a48e04
     m_TableEntryReference:
-      m_KeyId: 10083139584
+      m_KeyId: 142029220773888
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -786,6 +786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f2ec68ac8f0864c992f6cc46ade21c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventString: {fileID: 30149987}
   _gameplayManager: {fileID: 1820976039}
   _votersCounter: {fileID: 656780721}
 --- !u!4 &104899435
@@ -1838,6 +1839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 30149985}
+  _gamePlayTextLocalizationManager: {fileID: 104899434}
 --- !u!1 &664409829
 GameObject:
   m_ObjectHideFlags: 0

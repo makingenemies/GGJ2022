@@ -19,6 +19,13 @@ MonoBehaviour:
     m_Key: VotersText
     m_Metadata:
       m_Items: []
+  - m_Id: 142029220773888
+    m_Key: 'VotersText2
+
+
+'
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

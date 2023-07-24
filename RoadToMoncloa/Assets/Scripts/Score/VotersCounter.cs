@@ -4,6 +4,7 @@ using UnityEngine;
 public class VotersCounter : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _text;
+    [SerializeField] GamePlayTextLocalizationManager _gamePlayTextLocalizationManager;
 
     private int _currentAmount;
     private int _maxAmount;
@@ -29,6 +30,7 @@ public class VotersCounter : MonoBehaviour
 
     private void RefreshText()
     {
+        _gamePlayTextLocalizationManager.RefreshVotersText();
        // _text.text = $"{_currentAmount}M / {_maxAmount}M de votos";
     }
 }
