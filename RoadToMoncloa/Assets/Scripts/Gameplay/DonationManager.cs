@@ -54,6 +54,8 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
         _donationPanel.SetActive(true);
         _pauseManager.Pause();
         ShowButtonsOnlyIfEnoughMoney();
+
+        // TODO: This should go in button, not here
         soundEffectPlayer.PlayClip(SoundNames.Gameplay.DonationButton);
     }
 
@@ -72,6 +74,11 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
     public void HideDonationPanel()
     {
         _donationPanel.SetActive(false);
+    }
+
+    public void HideDonationPanelAndUnpause()
+    {
+        HideDonationPanel();
         _pauseManager.Unpause();
     }
 
@@ -80,7 +87,7 @@ public class DonationManager : MonoBehaviour, IEventHandler<LiePlayedEvent>
         _moneyCounter.UpdateCurrentAmount(-_donationAmount);
         _gameplayManager.DisableLies();
 
-        HideDonationPanel();
+        HideDonationPanelAndUnpause();
         _openPanelButton.interactable = false;
     }
 
