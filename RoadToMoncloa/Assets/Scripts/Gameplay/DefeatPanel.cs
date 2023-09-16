@@ -17,7 +17,7 @@ public class DefeatPanel : MonoBehaviour
     {
         if (_exitToMainMenuButtonClicked)
         {
-            SceneManager.LoadScene("StartGame");
+            SceneManager.LoadScene(SceneNames.PrototypeMenu);
             return;
         }
 
@@ -27,6 +27,6 @@ public class DefeatPanel : MonoBehaviour
 
     public void RestartLevel()
     {
-        SceneManager.LoadScene("Gameplay");
+        SceneManager.LoadScene(SceneNames.Gameplay);
     }
 }
