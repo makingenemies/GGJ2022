@@ -86,13 +86,9 @@ public class PlayCardsStageGameplayManager :
         InitializePlayedCardsLists();
 
         _playCardsPanel.SetUpLiesUI();
-        _boardCardSlotsById = new Dictionary<string, BoardCardSlot>();
-        var boardCardSlots = FindObjectsOfType<BoardCardSlot>();
-        foreach (var slot in boardCardSlots)
-        {
-            _boardCardSlotsById[slot.Id] = slot;
-        }
-
+        
+        SetUpSlots();
+        
         SetUpBCards();
 
         _playCardsPanel.SetActive(false);
@@ -126,6 +122,15 @@ public class PlayCardsStageGameplayManager :
         foreach (var cardPlayType in (CardPlayType[])Enum.GetValues(typeof(CardPlayType)))
         {
             _cardsPlayedByPlayType[cardPlayType] = new List<PlayStageCard>();
+        }
+    }
+
+    private void SetUpSlots() {
+        _boardCardSlotsById = new Dictionary<string, BoardCardSlot>();
+        var boardCardSlots = FindObjectsOfType<BoardCardSlot>();
+        foreach (var slot in boardCardSlots) {
+            _boardCardSlotsById[slot.Id] = slot;
+            slot.Modifier = 0;
         }
     }
 
