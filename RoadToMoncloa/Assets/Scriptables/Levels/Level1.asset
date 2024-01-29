@@ -22,3 +22,12 @@ MonoBehaviour:
   CardSelectionRoundConfigs:
   - NumberOfOfferedCards: 6
     NumberOfCardsToSelect: 5
+    NumberOfCardsToPlay: 0
+  VotersSideConfig:
+    CardSlotsRowsUpToDown:
+    - CardSlotsLeftToRight:
+      - Modifier: 3
+    - CardSlotsLeftToRight:
+      - Modifier: 3
+  MoneySideConfig:
+    CardSlotsRowsUpToDown: []
