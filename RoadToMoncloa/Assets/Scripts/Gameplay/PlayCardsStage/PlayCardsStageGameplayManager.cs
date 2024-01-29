@@ -130,7 +130,7 @@ public class PlayCardsStageGameplayManager :
         var boardCardSlots = FindObjectsOfType<BoardCardSlot>();
         foreach (var slot in boardCardSlots) {
             _boardCardSlotsById[slot.Id] = slot;
-            slot.Modifier = 0;
+            slot.SetModifier(0);
         }
     }
 

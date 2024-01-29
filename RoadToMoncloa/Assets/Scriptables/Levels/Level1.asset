@@ -30,4 +30,10 @@ MonoBehaviour:
     - CardSlotsLeftToRight:
       - Modifier: 3
   MoneySideConfig:
-    CardSlotsRowsUpToDown: []
+    CardSlotsRowsUpToDown:
+    - CardSlotsLeftToRight:
+      - Modifier: 0
+    - CardSlotsLeftToRight:
+      - Modifier: 3
+      - Modifier: 1
+      - Modifier: 7

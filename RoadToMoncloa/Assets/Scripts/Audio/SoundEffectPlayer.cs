@@ -14,7 +14,6 @@ public class SoundEffectPlayer : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("A");
         if (Instance == null)
         {
             Debug.Log($"Setting {GetInstanceID()} as singleton");
@@ -38,7 +37,6 @@ public class SoundEffectPlayer : MonoBehaviour
 
     public void PlayClip(string clipName)
     {
-        Debug.Log("B");
         _audioSource.PlayOneShot(_audioClipsByName[clipName]);
     }
 }

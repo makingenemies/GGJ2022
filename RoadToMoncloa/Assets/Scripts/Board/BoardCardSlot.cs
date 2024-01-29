@@ -10,24 +10,24 @@ public class BoardCardSlot : MonoBehaviour
     [SerializeField] private bool _isSelected;
     [SerializeField] private int _modifier;
     [SerializeField] private CardPlayType _playType;
+    
+    private string _id;
+    private bool _isInitialized;
 
     private BoxCollider2D _slotCollider;
     private EventBus _eventBus;
     private PlayCardsStageGameplayManager _gameplayManager;
-    private string _id;
-
     public TextMeshPro _modifierText;
 
     public string Id => _id;
     public bool IsUsed { get; set; }
     public CardPlayType PlayType => _playType;
-    public int Modifier { get; set; }
+    public int Modifier => _modifier;
 
     private void Awake()
     {
         _slotCollider = GetComponent<BoxCollider2D>();
         _id = Guid.NewGuid().ToString();
-        Modifier = _modifier;
     }
 
     // Start is called before the first frame update
@@ -35,15 +35,10 @@ public class BoardCardSlot : MonoBehaviour
     {
         _eventBus = FindObjectOfType<EventBus>();
         _gameplayManager= FindObjectOfType<PlayCardsStageGameplayManager>();
+
+        _isInitialized = true;
         
-        if (_gameplayManager.AreModifiersActive)
-        {
-            ShowModifiers();
-        }
-        else
-        {
-            HideModifiers();
-        }
+        RefreshModifier();
     }
 
     private void OnMouseExit()
@@ -73,29 +68,19 @@ public class BoardCardSlot : MonoBehaviour
         return true;
     }
 
-    
-    private void ShowModifiers()
-    {
-        if (_modifier != 0)
-        {
-            //modifiers text update
-            if(_modifier > 0)
-            {
-                _modifierText.text = $"+{_modifier}";
-            }
-            else
-            {
-                _modifierText.text = $"{_modifier}";
-            }
-
-            
-            _modifierText.enabled = true;
-            
-            
+    private void RefreshModifier() {
+        if (!_isInitialized || !_gameplayManager.AreModifiersActive || Modifier == 0) {
+            _modifierText.enabled = false;
+            return;
         }
+
+        _modifierText.text = Modifier > 0 ? $"+{Modifier}" : $"{Modifier}";
+        Debug.Log($"Setting modifier text to {_modifierText.text}");
     }
-    private void HideModifiers()
-    {
-        _modifierText.enabled = false;
+    
+    public void SetModifier(int modifier) {
+        Debug.Log($"Setting Modifier to {Modifier}");
+        _modifier = modifier;
+        RefreshModifier();
     }
 }
