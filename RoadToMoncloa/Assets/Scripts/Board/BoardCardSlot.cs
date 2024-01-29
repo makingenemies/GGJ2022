@@ -21,12 +21,13 @@ public class BoardCardSlot : MonoBehaviour
     public string Id => _id;
     public bool IsUsed { get; set; }
     public CardPlayType PlayType => _playType;
-    public int Modifier => _modifier;
+    public int Modifier { get; set; }
 
     private void Awake()
     {
         _slotCollider = GetComponent<BoxCollider2D>();
         _id = Guid.NewGuid().ToString();
+        Modifier = _modifier;
     }
 
     // Start is called before the first frame update
