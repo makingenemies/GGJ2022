@@ -12,6 +12,12 @@ public class PlayCardsPanel : MonoBehaviour
     [SerializeField] GameObject _cards4SpotsPrefab;
     [SerializeField] GameObject _cards5SpotsPrefab;
     [SerializeField] GameObject _cards6SpotsPrefab;
+    [SerializeField] GameObject _votersArea3SlotsPrefab;
+    [SerializeField] GameObject _votersArea2SlotsPrefab;
+    [SerializeField] GameObject _votersArea1SlotsPrefab;
+    [SerializeField] GameObject _moneyArea3SlotsPrefab;
+    [SerializeField] GameObject _moneyArea2SlotsPrefab;
+    [SerializeField] GameObject _moneyArea1SlotsPrefab;
     [SerializeField] private Button _pickMoreCardsButton;
     [SerializeField] private PlayCardsStageBCardsPanel _bCardsPanel;
 

@@ -5355,17 +5355,9 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1097045801}
-    - target: {fileID: 4844651150301769448, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6174869139013832036, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
       propertyPath: m_Name
       value: PlayCardsStagePanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174869139013832036, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6174869139013832037, guid: af699f6e3999e6e498f165f365cd5473, type: 3}
       propertyPath: m_RootOrder
