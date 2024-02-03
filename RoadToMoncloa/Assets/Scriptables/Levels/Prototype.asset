@@ -37,3 +37,21 @@ MonoBehaviour:
   - NumberOfOfferedCards: 5
     NumberOfCardsToSelect: 2
     NumberOfCardsToPlay: 5
+  VotersSideConfig:
+    CardSlotsRowsUpToDown:
+    - CardSlotsLeftToRight:
+      - Modifier: 3
+      - Modifier: 0
+      - Modifier: -1
+    - CardSlotsLeftToRight:
+      - Modifier: 1
+      - Modifier: 0
+  MoneySideConfig:
+    CardSlotsRowsUpToDown:
+    - CardSlotsLeftToRight:
+      - Modifier: -2
+      - Modifier: 0
+      - Modifier: 1
+    - CardSlotsLeftToRight:
+      - Modifier: 0
+      - Modifier: 0

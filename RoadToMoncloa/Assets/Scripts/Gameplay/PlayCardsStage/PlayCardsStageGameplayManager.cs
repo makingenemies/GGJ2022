@@ -85,9 +85,10 @@ public class PlayCardsStageGameplayManager :
 
         InitializePlayedCardsLists();
 
+        _playCardsPanel.SetUpSlots(CurrentLevelData);
         _playCardsPanel.SetUpLiesUI();
         
-        SetUpSlots();
+        SaveSlotsInDictionary();
         
         SetUpBCards();
 
@@ -125,12 +126,11 @@ public class PlayCardsStageGameplayManager :
         }
     }
 
-    private void SetUpSlots() {
+    private void SaveSlotsInDictionary() {
         _boardCardSlotsById = new Dictionary<string, BoardCardSlot>();
         var boardCardSlots = FindObjectsOfType<BoardCardSlot>();
         foreach (var slot in boardCardSlots) {
             _boardCardSlotsById[slot.Id] = slot;
-            slot.SetModifier(0);
         }
     }
 
@@ -166,7 +166,7 @@ public class PlayCardsStageGameplayManager :
 
     private void SetUpCards(List<CardData> _cardDatas)
     {
-        _playCardsPanel.SetUp(_cardDatas.Count);
+        _playCardsPanel.SetUpHand(_cardDatas.Count);
 
         for (var i = 0; i < _cardDatas.Count; i++)
         {

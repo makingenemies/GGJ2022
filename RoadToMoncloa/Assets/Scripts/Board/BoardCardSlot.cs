@@ -74,12 +74,13 @@ public class BoardCardSlot : MonoBehaviour
             return;
         }
 
+        _modifierText.enabled = true;
         _modifierText.text = Modifier > 0 ? $"+{Modifier}" : $"{Modifier}";
         Debug.Log($"Setting modifier text to {_modifierText.text}");
     }
     
     public void SetModifier(int modifier) {
-        Debug.Log($"Setting Modifier to {Modifier}");
+        Debug.Log($"Setting Modifier to {modifier}");
         _modifier = modifier;
         RefreshModifier();
     }

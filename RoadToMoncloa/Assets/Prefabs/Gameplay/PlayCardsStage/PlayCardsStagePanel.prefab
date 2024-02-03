@@ -4765,8 +4765,16 @@ MonoBehaviour:
   _cards4SpotsPrefab: {fileID: 5642138180221056665, guid: 6ba9307444ac22545abec755009dfee9, type: 3}
   _cards5SpotsPrefab: {fileID: 3842414228185030258, guid: 778a74201626aa249a126623752e4c14, type: 3}
   _cards6SpotsPrefab: {fileID: 3010333269669986365, guid: 59d20f8981bd9cf41a5aafd7759e635a, type: 3}
+  _boardSlotsParent: {fileID: 6174869139812515089}
+  _votersArea3SlotsPrefab: {fileID: 4234584472237098422, guid: 2f5dd5d340a6ebb4bbbc90f1e17b1a11, type: 3}
+  _votersArea2SlotsPrefab: {fileID: 7099891411262493421, guid: 21de321fe4077ae4f8bf2c2d32a23118, type: 3}
+  _votersArea1SlotsPrefab: {fileID: 8120299449511889848, guid: b75c350c2b65c7149b1e7ac8f7e10c78, type: 3}
+  _moneyArea3SlotsPrefab: {fileID: 8875642282967199762, guid: ced30958ad24e9d449b89b258a801ae4, type: 3}
+  _moneyArea2SlotsPrefab: {fileID: 5815215590876850701, guid: 254e5fc4eaf36914e962e4c57f9cc0c6, type: 3}
+  _moneyArea1SlotsPrefab: {fileID: 4092993642804361105, guid: dcaa83bf546f55f42b3bcd38f78556b4, type: 3}
   _pickMoreCardsButton: {fileID: 3295790262211682314}
   _bCardsPanel: {fileID: 7028756428594260917}
+  _distanceBetweenCardRows: 2.66
 --- !u!1 &6174869139021692101
 GameObject:
   m_ObjectHideFlags: 0
